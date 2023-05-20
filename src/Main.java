@@ -7,7 +7,7 @@ public class Main {
         getProgress();
         System.out.println("current progress: \n"+progress);
         updateUsername("Rita");
-        updateLevel();
+
     }
     private static void updateUsername(String newName) {
         progress.setUsername(newName);
