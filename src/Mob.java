@@ -3,6 +3,24 @@ public class Mob extends Character{
     private int x, y;
     private boolean collapsed = false;
     private boolean reverse = false;
+    private boolean damaging = true;
+    private boolean frozen = false;
+
+    public boolean isFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
+    }
+
+    public boolean isDamaging() {
+        return damaging;
+    }
+
+    public void setDamaging(boolean damaging) {
+        this.damaging = damaging;
+    }
 
     public int getDirection() {
         return direction;

@@ -17,21 +17,30 @@ public class ArrowKeyListener implements KeyListener{
         // Move the character based on the arrow key pressed
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
-                game.moveCharacter(chatGPT, -chatGPT.getSpeed(), 0);
+                game.moveChatGPT(-chatGPT.getSpeed(), 0);
                 break;
             case KeyEvent.VK_RIGHT:
-                game.moveCharacter(chatGPT, chatGPT.getSpeed(), 0);
+                game.moveChatGPT(chatGPT.getSpeed(), 0);
                 break;
             case KeyEvent.VK_UP:
-                game.moveCharacter(chatGPT,0, -chatGPT.getSpeed());
+                game.moveChatGPT(0, -chatGPT.getSpeed());
                 break;
             case KeyEvent.VK_DOWN:
-                game.moveCharacter(chatGPT,0, chatGPT.getSpeed());
+                game.moveChatGPT(0, chatGPT.getSpeed());
                 break;
             case KeyEvent.VK_SPACE:
-                if (game.isInside(game.slideDoorButton)){
+                if (game.isInside(game.slideDoorButton, 30)){
                     game.moveSlidingDoor();
                 }
+                if (game.isInside(game.key, 50)){
+                    game.moveRotatingDoor();
+                    game.key.remove();
+                }
+                break;
+            case KeyEvent.VK_ENTER:
+                game.moveRotatingDoor();
+
+
                 break;
         }
     }

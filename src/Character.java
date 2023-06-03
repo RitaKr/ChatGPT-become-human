@@ -11,6 +11,15 @@ public class Character {
     private int width;
     private int height;
     private boolean mob;
+    private boolean visible = true;
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 
     public boolean isMob() {
         return mob;
@@ -86,10 +95,6 @@ public class Character {
     public void setLives(int lives) {
         this.lives = lives;
     }
-    public void decreaseLives() {
-        if (lives>0) lives--;
-        else alive =false;
-    }
 
     public Character(int speed, int x, int y, boolean mob) {
         this.speed = speed;
@@ -110,6 +115,9 @@ public class Character {
         y+=dy;
 
     }
-
+    public void looseLife(){
+        if (lives>1) lives--;
+        else alive=false;
+    }
 
 }
