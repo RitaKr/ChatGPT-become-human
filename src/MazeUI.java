@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MazeUI extends JFrame {
     static MazeGame game;
@@ -12,13 +14,15 @@ public class MazeUI extends JFrame {
     static Color bg = new Color(45, 36, 58);
 
     private static int menuHeight = 40;
+
+
     public MazeUI(int level){
 
         System.out.println("Maze Game");
         game = new MazeGame(level);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setResizable(false);
 
 
         getContentPane().setLayout(new BorderLayout());
@@ -33,8 +37,9 @@ public class MazeUI extends JFrame {
         // Register arrow key listeners to move the character
         game.addKeyListener(new ArrowKeyListener(game));
         game.requestFocus();
+
     }
-    public static void setUpperPanel(){
+    public void setUpperPanel(){
         upperPanel.setBorder(new EmptyBorder(5, 20, 5, 20));
         upperPanel.setBackground(bg);
         upperPanel.setPreferredSize(new Dimension(game.getWidth(), menuHeight));
@@ -55,16 +60,32 @@ public class MazeUI extends JFrame {
         quitButton.setBorderPainted(false);
         quitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (game.isMusicPlaying()) game.pauseMusic();
+                System.out.println(game.isMusicPlaying());
+                int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
+                if (answer == 0) {
+
+                    dispose();
+                } else {
+                    game.playMusic();
+
+                    game.requestFocus();
+                }
+
+            }
+        });
 
         upperPanel.add(levelLabel, BorderLayout.WEST);
         upperPanel.add(heartsPanel, BorderLayout.CENTER);
         upperPanel.add(quitButton, BorderLayout.EAST);
 
     }
-    public static void updateUI(){
-        setUpperPanel();
-        upperPanel.updateUI();
-
+    public static void updateUpperPanel() {
+        levelLabel.setText("Level " + game.getLevel());
+        heartsPanel.repaint();
     }
 
     static class HeartsPanel extends JPanel {
@@ -92,6 +113,11 @@ public class MazeUI extends JFrame {
             ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
             heart = icon.getImage();
             //System.out.println("w: "+width+", h:"+ height);
+        }
+        static void repaintHeartsPanel() {
+            if (upperPanel != null) {
+                heartsPanel.repaint();
+            }
         }
     }
 

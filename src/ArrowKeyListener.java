@@ -1,3 +1,5 @@
+import javafx.scene.media.MediaPlayer;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -39,6 +41,18 @@ public class ArrowKeyListener implements KeyListener{
                 break;
             case KeyEvent.VK_ENTER:
                 game.moveRotatingDoor();
+
+                break;
+            case KeyEvent.VK_SHIFT:
+                if (game.isMusicPlaying()) {
+                    // The MediaPlayer is currently playing
+                    System.out.println("The track is playing");
+                    game.pauseMusic();
+                } else {
+                    // The MediaPlayer is currently paused
+                    System.out.println("The track is paused");
+                    game.playMusic();
+                }
 
                 break;
         }

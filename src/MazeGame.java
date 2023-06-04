@@ -1,9 +1,14 @@
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+
+
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
+import java.io.File;
 
 
 public class MazeGame extends JPanel {
@@ -20,7 +25,7 @@ public class MazeGame extends JPanel {
     private boolean mazeCompleted = false;
     private int level;
 
-
+    MediaPlayer mediaPlayer;
 
     public boolean isGameOver() {
         return gameOver;
@@ -72,6 +77,7 @@ public class MazeGame extends JPanel {
         switch (level) {
             case 1 ->{
                 loadBackgroundImage("bg2.jpg");
+                setMusic("music/marjim-go-big.mp3");
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 2, 4, 3, 1);
@@ -87,10 +93,11 @@ public class MazeGame extends JPanel {
             }
             case 2 -> {
                 loadBackgroundImage("bg1.jpg");
+                setMusic("music/marjim-invincible.mp3");
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 2, 4, 3, 1);
-                mob2 = new Mob("virus.png", 2, 2, 5, 0);
+                mob2 = new Mob("virus.png", 3, 2, 5, 0);
 
                 slidingDoor = new SlidingDoor(settings, 7, 4, 5,  4, true);
                 rotatingDoor = new RotatingDoor(settings, 0, 5, Side.LEFT, true);
@@ -105,7 +112,9 @@ public class MazeGame extends JPanel {
 
             }
         }
+
         repaint();
+        playMusic();
     }
     private void drawBackground(Graphics g){
 
@@ -119,7 +128,7 @@ public class MazeGame extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        MazeUI.updateUpperPanel();
         drawBackground(g);
         // Draw the maze layout
         g.setColor(Color.white);
@@ -182,21 +191,7 @@ public class MazeGame extends JPanel {
         if (rotatingDoor!=null) rotatingDoor.draw(g);
 
     }
-    boolean isInside(Item item, int margin) {
-        int characterTop = chatGPT.getY();
-        int characterBottom = chatGPT.getY() + chatGPT.getHeight();
-        int characterLeft = chatGPT.getX();
-        int characterRight = chatGPT.getX() + chatGPT.getWidth();
 
-        // Calculate the boundaries of the teleport
-        int teleportTop = item.getY();
-        int teleportBottom = item.getY() + item.getHeight();
-        int teleportLeft = item.getX();
-        int teleportRight = item.getX() + item.getWidth();
-
-        return characterBottom<=(teleportBottom+margin) && characterTop>=(teleportTop-margin) && characterLeft>=(teleportLeft-margin) && characterRight<=(teleportRight+margin);
-
-    }
     public void moveChatGPT(int dx, int dy) {
         int newX = chatGPT.getX() + dx;
         int newY = chatGPT.getY() + dy;
@@ -210,7 +205,7 @@ public class MazeGame extends JPanel {
             // Checking collisions with mobs
             if (mob1!=null && isCollisionWithMob(mob1) && mob1.isDamaging() || mob2!=null && isCollisionWithMob(mob2) && mob2.isDamaging()) {
                 chatGPT.looseLife();
-                MazeUI.heartsPanel.repaint();
+                MazeUI.HeartsPanel.repaintHeartsPanel();
 
                 System.out.println("shimmer in chatGPT");
                 shimmerCharacter(chatGPT);
@@ -252,12 +247,13 @@ public class MazeGame extends JPanel {
                 }
                 if (isCollisionWithMob(character) && character.isDamaging()) {
                     chatGPT.looseLife();
-                    MazeUI.heartsPanel.repaint();
+                    MazeUI.HeartsPanel.repaintHeartsPanel();
+                    shimmerCharacter(chatGPT);
                     checkGameOver();
 
                     System.out.println("Lives left (mob): " + chatGPT.getLives());
                     System.out.println("shimmer in mob");
-                    shimmerCharacter(chatGPT);
+
                     freezeMob(character);
                 }
             }
@@ -266,23 +262,26 @@ public class MazeGame extends JPanel {
     }
     public void checkGameOver(){
         if (!chatGPT.isAlive() ) {
+            stopMusic();
             gameOver =true;
             int answer = JOptionPane.showConfirmDialog(null, "Вот и помер дед максим..", "лох", JOptionPane.YES_NO_OPTION);
             if (answer==0) {
                 level=1;
                 setScene(level);
 
-
             }
         } else if (isInside(finish, 0)) {
+            stopMusic();
             gameOver =true;
             mazeCompleted=true;
             JOptionPane.showMessageDialog(null, "You completed level "+level+"! ", "Maze completed", JOptionPane.PLAIN_MESSAGE);
             System.out.println("level completed");
             level++;
             setScene(level);
+            //MazeUI.updateUpperPanel();
 
         }
+
     }
     private static void freezeMob(Mob character) {
         character.setFrozen(true); // Freeze the mob
@@ -339,7 +338,21 @@ public class MazeGame extends JPanel {
             repaint();
         }
     }
+    boolean isInside(Item item, int margin) {
+        int characterTop = chatGPT.getY();
+        int characterBottom = chatGPT.getY() + chatGPT.getHeight();
+        int characterLeft = chatGPT.getX();
+        int characterRight = chatGPT.getX() + chatGPT.getWidth();
 
+        // Calculate the boundaries of the teleport
+        int teleportTop = item.getY();
+        int teleportBottom = item.getY() + item.getHeight();
+        int teleportLeft = item.getX();
+        int teleportRight = item.getX() + item.getWidth();
+
+        return characterBottom<=(teleportBottom+margin) && characterTop>=(teleportTop-margin) && characterLeft>=(teleportLeft-margin) && characterRight<=(teleportRight+margin);
+
+    }
     public boolean isPositionValid(Character character, int x, int y) {
         int chW = character.getWidth();
         int chH = character.getHeight();
@@ -411,8 +424,54 @@ public class MazeGame extends JPanel {
 
 
 
+    public void playMusic() {
+        mediaPlayer.play();
+
+    }
+    public boolean isMusicPlaying() {
+        MediaPlayer.Status status = mediaPlayer.getStatus();
+
+        if (status == MediaPlayer.Status.PLAYING) {
+            // The MediaPlayer is currently playing
+            System.out.println("The track is playing");
+            return true;
+        } else {
+            // The MediaPlayer is in a different state (e.g., stopped)
+            System.out.println("The track is in a different state");
+            return false;
+        }
+
+    }
+    public void setMusic(String path) {
+        // Initialize JavaFX environment
+        new JFXPanel();
 
 
+        // Create a File object with the MP3 file
+        File musicFile = new File(path);
+
+        // Create a Media object with the File object
+        Media media = new Media(musicFile.toURI().toString());
+
+        // Create a MediaPlayer object to play the media
+        mediaPlayer = new MediaPlayer(media);
+
+        // Configure the MediaPlayer to loop the music
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+
+        // Start playing the music
+        mediaPlayer.setVolume(0.1);
+
+
+    }
+    public void pauseMusic() {
+        // Initialize JavaFX environment
+        mediaPlayer.pause();
+    }
+    public void stopMusic() {
+        // Initialize JavaFX environment
+        mediaPlayer.stop();
+    }
 
 
 }
