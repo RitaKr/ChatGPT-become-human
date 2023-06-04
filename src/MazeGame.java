@@ -425,7 +425,7 @@ public class MazeGame extends JPanel {
 
 
     public void playMusic() {
-        mediaPlayer.play();
+        if (mediaPlayer!=null) mediaPlayer.play();
 
     }
     public boolean isMusicPlaying() {
@@ -465,12 +465,12 @@ public class MazeGame extends JPanel {
 
     }
     public void pauseMusic() {
-        // Initialize JavaFX environment
-        mediaPlayer.pause();
+
+        if (mediaPlayer!=null) mediaPlayer.pause();
     }
     public void stopMusic() {
-        // Initialize JavaFX environment
-        mediaPlayer.stop();
+
+        if (mediaPlayer!=null) mediaPlayer.stop();
     }
 
 
