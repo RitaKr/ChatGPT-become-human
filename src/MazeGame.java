@@ -81,9 +81,9 @@ public class MazeGame extends JPanel {
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 2, 4, 3, 1);
-
+                mob2=null;
                 slidingDoor = new SlidingDoor(settings, 7, 4, 5,  4, true);
-                //rotatingDoor = new RotatingDoor(settings, 0, 5, Side.LEFT, true);
+                rotatingDoor = null;
 
                 teleport1 = new Teleport(3, 0, 3 , 6, Side.TOP);
                 teleport2 = new Teleport(3, 6, 3, 0, Side.TOP);

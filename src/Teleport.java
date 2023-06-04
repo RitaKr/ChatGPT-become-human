@@ -6,10 +6,11 @@ public class Teleport extends Item {
     private Side entranceSide;
 
     public Teleport(int row, int col, int destinationRow, int destinationCol, Side entranceSide) {
-        super("teleport.png", row, col);
+        super("teleport.png", row, col, 100, 100);
         this.destinationCol = destinationCol;
         this.destinationRow = destinationRow;
         this.entranceSide = entranceSide;
+
         calculateCoordinates(MazeGame.chatGPT.getWidth(), MazeGame.chatGPT.getHeight());
 
     }
