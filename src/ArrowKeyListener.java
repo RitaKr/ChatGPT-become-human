@@ -29,17 +29,16 @@ public class ArrowKeyListener implements KeyListener{
                 game.moveChatGPT(0, chatGPT.getSpeed());
                 break;
             case KeyEvent.VK_SPACE:
-                if (game.isInside(game.slideDoorButton, 30)){
+                if (game.slideDoorButton!=null && game.isCollisionWithMob(game.slideDoorButton)){
                     game.moveSlidingDoor();
                 }
-                if (game.isInside(game.key, 50)){
+                if (game.key!=null && game.isCollisionWithMob(game.key)){
                     game.moveRotatingDoor();
                     game.key.remove();
                 }
                 break;
             case KeyEvent.VK_ENTER:
                 game.moveRotatingDoor();
-
 
                 break;
         }

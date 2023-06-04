@@ -2,31 +2,44 @@ import java.io.*;
 
 public class Main {
     private static ProgressData progress;
-    public static void main(String[] args) {
-        //System.out.println("Hello world!");
-        getProgress();
-        System.out.println("current progress: \n"+progress);
-        updateUsername("Rita");
+    static MazeUI mazeUI;
+    public static ProgressData getProgress() {
+        return progress;
+    }
 
+
+    public static void startMazeGame(){
+        mazeUI = new MazeUI(Main.getProgress().getLv());
+        mazeUI.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        fetchProgress();
+        System.out.println("current progress: \n"+progress);
+        startMazeGame();
     }
     private static void updateUsername(String newName) {
         progress.setUsername(newName);
         updateProgress();
     }
-    private static void updateLevel() {
+    public static void updateLevel() {
         int level = progress.getLv()+1;
         progress.setLv(level);
         updateProgress();
     }
+    public static void setLevel(int level) {
+        progress.setLv(level);
+        updateProgress();
+    }
 
-    private static void updateProgress(){
+    public static void updateProgress(){
         //System.out.println("current progress (update): \n"+progress);
         String progressString = "username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; msg:"+progress.getMsg()+"; plot:"+progress.getPlot()+""
                 ;
         writeFile("progress.txt", progressString);
 
     }
-    private static void getProgress(){
+    public static void fetchProgress(){
         String filePath = "progress.txt"; // Replace with your file path
 
         String fileContent = readFile(filePath);

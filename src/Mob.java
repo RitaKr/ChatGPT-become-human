@@ -1,6 +1,5 @@
 public class Mob extends Character{
     private int direction; //0 vertical, 1 horizontal
-    private int x, y;
     private boolean collapsed = false;
     private boolean reverse = false;
     private boolean damaging = true;
@@ -46,10 +45,8 @@ public class Mob extends Character{
         this.reverse = reverse;
     }
 
-    public Mob(String image, int speed, int x, int y, int direction) {
-        super(image, speed, x, y, true);
-        this.x=x;
-        this.y=y;
+    public Mob(String image, int speed, int row, int col, int direction) {
+        super(image, speed, row, col, true);
         this.direction = direction;
     }
 
