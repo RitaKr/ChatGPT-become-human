@@ -18,12 +18,14 @@ public class ChatUI extends JFrame {
     static JButton sendButton = new JButton();
     static Font font = new Font("Arial", Font.PLAIN, 16);
     GridBagConstraints gbc = new GridBagConstraints();
-    public ChatUI(){
+    ProgressData progressData;
+    public ChatUI(ProgressData progressData) {
         setTitle("ChatGPT");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(chatBg);
         setUpperPanel();
 
+        this.progressData = progressData;
 
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -113,7 +115,7 @@ public class ChatUI extends JFrame {
 
     }
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ChatUI());
+        SwingUtilities.invokeLater(() -> new ChatUI(Main.getProgress()));
     }
     private String HTMLfyText(String text) {
         return "<html><div style=\"padding: 5px 10px\">"+text+"</div></html>";

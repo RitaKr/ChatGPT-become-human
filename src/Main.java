@@ -6,6 +6,8 @@ public class Main {
     public static ProgressData getProgress() {
         return progress;
     }
+    static MainMenuUI mainMenuUI;
+    static ChatUI chatUI;
 
 
     public static void startMazeGame(){
@@ -16,7 +18,8 @@ public class Main {
     public static void main(String[] args) {
         fetchProgress();
         System.out.println("current progress: \n"+progress);
-        startMazeGame();
+//        startMazeGame();
+        mainMenuUI = new MainMenuUI(Main.getProgress());
     }
     private static void updateUsername(String newName) {
         progress.setUsername(newName);
