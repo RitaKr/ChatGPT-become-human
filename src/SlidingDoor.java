@@ -50,8 +50,8 @@ public class SlidingDoor extends Item{
 
     }
     public void move() {
-        int delay = 300; // Delay in milliseconds
-        int increment = 5; // Amount to move in each step
+        int delay = 400; // Delay in milliseconds
+        int increment = 10; // Amount to move in each step
         int steps = (Math.abs(destinationX - originX)) / increment; // Calculate the number of steps needed
 
         Timer timer = new Timer(delay / steps, new ActionListener() {

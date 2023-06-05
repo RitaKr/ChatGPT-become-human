@@ -119,11 +119,12 @@ public class MazeGame extends JPanel {
     private void drawBackground(Graphics g){
 
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
     private void loadBackgroundImage(String imageName) {
         ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
         backgroundImage = icon.getImage();
-        //System.out.println("w: "+width+", h:"+ height);
+
     }
     @Override
     protected void paintComponent(Graphics g) {
