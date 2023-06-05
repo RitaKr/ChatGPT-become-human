@@ -13,7 +13,7 @@ public class MazeUI extends JFrame {
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
     static Color bg = new Color(45, 36, 58);
 
-    private static int menuHeight = 40;
+    static int menuHeight = 40;
 
 
     public MazeUI(int level){

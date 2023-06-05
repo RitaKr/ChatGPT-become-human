@@ -119,11 +119,12 @@ public class MazeGame extends JPanel {
     private void drawBackground(Graphics g){
 
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
     private void loadBackgroundImage(String imageName) {
         ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
         backgroundImage = icon.getImage();
-        //System.out.println("w: "+width+", h:"+ height);
+
     }
     @Override
     protected void paintComponent(Graphics g) {
@@ -425,7 +426,7 @@ public class MazeGame extends JPanel {
 
 
     public void playMusic() {
-        mediaPlayer.play();
+        if (mediaPlayer!=null) mediaPlayer.play();
 
     }
     public boolean isMusicPlaying() {
@@ -465,12 +466,12 @@ public class MazeGame extends JPanel {
 
     }
     public void pauseMusic() {
-        // Initialize JavaFX environment
-        mediaPlayer.pause();
+
+        if (mediaPlayer!=null) mediaPlayer.pause();
     }
     public void stopMusic() {
-        // Initialize JavaFX environment
-        mediaPlayer.stop();
+
+        if (mediaPlayer!=null) mediaPlayer.stop();
     }
 
 
