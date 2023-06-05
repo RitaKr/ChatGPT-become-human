@@ -5,8 +5,8 @@ public class Teleport extends Item {
     private int destinationRow;
     private Side entranceSide;
 
-    public Teleport(int row, int col, int destinationRow, int destinationCol, Side entranceSide) {
-        super("teleport.png", row, col, 100, 100);
+    public Teleport(String image, int row, int col, int destinationRow, int destinationCol, Side entranceSide) {
+        super(image, row, col, 100, 100);
         this.destinationCol = destinationCol;
         this.destinationRow = destinationRow;
         this.entranceSide = entranceSide;

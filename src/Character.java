@@ -43,14 +43,14 @@ public class Character extends Item {
     }
 
     public Character(int speed, int row, int col, boolean mob) {
-        super("chatGPT.png", row, col);
+        super("chatGPT.png", row, col, 60, 60);
         this.speed = speed;
         this.mob = mob;
         lives = 3;
 
     }
     public Character(String image, int speed, int row, int col, boolean mob) {
-        super(image, row, col);
+        super(image, row, col, 60, 60);
         this.speed = speed;
         lives = 3;
         this.mob = mob;

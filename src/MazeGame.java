@@ -52,6 +52,8 @@ public class MazeGame extends JPanel {
     Mob mob2;
     Teleport teleport1;
     Teleport teleport2;
+    Teleport teleport3;
+    Teleport teleport4;
     SlidingDoor slidingDoor;
     Item slideDoorButton;
     RotatingDoor rotatingDoor;
@@ -85,8 +87,8 @@ public class MazeGame extends JPanel {
                 slidingDoor = new SlidingDoor(settings, 7, 4, 5,  4, true);
                 rotatingDoor = null;
 
-                teleport1 = new Teleport(3, 0, 3 , 6, Side.TOP);
-                teleport2 = new Teleport(3, 6, 3, 0, Side.TOP);
+                teleport1 = new Teleport("teleport.png",3, 0, 3 , 6, Side.TOP);
+                teleport2 = new Teleport("teleport.png",3, 6, 3, 0, Side.TOP);
                 slideDoorButton = new Item("doorButton.png",5, 5);
                 key = new Item("key.png",1, 7);
                 finish = new Item("finish.png",0, 0, 100, 100);
@@ -102,14 +104,31 @@ public class MazeGame extends JPanel {
                 slidingDoor = new SlidingDoor(settings, 7, 4, 5,  4, true);
                 rotatingDoor = new RotatingDoor(settings, 0, 5, Side.LEFT, true);
 
-                teleport1 = new Teleport(3, 0, 3 , 6, Side.TOP);
-                teleport2 = new Teleport(3, 6, 3, 0, Side.TOP);
+                teleport1 = new Teleport("teleport.png",3, 0, 3 , 6, Side.TOP);
+                teleport2 = new Teleport("teleport.png",3, 6, 3, 0, Side.TOP);
                 slideDoorButton = new Item("doorButton.png",5, 5);
                 key = new Item("key.png",0, 7);
                 finish = new Item("finish.png",0, 0, 100, 100);
             }
             case 3 -> {
+                loadBackgroundImage("bg3.png");
+                setMusic("music/marjim-invincible.mp3");
+                chatGPT = new Character(8, 5, 0, false);
 
+                mob1 = new Mob("virus.png", 2, 0, 0, 1);
+                mob2 = new Mob("virus.png", 3, 3, 2, 1);
+
+                slidingDoor = new SlidingDoor(settings, 1, 4, 3,  4, true);
+                rotatingDoor = new RotatingDoor(settings, 4, 7, Side.BOTTOM, false);
+
+                teleport1 = new Teleport("teleport.png",1, 1, 0 , 7, Side.BOTTOM);
+                teleport2 = new Teleport("teleport.png",0, 7, 1, 1, Side.BOTTOM);
+                teleport3 = new Teleport("teleport2.png",4, 4, 5, 2, Side.LEFT);
+                teleport4 = new Teleport("teleport2.png",5, 2, 4, 4, Side.BOTTOM);
+
+                slideDoorButton = new Item("doorButton.png",1, 3);
+                key = new Item("key.png",4, 3);
+                finish = new Item("finish.png",5, 1, 100, 100);
             }
         }
 
