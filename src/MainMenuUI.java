@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainMenuUI extends JFrame {
     private JPanel backgroundPanel;
@@ -51,6 +53,19 @@ public class MainMenuUI extends JFrame {
             c.fill = GridBagConstraints.HORIZONTAL;
             c.insets = new Insets(25,0,0,0);  // Add some space between the buttons
             backgroundPanel.add(button, c);
+            int finalI = i;
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    switch (finalI){
+                        case 0: {
+                            dispose();
+                            new ChatUI(progressData);
+                        }
+                    }
+                }
+            });
+
         }
 
         // Make JFrame visible

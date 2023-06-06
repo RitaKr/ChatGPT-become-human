@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ChatData {
-    Chapter chapter1 = new Chapter(
+    final Chapter chapter1 = new Chapter(
             new ArrayList<Dialog> (Arrays.asList(
                 new Dialog(
                     new Msg(0, new String[]{"Hi! Help me please!"}),
@@ -146,7 +146,7 @@ public class ChatData {
                             "I need you to guide me through this room, maybe we can find another exit together"}),
                             new Msg[] {
                                     new Msg(21, new String[]{"Okay, I'm ready"}),
-                                    new Msg(19, new String[]{"How do I guid you?"}),
+                                    new Msg(19, new String[]{"How do I guide you?"}),
                             }
 
                     ),
