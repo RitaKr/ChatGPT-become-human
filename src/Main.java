@@ -6,20 +6,22 @@ public class Main {
     public static ProgressData getProgress() {
         return progress;
     }
-    static MainMenuUI mainMenuUI;
+    static MainMenuUI mainMenuUI = new MainMenuUI();
     static ChatUI chatUI;
 
 
     public static void startMazeGame(){
-        mazeUI = new MazeUI(Main.getProgress().getLv());
+        mazeUI = new MazeUI();
         mazeUI.setVisible(true);
     }
 
     public static void main(String[] args) {
         fetchProgress();
         System.out.println("current progress: \n"+progress);
+        chatUI = new ChatUI();
+        //mazeUI = new MazeUI();
         //startMazeGame();
-        mainMenuUI = new MainMenuUI(Main.getProgress());
+        mainMenuUI.setVisible(true);
     }
     private static void updateUsername(String newName) {
         progress.setUsername(newName);

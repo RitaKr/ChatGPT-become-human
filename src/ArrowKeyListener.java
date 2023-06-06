@@ -57,7 +57,10 @@ public class ArrowKeyListener implements KeyListener{
                 }
 
                 break;
-
+            case KeyEvent.VK_ESCAPE: {
+                MazeUI.quit();
+                break;
+            }
         }
     }
 

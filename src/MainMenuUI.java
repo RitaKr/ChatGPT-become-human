@@ -8,12 +8,13 @@ public class MainMenuUI extends JFrame {
     Image backgroundImage;
 
     ProgressData progressData;
+    //ChatUI chatUI = new ChatUI();
 
-    public MainMenuUI(ProgressData progressData) {
+    public MainMenuUI() {
         super("хз");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.progressData = progressData;
+        //this.progressData = progressData;
 
         setSize(890, 710);
         setLocationRelativeTo(null);
@@ -59,8 +60,9 @@ public class MainMenuUI extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     switch (finalI){
                         case 0: {
-                            dispose();
-                            new ChatUI(progressData);
+                            Main.chatUI.setVisible(true);
+                            Main.chatUI.requestFocus();
+                            SwingUtilities.invokeLater(()->dispose());
                         }
                     }
                 }
@@ -69,7 +71,7 @@ public class MainMenuUI extends JFrame {
         }
 
         // Make JFrame visible
-        setVisible(true);
+        //setVisible(true);
     }
 
     private void drawBackground(Graphics g) {

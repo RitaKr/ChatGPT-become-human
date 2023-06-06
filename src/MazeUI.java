@@ -19,10 +19,10 @@ public class MazeUI extends JFrame {
     static int menuHeight = 40;
 
 
-    public MazeUI(int level){
+    public MazeUI(){
 
         System.out.println("Maze Game");
-        game = new MazeGame(level);
+        game = new MazeGame(Main.getProgress().getLv());
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -35,36 +35,12 @@ public class MazeUI extends JFrame {
         add(game, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
-        setVisible(true);
+        //setVisible(true);
 
         // Register arrow key listeners to move the character
         game.addKeyListener(new ArrowKeyListener(game));
         game.requestFocus();
-        this.addKeyListener(new KeyListener(){
-            @Override
-            public void keyTyped(KeyEvent e) {
 
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-
-                // Move the character based on the arrow key pressed
-                switch (keyCode) {
-
-                    case KeyEvent.VK_ESCAPE: {
-                        new MainMenuUI(Main.getProgress());
-                        SwingUtilities.invokeLater(MazeUI.super::dispose);
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
 
     }
     public void setUpperPanel(){
@@ -91,25 +67,29 @@ public class MazeUI extends JFrame {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (game.isMusicPlaying()) game.pauseMusic();
-                System.out.println(game.isMusicPlaying());
-                int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
-                if (answer == 0) {
-                    new MainMenuUI(Main.getProgress());
-                    SwingUtilities.invokeLater(()->dispose());
-                } else {
-                    game.playMusic();
-
-                    game.requestFocus();
-                }
+                quit();
 
             }
         });
+
 
         upperPanel.add(levelLabel, BorderLayout.WEST);
         upperPanel.add(heartsPanel, BorderLayout.CENTER);
         upperPanel.add(quitButton, BorderLayout.EAST);
 
+    }
+    static void quit() {
+        if (game.isMusicPlaying()) game.pauseMusic();
+        System.out.println(game.isMusicPlaying());
+        int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
+        if (answer == 0) {
+            Main.mainMenuUI.setVisible(true);
+            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+        } else {
+            game.playMusic();
+
+            game.requestFocus();
+        }
     }
     public static void updateUpperPanel() {
         levelLabel.setText("Level " + game.getLevel());

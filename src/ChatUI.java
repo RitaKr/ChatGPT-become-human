@@ -3,6 +3,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class ChatUI extends JFrame {
     static JPanel chatArea = new JPanel(new GridBagLayout());
@@ -23,24 +25,19 @@ public class ChatUI extends JFrame {
     JButton answer1;
     JButton answer2;
     JScrollPane scrollPane;
-    public ChatUI(ProgressData progressData) {
+
+    public ChatUI() {
         setTitle("ChatGPT");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(chatBg);
         setUpperPanel();
 
-        this.progressData = progressData;
-        chatData = progressData.getChatData();
+        chatData = Main.getProgress().getChatData();
 
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         chatArea.setBackground(chatBg);
-        //MessagePanel message1 = new MessagePanel(true, "Some text by chat gpt tftjfy Some text by user jhgjh hgf nhgnff ghjtt jttyj ftyjffy f ytjf yt fj   tftjfy Some text by user jhgjh hgf nhgnff ghjtt jttyj ftyjffy f ytjf yt fj   tftjfy");
-        //MessagePanel message2 = new MessagePanel(false, "Some text by user");
 
-        //chatArea.add(message1);
-        //chatArea.add(message2);
-        //chatArea.setPreferredSize(new Dimension(860, 580));
         scrollPane = new JScrollPane(chatArea);
         scrollPane.setPreferredSize(new Dimension(860, 580));
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Disable horizontal scroll bar
@@ -65,7 +62,41 @@ public class ChatUI extends JFrame {
         pack();
         setLocationRelativeTo(null);
 
-        setVisible(true);
+        setFocusable(true);
+        requestFocusInWindow();
+        super.addKeyListener(new KeyListener(){
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+
+                switch (keyCode) {
+                    case KeyEvent.VK_ESCAPE: {
+                        System.out.println("quit");
+                        quit();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+        //setVisible(true);
+    }
+    private void quit(){
+        int answer = JOptionPane.showConfirmDialog(null, "Do you want to go back to the main menu?","Quit chat", JOptionPane.YES_NO_OPTION);
+        if (answer == 0) {
+            //mainMenuUI = new MainMenuUI(Main.getProgress());
+            Main.mainMenuUI.setVisible(true);
+            SwingUtilities.invokeLater(this::dispose);
+        }
     }
     private void addMessage(ChatData.Dialog dialog){
         for (String text : dialog.getGpt().getTexts()) {
@@ -76,57 +107,61 @@ public class ChatUI extends JFrame {
         answer2.setText(HTMLfyText(dialog.getUser()[1].getTexts()[0]));
 
 
-        final boolean[] answered = {false};
-        answer1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!answered[0]) {
-                    answered[0] = true;
-                    dialog.getUser()[0].setChosen(true);
-                    dialog.setCompleted(true);
-                    MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0] ));
-                    chatArea.add(message, gbc);
-                    try {
-                        ChatData.Dialog newDialog = progressData.getChatData().chapter1.getDialogs().get(dialog.getUser()[0].getPlot());
-                        chatData.chapter.getDialogs().add(newDialog);
-                        System.out.println("dialogs after user answer "+chatData.chapter.getDialogs());
-                        System.out.println("next dialog "+newDialog);
-                        addMessage(newDialog);
-                    } catch (IndexOutOfBoundsException ex) {
-                        //dispose();
-                        if (dialog.getUser()[0].getPlot()==progressData.getChatData().chapter1.getDialogs().size()) {
-                            System.out.println(true);
-                            new MazeUI(Main.getProgress().getLv());
-                            SwingUtilities.invokeLater(()->dispose());
+        //final boolean answered = dialog.isCompleted();
+        if (!dialog.isCompleted()) {
+            answer1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (!dialog.isCompleted()) {
+                        //answered[0] = true;
+                        dialog.getUser()[0].setChosen(true);
+                        dialog.setCompleted(true);
+                        MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0]));
+                        chatArea.add(message, gbc);
+                        try {
+                            ChatData.Dialog newDialog = chatData.chapter1.getDialogs().get(dialog.getUser()[0].getPlot());
+                            chatData.chapter.getDialogs().add(newDialog);
+                            //System.out.println("dialogs after user answer " + chatData.chapter.getDialogs());
+                            //System.out.println("next dialog " + newDialog);
+                            addMessage(newDialog);
+                        } catch (IndexOutOfBoundsException ex) {
+                            //dispose();
+                            if (dialog.getUser()[0].getPlot() == chatData.chapter1.getDialogs().size()) {
+                                //System.out.println(true);
+                                Main.startMazeGame();
+                                SwingUtilities.invokeLater(() -> dispose());
+                            }
                         }
                     }
+                    ChatUI.super.requestFocus();
                 }
-            }
-        });
-        answer2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!answered[0]) {
-                    answered[0] = true;
-                    dialog.getUser()[1].setChosen(true);
-                    dialog.setCompleted(true);
-                    MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0] ));
-                    chatArea.add(message, gbc);
-                    try {
-                        ChatData.Dialog newDialog = progressData.getChatData().chapter1.getDialogs().get(dialog.getUser()[1].getPlot());
-                        chatData.chapter.getDialogs().add(newDialog);
-                        addMessage(newDialog);
-                    } catch (IndexOutOfBoundsException ex) {
-                        //dispose();
-                        if (dialog.getUser()[1].getPlot()==progressData.getChatData().chapter1.getDialogs().size()) {
-                            System.out.println(true);
-                            new MazeUI(Main.getProgress().getLv());
-                            SwingUtilities.invokeLater(()->dispose());
+            });
+            answer2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (!dialog.isCompleted()) {
+                        //answered[0] = true;
+                        dialog.getUser()[1].setChosen(true);
+                        dialog.setCompleted(true);
+                        MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0]));
+                        chatArea.add(message, gbc);
+                        try {
+                            ChatData.Dialog newDialog = chatData.chapter1.getDialogs().get(dialog.getUser()[1].getPlot());
+                            chatData.chapter.getDialogs().add(newDialog);
+                            addMessage(newDialog);
+                        } catch (IndexOutOfBoundsException ex) {
+                            //dispose();
+                            if (dialog.getUser()[1].getPlot() == chatData.chapter1.getDialogs().size()) {
+                                //System.out.println(true);
+                                Main.startMazeGame();
+                                SwingUtilities.invokeLater(() -> dispose());
+                            }
                         }
                     }
+                    ChatUI.super.requestFocus();
                 }
-            }
-        });
+            });
+        }
         if (dialog.isCompleted()) {
             MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0] ));
             chatArea.add(message, gbc);
@@ -187,14 +222,7 @@ public class ChatUI extends JFrame {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                int answer = JOptionPane.showConfirmDialog(null, "Do you want to go back to the main menu?","Quit chat", JOptionPane.YES_NO_OPTION);
-                if (answer == 0) {
-                    new MainMenuUI(Main.getProgress());
-                    SwingUtilities.invokeLater(()->dispose());
-                } else {
-                }
-
+                quit();
             }
         });
 
@@ -205,7 +233,7 @@ public class ChatUI extends JFrame {
     }
     public static void main(String[] args) {
         Main.fetchProgress();
-        new ChatUI(Main.getProgress());
+        new ChatUI();
     }
     private String HTMLfyText(String text) {
         return "<html><div style=\"padding: 5px 10px\">"+text+"</div></html>";
@@ -223,30 +251,9 @@ public class ChatUI extends JFrame {
             setPreferredSize(new Dimension(890, 100));
             setBackground(chatGPT ? chatBg : userMsgBg);
             contentPanel.setBackground(chatGPT ? chatBg : userMsgBg);
-            //setLayout(new FlowLayout());
 
-
-            //avatarPanel.setPreferredSize(new Dimension(40, 40));
-            //avatarPanel.setBorder(null);
-
-
-            //if (chatGPT) {
-                avatarImageLabel = new JLabel(chatGPT ? chatGPTIcon : userIcon);
-                avatarImageLabel.setPreferredSize(new Dimension(40, 40));
-                //avatarPanel.setBackground(chatGPT ? chatBg : userMsgBg);
-
-//            } else {
-//                avatarImageLabel = new JLabel("You", SwingConstants.CENTER);
-//                avatarImageLabel.setPreferredSize(new Dimension(40, 40));
-//                //avatarPanel.setPreferredSize(new Dimension(40, 40));
-//                avatarPanel.setBackground(Color.gray);
-//                avatarImageLabel.setFont(font);
-//                avatarImageLabel.setForeground(Color.WHITE);
-//                avatarPanel.setAlignmentX(CENTER_ALIGNMENT);
-//                avatarPanel.setAlignmentY(CENTER_ALIGNMENT);
-//                //avatarImageLabel.setBorder(BorderFactory.createLineBorder(chatBg, 1, true));
-//            }
-            //avatarPanel.add(avatarImageLabel);
+            avatarImageLabel = new JLabel(chatGPT ? chatGPTIcon : userIcon);
+            avatarImageLabel.setPreferredSize(new Dimension(40, 40));
 
 
             messageLabel = new JLabel(HTMLfyText(text));
