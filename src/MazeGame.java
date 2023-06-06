@@ -201,6 +201,8 @@ public class MazeGame extends JPanel {
     private void drawStaticItems(Graphics g) {
         if (teleport1!=null) teleport1.draw(g);
         if (teleport2!=null) teleport2.draw(g);
+        if (teleport3!=null) teleport1.draw(g);
+        if (teleport4!=null) teleport2.draw(g);
         if (slideDoorButton!=null) slideDoorButton.draw(g);
         if (key!=null) key.draw(g);
         if (finish!=null) finish.draw(g);
@@ -240,6 +242,10 @@ public class MazeGame extends JPanel {
 
             } else if (isInside(teleport2, 0)) {
                 teleport2.teleportCharacter();
+            } else if (isInside(teleport3, 0)) {
+                teleport3.teleportCharacter();
+            } else if (isInside(teleport4, 0)) {
+                teleport4.teleportCharacter();
             }
             checkGameOver();
 
