@@ -50,6 +50,7 @@ public class MazeGame extends JPanel {
     static Character chatGPT;
     Mob mob1;
     Mob mob2;
+    Mob mob3;
     Teleport teleport1;
     Teleport teleport2;
     Teleport teleport3;
@@ -78,12 +79,13 @@ public class MazeGame extends JPanel {
 
         switch (level) {
             case 1 ->{
-                loadBackgroundImage("bg2.jpg");
+                loadBackgroundImage("bg1.jpg");
                 setMusic("music/marjim-dizzy.mp3");
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 2, 4, 3, 1);
                 mob2 = new Mob("virus.png", 3, 2, 5, 0);
+                mob3 = null;
                 slidingDoor = new SlidingDoor(settings, 7, 4, 5,  4, true);
                 rotatingDoor = new RotatingDoor(settings, 0, 5, Side.LEFT, true);
 
@@ -97,32 +99,13 @@ public class MazeGame extends JPanel {
                 finish = new Item("finish.png",0, 0, 100, 100);
             }
             case 2 -> {
-                loadBackgroundImage("bg1.jpg");
+                loadBackgroundImage("bg2.jpg");
                 setMusic("music/marjim-invincible.mp3");
                 chatGPT = new Character(8, 5, 0, false);
 
-                mob1 = new Mob("virus.png", 2, 4, 3, 1);
-                mob2 = new Mob("virus.png", 3, 2, 5, 0);
-
-                slidingDoor = new SlidingDoor(settings, 7, 4, 5,  4, true);
-                rotatingDoor = new RotatingDoor(settings, 0, 5, Side.LEFT, true);
-
-                teleport1 = new Teleport("teleport.png",3, 0, 3 , 6, Side.TOP);
-                teleport2 = new Teleport("teleport.png",3, 6, 3, 0, Side.TOP);
-                teleport3 = null;
-                teleport4 = null;
-
-                slideDoorButton = new Item("doorButton.png",5, 5);
-                key = new Item("key.png",0, 7);
-                finish = new Item("finish.png",0, 0, 100, 100);
-            }
-            case 3 -> {
-                loadBackgroundImage("bg3.png");
-                setMusic("music/marjim-invincible.mp3");
-                chatGPT = new Character(8, 5, 0, false);
-
-                mob1 = new Mob("virus.png", 2, 0, 0, 1);
-                mob2 = new Mob("virus.png", 3, 3, 2, 1);
+                mob1 = new Mob("virus.png", 4, 0, 0, 1);
+                mob2 = new Mob("virus.png", 5, 3, 2, 1);
+                mob3 = null;
 
                 slidingDoor = new SlidingDoor(settings, 1, 4, 3,  4, true);
                 rotatingDoor = new RotatingDoor(settings, 4, 7, Side.BOTTOM, false);
@@ -135,6 +118,27 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",1, 3);
                 key = new Item("key.png",4, 3);
                 finish = new Item("finish.png",5, 1, 100, 100);
+            }
+            case 3 -> {
+                loadBackgroundImage("bg3.png");
+                setMusic("music/marjim-invincible.mp3");
+                chatGPT = new Character(8, 5, 0, false);
+
+                mob1 = new Mob("virus.png", 4, 4, 0, 0);
+                mob2 = new Mob("virus.png", 4, 0, 2, 1);
+                mob3 = new Mob("virus.png", 5, 5, 6, 0);
+
+                slidingDoor = new SlidingDoor(settings, 6, 1, 5,  1, true);
+                rotatingDoor = new RotatingDoor(settings, 3, 3, Side.LEFT, true);
+
+                teleport1 = new Teleport("teleport.png",4, 2, 3 , 7, Side.BOTTOM);
+                teleport2 = new Teleport("teleport.png",3, 7, 4, 2, Side.LEFT);
+                teleport3 = new Teleport("teleport2.png",1, 1, 2, 5, Side.LEFT);
+                teleport4 = new Teleport("teleport2.png",2, 5, 1, 1, Side.TOP);
+
+                slideDoorButton = new Item("doorButton.png",3, 2);
+                key = new Item("key.png",5, 7);
+                finish = new Item("finish.png",4, 7, 100, 100);
             }
         }
 
@@ -172,6 +176,7 @@ public class MazeGame extends JPanel {
         }
         if (mob1!=null) moveMob(mob1, mob1.getSpeed());
         if (mob2!=null) moveMob(mob2, mob2.getSpeed());
+        if (mob3!=null) moveMob(mob3, mob3.getSpeed());
 
     }
 
@@ -203,6 +208,7 @@ public class MazeGame extends JPanel {
         chatGPT.draw(g);
         if (mob1!=null) mob1.draw(g);
         if (mob2!=null) mob2.draw(g);
+        if (mob3!=null) mob3.draw(g);
     }
     private void drawStaticItems(Graphics g) {
         if (teleport1!=null) teleport1.draw(g);
@@ -232,7 +238,7 @@ public class MazeGame extends JPanel {
                 repaint();
             }
             // Checking collisions with mobs
-            if (mob1!=null && isCollisionWithMob(mob1) && mob1.isDamaging() || mob2!=null && isCollisionWithMob(mob2) && mob2.isDamaging()) {
+            if (mob1!=null && isCollisionWithMob(mob1) && mob1.isDamaging() || mob2!=null && isCollisionWithMob(mob2) && mob2.isDamaging() || mob3!=null && isCollisionWithMob(mob3) && mob3.isDamaging()) {
                 chatGPT.looseLife();
                 MazeUI.HeartsPanel.repaintHeartsPanel();
 
@@ -240,6 +246,7 @@ public class MazeGame extends JPanel {
                 shimmerCharacter(chatGPT);
                 if (mob1!=null && isCollisionWithMob(mob1)) freezeMob(mob1);
                 if (mob2!=null && isCollisionWithMob(mob2)) freezeMob(mob2);
+                if (mob3!=null && isCollisionWithMob(mob3)) freezeMob(mob3);
                 //chatGPT.setAlive(false);
 
             }
