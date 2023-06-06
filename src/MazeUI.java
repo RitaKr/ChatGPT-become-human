@@ -32,7 +32,7 @@ public class MazeUI extends JFrame {
         add(game, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
-        //setVisible(true);
+        setVisible(true);
 
         // Register arrow key listeners to move the character
         game.addKeyListener(new ArrowKeyListener(game));

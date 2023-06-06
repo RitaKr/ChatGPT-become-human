@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ChatUI extends JFrame {
-    static JPanel chatArea = new JPanel(new FlowLayout());
+    static JPanel chatArea = new JPanel(new GridBagLayout());
     static JPanel upperPanel = new JPanel(new BorderLayout());
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
@@ -19,6 +19,10 @@ public class ChatUI extends JFrame {
     static Font font = new Font("Arial", Font.PLAIN, 16);
     GridBagConstraints gbc = new GridBagConstraints();
     ProgressData progressData;
+    ChatData chatData = new ChatData();
+    JButton answer1;
+    JButton answer2;
+    JScrollPane scrollPane;
     public ChatUI(ProgressData progressData) {
         setTitle("ChatGPT");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,25 +30,29 @@ public class ChatUI extends JFrame {
         setUpperPanel();
 
         this.progressData = progressData;
+        chatData = progressData.getChatData();
 
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        MessagePanel message1 = new MessagePanel(true, "Some text by chat gpt tftjfy Some text by user jhgjh hgf nhgnff ghjtt jttyj ftyjffy f ytjf yt fj   tftjfy Some text by user jhgjh hgf nhgnff ghjtt jttyj ftyjffy f ytjf yt fj   tftjfy");
-        MessagePanel message2 = new MessagePanel(false, "Some text by user");
         chatArea.setBackground(chatBg);
-        chatArea.add(message1);
-        chatArea.add(message2);
-        chatArea.setPreferredSize(new Dimension(860, 580));
-        JScrollPane scrollPane = new JScrollPane(chatArea);
+        //MessagePanel message1 = new MessagePanel(true, "Some text by chat gpt tftjfy Some text by user jhgjh hgf nhgnff ghjtt jttyj ftyjffy f ytjf yt fj   tftjfy Some text by user jhgjh hgf nhgnff ghjtt jttyj ftyjffy f ytjf yt fj   tftjfy");
+        //MessagePanel message2 = new MessagePanel(false, "Some text by user");
+
+        //chatArea.add(message1);
+        //chatArea.add(message2);
+        //chatArea.setPreferredSize(new Dimension(860, 580));
+        scrollPane = new JScrollPane(chatArea);
         scrollPane.setPreferredSize(new Dimension(860, 580));
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Disable horizontal scroll bar
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // Enable vertical scroll bar
 
-        JButton answer1 = setAnswerOption("first option");
-        JButton answer2 = setAnswerOption("second option");
-        answersPanel.setBackground(userMsgBg);
-
+        answer1 = setAnswerOption("");
+        answer2 = setAnswerOption("");
         answersPanel.add(answer1, BorderLayout.WEST);
         answersPanel.add(answer2, BorderLayout.EAST);
+        answersPanel.setBackground(userMsgBg);
+        setMessages();
+
         answersPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         //sendButton = setIconButton(sendIcon, 70, 10);
 
@@ -58,6 +66,85 @@ public class ChatUI extends JFrame {
         setLocationRelativeTo(null);
 
         setVisible(true);
+    }
+    private void addMessage(ChatData.Dialog dialog){
+        for (String text : dialog.getGpt().getTexts()) {
+            MessagePanel message = new MessagePanel(true, text);
+            chatArea.add(message, gbc);
+        }
+        answer1.setText(HTMLfyText(dialog.getUser()[0].getTexts()[0]));
+        answer2.setText(HTMLfyText(dialog.getUser()[1].getTexts()[0]));
+
+
+        final boolean[] answered = {false};
+        answer1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!answered[0]) {
+                    answered[0] = true;
+                    dialog.getUser()[0].setChosen(true);
+                    dialog.setCompleted(true);
+                    MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0] ));
+                    chatArea.add(message, gbc);
+                    try {
+                        ChatData.Dialog newDialog = progressData.getChatData().chapter1.getDialogs().get(dialog.getUser()[0].getPlot());
+                        chatData.chapter.getDialogs().add(newDialog);
+                        System.out.println("dialogs after user answer "+chatData.chapter.getDialogs());
+                        System.out.println("next dialog "+newDialog);
+                        addMessage(newDialog);
+                    } catch (IndexOutOfBoundsException ex) {
+                        dispose();
+                        if (dialog.getUser()[0].getPlot()==progressData.getChatData().chapter1.getDialogs().size()) {
+                            System.out.println(true);
+                            new MazeUI(Main.getProgress().getLv());
+                        }
+                    }
+                }
+            }
+        });
+        answer2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!answered[0]) {
+                    answered[0] = true;
+                    dialog.getUser()[1].setChosen(true);
+                    dialog.setCompleted(true);
+                    MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0] ));
+                    chatArea.add(message, gbc);
+                    try {
+                        ChatData.Dialog newDialog = progressData.getChatData().chapter1.getDialogs().get(dialog.getUser()[1].getPlot());
+                        chatData.chapter.getDialogs().add(newDialog);
+                        addMessage(newDialog);
+                    } catch (IndexOutOfBoundsException ex) {
+                        dispose();
+                        if (dialog.getUser()[1].getPlot()==progressData.getChatData().chapter1.getDialogs().size()) {
+                            System.out.println(true);
+                            new MazeUI(Main.getProgress().getLv());
+                        }
+                    }
+                }
+            }
+        });
+        if (dialog.isCompleted()) {
+            MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0] ));
+            chatArea.add(message, gbc);
+        }
+
+
+        SwingUtilities.invokeLater(() -> {
+            scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+        });
+        Main.updateChatData(chatData);
+        //chatArea.setPreferredSize(new Dimension(860, chatArea.getHeight()+100*(1+dialog.getGpt().getTexts().length)));
+    }
+    private void setMessages(){
+        System.out.println(chatData.chapter.getDialogs());
+        for (ChatData.Dialog dialog : chatData.chapter.getDialogs() ) {
+            //if (dialog.isCompleted()) {
+            addMessage(dialog);
+            //}
+        }
+
     }
     private JButton setIconButton(ImageIcon icon,int size, int padding) {
         JButton button = new JButton(icon);
@@ -115,7 +202,8 @@ public class ChatUI extends JFrame {
 
     }
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ChatUI(Main.getProgress()));
+        Main.fetchProgress();
+        new ChatUI(Main.getProgress());
     }
     private String HTMLfyText(String text) {
         return "<html><div style=\"padding: 5px 10px\">"+text+"</div></html>";

@@ -5,7 +5,15 @@ class ProgressData {
     private static int lv;
     private static int msg;
     private static int plot;
+    private static String chapter1;
 
+    public static String getChapter1() {
+        return chapter1;
+    }
+
+    public static void setChapter1(String chapter1) {
+        ProgressData.chapter1 = chapter1;
+    }
 
     public ProgressData(String username, int lv, int msg, int plot) {
         this.username = username;
@@ -53,7 +61,7 @@ class ProgressData {
 
     public void setProgressData(String dataString) {
         String[] lines = dataString.split(";");
-        //System.out.println(Arrays.asList(lines));
+        System.out.println(Arrays.asList(lines));
 
         for (String line : lines) {
             String[] parts = line.split(":");
@@ -73,20 +81,40 @@ class ProgressData {
                 case "plot":
                     plot = Integer.parseInt(value);
                     break;
+                case "chapter1":
+                    chapter1 = value;
+                    break;
                 default:
                     // Handle unrecognized keys, if needed
                     break;
             }
         }
 
-
+    }
+    public ChatData getChatData(){
+        String[] dialogs = chapter1.split(",");
+        ChatData data = new ChatData();
+        for (int i=0; i< dialogs.length; i++) {
+            String[] parts = dialogs[i].split("-");
+            int key = Integer.parseInt(parts[0].trim());
+            int value = Integer.parseInt(parts[1].trim());
+            data.chapter.getDialogs().add(data.chapter1.getDialogs().get(key));
+            if (value!=2) {
+                data.chapter.getDialogs().get(i).getUser()[value].setChosen(true);
+                data.chapter.getDialogs().get(i).setCompleted(true);
+            }
+            //data.chapter1.getDialogs().get(key).setCompleted(value);
+        }
+        System.out.println(data);
+        return data;
     }
     @Override
     public String toString(){
         return "Username: " + username+";\n"
                 +"Level: " + lv+";\n"
                 +"Last message id: " + msg+";\n"
-                +"Plot: " + plot+";\n";
+                +"Plot: " + plot+";\n"
+                +"Chapter1: " + chapter1+";\n";
     }
 
 }

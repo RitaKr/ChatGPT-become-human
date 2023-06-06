@@ -34,10 +34,15 @@ public class Main {
         progress.setLv(level);
         updateProgress();
     }
+    public static void updateChatData(ChatData chatData) {
+
+        progress.setChapter1(chatData.chapter.toString());
+        updateProgress();
+    }
 
     public static void updateProgress(){
         //System.out.println("current progress (update): \n"+progress);
-        String progressString = "username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; msg:"+progress.getMsg()+"; plot:"+progress.getPlot()+""
+        String progressString = "username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; msg:"+progress.getMsg()+"; plot:"+progress.getPlot()+"; chapter1:"+progress.getChapter1()+"";
                 ;
         writeFile("progress.txt", progressString);
 
@@ -46,7 +51,7 @@ public class Main {
         String filePath = "progress.txt"; // Replace with your file path
 
         String fileContent = readFile(filePath);
-        if (fileContent.isEmpty()) fileContent = "username:player; lv:1; msg:1; plot:1";
+        if (fileContent.isEmpty()) fileContent = "username:player; lv:1; msg:1; plot:0; chapter1:0-2";
         //System.out.println(fileContent);
         progress = new ProgressData(fileContent);
 
