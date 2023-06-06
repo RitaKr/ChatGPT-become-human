@@ -79,13 +79,13 @@ public class MazeGame extends JPanel {
         switch (level) {
             case 1 ->{
                 loadBackgroundImage("bg2.jpg");
-                setMusic("music/marjim-go-big.mp3");
+                setMusic("music/marjim-dizzy.mp3");
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 2, 4, 3, 1);
-                mob2=null;
+                mob2 = new Mob("virus.png", 3, 2, 5, 0);
                 slidingDoor = new SlidingDoor(settings, 7, 4, 5,  4, true);
-                rotatingDoor = null;
+                rotatingDoor = new RotatingDoor(settings, 0, 5, Side.LEFT, true);
 
                 teleport1 = new Teleport("teleport.png",3, 0, 3 , 6, Side.TOP);
                 teleport2 = new Teleport("teleport.png",3, 6, 3, 0, Side.TOP);
@@ -93,7 +93,7 @@ public class MazeGame extends JPanel {
                 teleport4 = null;
 
                 slideDoorButton = new Item("doorButton.png",5, 5);
-                key = new Item("key.png",1, 7);
+                key = new Item("key.png",0, 7);
                 finish = new Item("finish.png",0, 0, 100, 100);
             }
             case 2 -> {
