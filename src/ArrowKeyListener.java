@@ -1,11 +1,13 @@
 import javafx.scene.media.MediaPlayer;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class ArrowKeyListener implements KeyListener{
     private final MazeGame game;
     private Character chatGPT;
+
 
     public ArrowKeyListener(MazeGame game) {
         this.game = game;
@@ -55,6 +57,7 @@ public class ArrowKeyListener implements KeyListener{
                 }
 
                 break;
+
         }
     }
 

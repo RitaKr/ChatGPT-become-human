@@ -3,6 +3,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.security.Key;
 
 public class MazeUI extends JFrame {
     static MazeGame game;
@@ -37,6 +40,31 @@ public class MazeUI extends JFrame {
         // Register arrow key listeners to move the character
         game.addKeyListener(new ArrowKeyListener(game));
         game.requestFocus();
+        this.addKeyListener(new KeyListener(){
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+
+                // Move the character based on the arrow key pressed
+                switch (keyCode) {
+
+                    case KeyEvent.VK_ESCAPE: {
+                        new MainMenuUI(Main.getProgress());
+                        SwingUtilities.invokeLater(MazeUI.super::dispose);
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
 
     }
     public void setUpperPanel(){
@@ -67,8 +95,8 @@ public class MazeUI extends JFrame {
                 System.out.println(game.isMusicPlaying());
                 int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
                 if (answer == 0) {
-
-                    dispose();
+                    new MainMenuUI(Main.getProgress());
+                    SwingUtilities.invokeLater(()->dispose());
                 } else {
                     game.playMusic();
 
@@ -87,6 +115,8 @@ public class MazeUI extends JFrame {
         levelLabel.setText("Level " + game.getLevel());
         heartsPanel.repaint();
     }
+
+
 
     static class HeartsPanel extends JPanel {
         Image heart;

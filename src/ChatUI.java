@@ -93,10 +93,11 @@ public class ChatUI extends JFrame {
                         System.out.println("next dialog "+newDialog);
                         addMessage(newDialog);
                     } catch (IndexOutOfBoundsException ex) {
-                        dispose();
+                        //dispose();
                         if (dialog.getUser()[0].getPlot()==progressData.getChatData().chapter1.getDialogs().size()) {
                             System.out.println(true);
                             new MazeUI(Main.getProgress().getLv());
+                            SwingUtilities.invokeLater(()->dispose());
                         }
                     }
                 }
@@ -116,10 +117,11 @@ public class ChatUI extends JFrame {
                         chatData.chapter.getDialogs().add(newDialog);
                         addMessage(newDialog);
                     } catch (IndexOutOfBoundsException ex) {
-                        dispose();
+                        //dispose();
                         if (dialog.getUser()[1].getPlot()==progressData.getChatData().chapter1.getDialogs().size()) {
                             System.out.println(true);
                             new MazeUI(Main.getProgress().getLv());
+                            SwingUtilities.invokeLater(()->dispose());
                         }
                     }
                 }
@@ -186,10 +188,10 @@ public class ChatUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
+                int answer = JOptionPane.showConfirmDialog(null, "Do you want to go back to the main menu?","Quit chat", JOptionPane.YES_NO_OPTION);
                 if (answer == 0) {
-
-                    dispose();
+                    new MainMenuUI(Main.getProgress());
+                    SwingUtilities.invokeLater(()->dispose());
                 } else {
                 }
 

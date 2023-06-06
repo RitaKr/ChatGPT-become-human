@@ -89,6 +89,9 @@ public class MazeGame extends JPanel {
 
                 teleport1 = new Teleport("teleport.png",3, 0, 3 , 6, Side.TOP);
                 teleport2 = new Teleport("teleport.png",3, 6, 3, 0, Side.TOP);
+                teleport3 = null;
+                teleport4 = null;
+
                 slideDoorButton = new Item("doorButton.png",5, 5);
                 key = new Item("key.png",1, 7);
                 finish = new Item("finish.png",0, 0, 100, 100);
@@ -106,6 +109,9 @@ public class MazeGame extends JPanel {
 
                 teleport1 = new Teleport("teleport.png",3, 0, 3 , 6, Side.TOP);
                 teleport2 = new Teleport("teleport.png",3, 6, 3, 0, Side.TOP);
+                teleport3 = null;
+                teleport4 = null;
+
                 slideDoorButton = new Item("doorButton.png",5, 5);
                 key = new Item("key.png",0, 7);
                 finish = new Item("finish.png",0, 0, 100, 100);
@@ -201,8 +207,9 @@ public class MazeGame extends JPanel {
     private void drawStaticItems(Graphics g) {
         if (teleport1!=null) teleport1.draw(g);
         if (teleport2!=null) teleport2.draw(g);
-        if (teleport3!=null) teleport1.draw(g);
-        if (teleport4!=null) teleport2.draw(g);
+        if (teleport3!=null) teleport3.draw(g);
+        if (teleport4!=null) teleport4.draw(g);
+
         if (slideDoorButton!=null) slideDoorButton.draw(g);
         if (key!=null) key.draw(g);
         if (finish!=null) finish.draw(g);
@@ -237,14 +244,15 @@ public class MazeGame extends JPanel {
 
             }
             // Checking if character is in teleport
-            if (isInside(teleport1, 0)) {
+            if (teleport1!=null && isInside(teleport1, 0)) {
                 teleport1.teleportCharacter();
 
-            } else if (isInside(teleport2, 0)) {
+            } else if (teleport2!=null && isInside(teleport2, 0)) {
                 teleport2.teleportCharacter();
-            } else if (isInside(teleport3, 0)) {
+            }
+            if (teleport3!=null && isInside(teleport3, 0)) {
                 teleport3.teleportCharacter();
-            } else if (isInside(teleport4, 0)) {
+            } else if (teleport4!=null && isInside(teleport4, 0)) {
                 teleport4.teleportCharacter();
             }
             checkGameOver();
@@ -296,13 +304,15 @@ public class MazeGame extends JPanel {
                 setScene(level);
 
             }
-        } else if (isInside(finish, 0)) {
+        } else if (isInside(finish, 10)) {
             stopMusic();
             gameOver =true;
             mazeCompleted=true;
             JOptionPane.showMessageDialog(null, "You completed level "+level+"! ", "Maze completed", JOptionPane.PLAIN_MESSAGE);
             System.out.println("level completed");
-            level++;
+            if (level<3) {
+                level++;
+            }
             setScene(level);
             //MazeUI.updateUpperPanel();
 
