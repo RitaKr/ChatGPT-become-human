@@ -24,7 +24,11 @@ public class ChatUI extends JFrame {
     JButton answer1;
     JButton answer2;
     JScrollPane scrollPane;
-
+    public void updateProgressData(){
+        Main.fetchProgress();
+        levelLabel.setText("Current level: "+Main.getProgress().getLv());
+        levelLabel.updateUI();
+    }
     public ChatUI() {
         setTitle("ChatGPT");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,7 +79,7 @@ public class ChatUI extends JFrame {
 
                 switch (keyCode) {
                     case KeyEvent.VK_ESCAPE: {
-                        System.out.println("quit");
+                        //System.out.println("quit");
                         quit();
                         break;
                     }
@@ -120,19 +124,20 @@ public class ChatUI extends JFrame {
                         try {
                             ChatData.Dialog newDialog = chatData.chapter1.getDialogs().get(dialog.getUser()[0].getPlot());
                             chatData.chapter.getDialogs().add(newDialog);
-                            //System.out.println("dialogs after user answer " + chatData.chapter.getDialogs());
-                            //System.out.println("next dialog " + newDialog);
+                            ////System.out.println("dialogs after user answer " + chatData.chapter.getDialogs());
+                            ////System.out.println("next dialog " + newDialog);
                             addMessage(newDialog);
                         } catch (IndexOutOfBoundsException ex) {
-                            System.out.println("plot "+dialog.getUser()[0].getPlot());
+                            //System.out.println("plot "+dialog.getUser()[0].getPlot());
                             //dispose();
                             if (dialog.getUser()[0].getPlot() == chatData.chapter1.getDialogs().size()) {
-                                //System.out.println(true);
+                                ////System.out.println(true);
                                 if (Main.getProgress().getLv()==0) Main.updateLevel();
+                                dialog.setCompleted(false);
                                 Main.startMazeGame();
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-                                System.out.println("exit game");
+                                //System.out.println("exit game");
                                 dispose();
                                 System.exit(0); // Exit the program
                             }
@@ -156,14 +161,15 @@ public class ChatUI extends JFrame {
                             addMessage(newDialog);
                         } catch (IndexOutOfBoundsException ex) {
                             //dispose();
-                            System.out.println("plot "+dialog.getUser()[0].getPlot());
+                            //System.out.println("plot "+dialog.getUser()[0].getPlot());
                             if (dialog.getUser()[1].getPlot() == chatData.chapter1.getDialogs().size()) {
-                                //System.out.println(true);
+                                ////System.out.println(true);
                                 if (Main.getProgress().getLv()==0) Main.updateLevel();
+                                dialog.setCompleted(false);
                                 Main.startMazeGame();
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-                                System.out.println("exit game");
+                                //System.out.println("exit game");
                                 dispose();
                                 System.exit(0); // Exit the program
                             }
@@ -186,7 +192,7 @@ public class ChatUI extends JFrame {
         //chatArea.setPreferredSize(new Dimension(860, chatArea.getHeight()+100*(1+dialog.getGpt().getTexts().length)));
     }
     private void setMessages(){
-        System.out.println(chatData.chapter.getDialogs());
+        //System.out.println(chatData.chapter.getDialogs());
         for (ChatData.Dialog dialog : chatData.chapter.getDialogs() ) {
             //if (dialog.isCompleted()) {
             addMessage(dialog);
@@ -287,7 +293,7 @@ public class ChatUI extends JFrame {
 
         private void loadImage() {
             avatarImage = chatGPTIcon.getImage();
-            //System.out.println("w: "+width+", h:"+ height);
+            ////System.out.println("w: "+width+", h:"+ height);
         }
 
     }

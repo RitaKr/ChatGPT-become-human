@@ -88,7 +88,7 @@ public class ChooseMazeUI extends JFrame {
 
                 switch (keyCode) {
                     case KeyEvent.VK_ESCAPE: {
-                        System.out.println("quit");
+                        //System.out.println("quit");
                         quit();
                         break;
                     }
@@ -136,6 +136,7 @@ public class ChooseMazeUI extends JFrame {
                     switch (finalI){
                         case 0: {
                             if (progressData.getLv()>=1) {
+
                                 Main.startMazeGame(1);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
@@ -162,6 +163,7 @@ public class ChooseMazeUI extends JFrame {
                             break;
                         }
                     }
+
                     requestFocusInWindow();
                 }
             });
@@ -192,6 +194,7 @@ public class ChooseMazeUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 quit();
+                ChooseMazeUI.super.requestFocus();
             }
         });
 
@@ -220,7 +223,7 @@ public class ChooseMazeUI extends JFrame {
     }
     private void drawBackground(Graphics g) {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        System.out.println("x "+getWidth() + ", y" + getHeight() );
+        //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
 
     private void loadBackgroundImage(String imageName) {
@@ -228,11 +231,11 @@ public class ChooseMazeUI extends JFrame {
             ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
             backgroundImage = icon.getImage();
             if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-                System.out.println("Failed to load image: " + imageName);
+                //System.out.println("Failed to load image: " + imageName);
                 backgroundImage = null;
             }
         } catch (Exception e) {
-            System.out.println("Failed to load image: " + imageName);
+            //System.out.println("Failed to load image: " + imageName);
             e.printStackTrace();
         }
     }

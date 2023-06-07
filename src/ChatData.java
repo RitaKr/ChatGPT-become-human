@@ -7,7 +7,7 @@ public class ChatData {
                 new Dialog(
                     new Msg(0, new String[]{"Hi! Help me please!"}),
                     new Msg[] {
-                            new Msg(1, new String[]{"WTF???"}),
+                            new Msg(1, new String[]{"???"}),
                             new Msg(7, new String[]{"Uhm okay.. How can I help you?"}),
                     },
                         false
@@ -186,7 +186,7 @@ public class ChatData {
 
     }
     public static void main(String[] args) {
-        System.out.println(new ChatData());
+        //System.out.println(new ChatData());
     }
     @Override
     public String toString() {

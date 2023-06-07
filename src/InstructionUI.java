@@ -1,6 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class InstructionUI extends JFrame {
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 35);
@@ -20,6 +24,11 @@ public class InstructionUI extends JFrame {
     private static final String MOB_IMAGE_PATH = "images/virus.png";
     private static final String TELEPORT_IMAGE_PATH = "images/teleport.png";
     private static final String TELEPORT2_IMAGE_PATH = "images/teleport2.png";
+    static JPanel upperPanel = new JPanel(new BorderLayout());
+    static JLabel levelLabel = new JLabel();
+    static JButton quitButton;
+    static ImageIcon crossIcon = new ImageIcon("images/cross.png");
+    static Color upperPanelBg = new Color(45, 36, 58);;
 
     ImageIcon bgIcon = new ImageIcon(BACKGROUND_IMAGE_PATH);
     JPanel backgroundPanel;
@@ -40,7 +49,7 @@ public class InstructionUI extends JFrame {
             setSize(890, 710);
             setLocationRelativeTo(null);
             setLayout(new BorderLayout());
-
+            setUpperPanel();
 
             // Задання фону
 
@@ -56,7 +65,7 @@ public class InstructionUI extends JFrame {
                 }
             };
 
-            backgroundPanel.setPreferredSize(new Dimension(890, 710));
+            backgroundPanel.setPreferredSize(new Dimension(890, 670));
 
             // Заголовок
             drawTitle();
@@ -67,7 +76,7 @@ public class InstructionUI extends JFrame {
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     if (backgroundImage != null) {
-                        System.out.println("bg drawn to content panel");
+                        //System.out.println("bg drawn to content panel");
                         g.drawImage(backgroundImage, 0, -40, this.getWidth(), this.getHeight()+40, this);
                     }
                 }
@@ -94,14 +103,91 @@ public class InstructionUI extends JFrame {
 
 
             backgroundPanel.add(scrollPane, BorderLayout.CENTER);
+            add(upperPanel, BorderLayout.NORTH);
             add(backgroundPanel, BorderLayout.CENTER);
+
+            setFocusable(true);
+            requestFocusInWindow();
+            super.addKeyListener(new KeyListener(){
+                @Override
+                public void keyTyped(KeyEvent e) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    int keyCode = e.getKeyCode();
+
+                    switch (keyCode) {
+                        case KeyEvent.VK_ESCAPE: {
+                            //System.out.println("quit");
+                            quit();
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+
+                }
+            });
             //setVisible(true);
 
         } catch (Exception e) {
-            System.out.println("Помилка при завантаженні зображень");
+            //System.out.println("Помилка при завантаженні зображень");
         }
     }
+    public void updateProgressData(){
+        Main.fetchProgress();
+        levelLabel.setText("Current level: "+Main.getProgress().getLv());
+        levelLabel.updateUI();
+    }
+    public void setUpperPanel(){
+        upperPanel.setBorder(new EmptyBorder(5, 20, 5, 20));
+        upperPanel.setBackground(upperPanelBg);
+        upperPanel.setPreferredSize(new Dimension(MazeGame.getMazeWidth(), MazeUI.menuHeight));
+        upperPanel.setAlignmentX(CENTER_ALIGNMENT);
+        upperPanel.setAlignmentY(CENTER_ALIGNMENT);
 
+        levelLabel = new JLabel("Current level: "+Main.getProgress().getLv());
+        levelLabel.setForeground(Color.WHITE);
+
+
+        quitButton = setIconButton(crossIcon, 30, 0);
+
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quit();
+                InstructionUI.super.requestFocus();
+            }
+
+        });
+
+        upperPanel.add(levelLabel, BorderLayout.WEST);
+        upperPanel.add(quitButton, BorderLayout.EAST);
+
+    }
+    private JButton setIconButton(ImageIcon icon,int size, int padding) {
+        JButton button = new JButton(icon);
+        button.setBackground(null);
+
+        button.setPreferredSize(new Dimension(size, size));
+        button.setMargin(new Insets(padding, padding, padding, padding));
+        button.setBorder(null);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        return button;
+    }
+    private void quit(){
+        int answer = JOptionPane.showConfirmDialog(null, "Do you want to go back to the main menu?","Quit instructions", JOptionPane.YES_NO_OPTION);
+        if (answer == 0) {
+            //mainMenuUI = new MainMenuUI(Main.getProgress());
+            Main.mainMenuUI.setVisible(true);
+            SwingUtilities.invokeLater(this::dispose);
+        }
+    }
     public void GPTInstruction(){
         GPTPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         GPTPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -224,7 +310,7 @@ public class InstructionUI extends JFrame {
         slidingDoorPanel.add(slidingDoorLabel);
 
         String slidingDoorText = "<html><div WIDTH=650><i><b>Двері, які ковзають лабіринтом.</b></i> Виглядають як фіолетова стінка. " +
-                "Щоб їх перемістити, натисніть на рожеву кнопку, яка розміщена десь в коридорах лабіринту. </div></html>";
+                "Щоб їх перемістити, натисніть на клавішу ПРОБІЛ, перебуваючи на рожевій кнопці, яка розміщена десь в коридорах лабіринту. </div></html>";
         slidingDoorInstructionLabel = new JLabel(slidingDoorText);
         slidingDoorInstructionLabel.setFont(TEXT_FONT);
         slidingDoorInstructionLabel.setForeground(TEXT_COLOR);
@@ -266,7 +352,7 @@ public class InstructionUI extends JFrame {
 
         String slidingDoorText = "<html><div WIDTH=650><i><b>Двері, що обертаються.</b></i> Виглядають як сіра стінка. " +
                 "Повертаються на 90 градусів. " +
-                "Щоб їх повернути, знайдіть в коридорах лабіринту ключ. </div></html>";
+                "Щоб їх повернути, знайдіть в коридорах лабіринту ключ та натисніть клавішу ПРОБІЛ. </div></html>";
         rotatingDoorInstructionLabel = new JLabel(slidingDoorText);
         rotatingDoorInstructionLabel.setFont(TEXT_FONT);
         rotatingDoorInstructionLabel.setForeground(TEXT_COLOR);

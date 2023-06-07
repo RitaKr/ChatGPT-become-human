@@ -60,12 +60,14 @@ public class MainMenuUI extends JFrame {
                     Main.fetchProgress();
                     switch (finalI){
                         case 0: {
+                            Main.chatUI.updateProgressData();
                             Main.chatUI.setVisible(true);
                             Main.chatUI.requestFocus();
                             SwingUtilities.invokeLater(()->dispose());
                             break;
                         }
                         case 1: {
+                            Main.instructionUI.updateProgressData();
                             Main.instructionUI.setVisible(true);
                             Main.instructionUI.requestFocus();
                             SwingUtilities.invokeLater(()->dispose());
@@ -101,7 +103,7 @@ public class MainMenuUI extends JFrame {
 
     private void drawBackground(Graphics g) {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        System.out.println("x "+getWidth() + ", y" + getHeight() );
+        //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
 
     private void loadBackgroundImage(String imageName) {
@@ -109,11 +111,11 @@ public class MainMenuUI extends JFrame {
             ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
             backgroundImage = icon.getImage();
             if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-                System.out.println("Failed to load image: " + imageName);
+                //System.out.println("Failed to load image: " + imageName);
                 backgroundImage = null;
             }
         } catch (Exception e) {
-            System.out.println("Failed to load image: " + imageName);
+            //System.out.println("Failed to load image: " + imageName);
             e.printStackTrace();
         }
     }

@@ -179,7 +179,9 @@ public class MazeGame extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        MazeUI.updateUpperPanel();
+        Main.mazeUI.updateUpperPanel();
+
+
         drawBackground(g);
         // Draw the maze layout
         g.setColor(Color.white);
@@ -261,9 +263,9 @@ public class MazeGame extends JPanel {
             // Checking collisions with mobs
             if (mob1!=null && isCollisionWithMob(mob1) && mob1.isDamaging() || mob2!=null && isCollisionWithMob(mob2) && mob2.isDamaging() || mob3!=null && isCollisionWithMob(mob3) && mob3.isDamaging()) {
                 chatGPT.looseLife();
-                MazeUI.HeartsPanel.repaintHeartsPanel();
+                Main.mazeUI.repaintHeartsPanel();
 
-                System.out.println("shimmer in chatGPT");
+               //System.out.println("shimmer in chatGPT");
                 shimmerCharacter(chatGPT);
                 if (mob1!=null && isCollisionWithMob(mob1)) freezeMob(mob1);
                 if (mob2!=null && isCollisionWithMob(mob2)) freezeMob(mob2);
@@ -309,12 +311,13 @@ public class MazeGame extends JPanel {
                 }
                 if (isCollisionWithMob(character) && character.isDamaging()) {
                     chatGPT.looseLife();
-                    MazeUI.HeartsPanel.repaintHeartsPanel();
+                    //MazeUI.HeartsPanel.repaintHeartsPanel();
+                    Main.mazeUI.repaintHeartsPanel();
                     shimmerCharacter(chatGPT);
                     checkGameOver();
 
-                    System.out.println("Lives left (mob): " + chatGPT.getLives());
-                    System.out.println("shimmer in mob");
+                   //System.out.println("Lives left (mob): " + chatGPT.getLives());
+                   //System.out.println("shimmer in mob");
 
                     freezeMob(character);
                 }
@@ -359,30 +362,34 @@ public class MazeGame extends JPanel {
                         } else {
                             Main.chooseMazeUI.setVisible(true);
                             SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                            stopMusic();
                         }
 
                     } else {
                         JOptionPane.showMessageDialog(null, "You completed level "+level+"! It was the last level", "Maze completed", JOptionPane.PLAIN_MESSAGE);
                         Main.chooseMazeUI.setVisible(true);
                         SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                        stopMusic();
                     }
 
                 } else {
                     JOptionPane.showMessageDialog(null, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", JOptionPane.PLAIN_MESSAGE);
                     Main.chooseMazeUI.setVisible(true);
                     SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                    stopMusic();
                 }
             } else {
 
                 if (level<3) {
                     JOptionPane.showMessageDialog(null, "You completed level "+level+"! ", "Maze completed", JOptionPane.PLAIN_MESSAGE);
-                    System.out.println("level completed");
+                   //System.out.println("level completed");
                     level++;
                     setScene(level);
                 } else {
                     JOptionPane.showMessageDialog(null, "You completed level "+level+"! It was the last level", "Maze completed", JOptionPane.PLAIN_MESSAGE);
                     Main.mainMenuUI.setVisible(true);
                     SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                    stopMusic();
                 }
                 Main.setLevel(level);
 
@@ -544,11 +551,11 @@ public class MazeGame extends JPanel {
 
         if (status == MediaPlayer.Status.PLAYING) {
             // The MediaPlayer is currently playing
-            System.out.println("The track is playing");
+           //System.out.println("The track is playing");
             return true;
         } else {
             // The MediaPlayer is in a different state (e.g., stopped)
-            System.out.println("The track is in a different state");
+           //System.out.println("The track is in a different state");
             return false;
         }
 

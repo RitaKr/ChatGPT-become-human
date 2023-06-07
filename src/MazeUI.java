@@ -9,15 +9,23 @@ import java.security.Key;
 
 public class MazeUI extends JFrame {
     static MazeGame game;
-    static JPanel upperPanel = new JPanel(new BorderLayout());
-    static JLabel levelLabel = new JLabel();
-    static JPanel heartsPanel = new HeartsPanel();
+    JPanel upperPanel = new JPanel(new BorderLayout());
+    JLabel levelLabel = new JLabel();
+    JPanel heartsPanel = new HeartsPanel();
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
     static Color bg = new Color(45, 36, 58);
     static boolean lv1completed;
     static boolean lv2completed;
     static boolean lv3completed;
+
+    public MazeGame getGame() {
+        return game;
+    }
+
+    public void setGame(MazeGame game) {
+        MazeUI.game = game;
+    }
 
     public boolean isLv1completed() {
         return lv1completed;
@@ -56,7 +64,7 @@ public class MazeUI extends JFrame {
 
     public MazeUI(){
 
-        System.out.println("Maze Game");
+        //System.out.println("Maze Game");
         game = new MazeGame(false, Main.getProgress().getLv());
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,7 +88,7 @@ public class MazeUI extends JFrame {
     }
     public MazeUI(int level){
 
-        System.out.println("Maze Game");
+        //System.out.println("Maze Game");
         game = new MazeGame(true, level);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,7 +135,7 @@ public class MazeUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 quit();
-
+                requestFocus();
             }
         });
 
@@ -139,10 +147,12 @@ public class MazeUI extends JFrame {
     }
     static void quit() {
         if (game.isMusicPlaying()) game.pauseMusic();
-        System.out.println(game.isMusicPlaying());
+        //System.out.println(game.isMusicPlaying());
         int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
         if (answer == 0) {
-            Main.mainMenuUI.setVisible(true);
+            Main.mazeUI.updateUpperPanel();
+            if (Main.mazeUI.getGame().fromChooseMaze) Main.chooseMazeUI.setVisible(true);
+            else Main.mainMenuUI.setVisible(true);
             SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
         } else {
             game.playMusic();
@@ -150,12 +160,17 @@ public class MazeUI extends JFrame {
             game.requestFocus();
         }
     }
-    public static void updateUpperPanel() {
+    public void updateUpperPanel() {
         levelLabel.setText("Level " + game.getLevel());
+        levelLabel.updateUI();
         heartsPanel.repaint();
     }
 
-
+    public void repaintHeartsPanel() {
+        if (upperPanel != null) {
+            heartsPanel.repaint();
+        }
+    }
 
     static class HeartsPanel extends JPanel {
         Image heart;
@@ -171,7 +186,7 @@ public class MazeUI extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            //System.out.println("width "+super.getWidth()+", height "+super.getHeight());
+            ////System.out.println("width "+super.getWidth()+", height "+super.getHeight());
             x = (super.getWidth()-(heartSize+distance)*3)/2;
             y = (super.getHeight()-heartSize)/2;
             if (MazeGame.chatGPT.getLives()>0) g.drawImage(heart, x,y, heartSize, heartSize, null);
@@ -181,13 +196,9 @@ public class MazeUI extends JFrame {
         private void loadImage(String imageName) {
             ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
             heart = icon.getImage();
-            //System.out.println("w: "+width+", h:"+ height);
+            ////System.out.println("w: "+width+", h:"+ height);
         }
-        static void repaintHeartsPanel() {
-            if (upperPanel != null) {
-                heartsPanel.repaint();
-            }
-        }
+
     }
 
 }

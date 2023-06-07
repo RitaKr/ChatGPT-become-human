@@ -18,12 +18,13 @@ public class Main {
     }
     public static void startMazeGame(int level){
         mazeUI = new MazeUI(level);
+
         mazeUI.setVisible(true);
     }
 
     public static void main(String[] args) {
         fetchProgress();
-        System.out.println("current progress: \n"+progress);
+        //System.out.println("current progress: \n"+progress);
         chatUI = new ChatUI();
         chooseMazeUI = new ChooseMazeUI();
         instructionUI = new InstructionUI();
@@ -55,13 +56,13 @@ public class Main {
     }
 
     public static void updateProgress(){
-        //System.out.println("current progress (update): \n"+progress);
+        ////System.out.println("current progress (update): \n"+progress);
         String progressString = "username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; chapter1:"+progress.getChapter1()+"";
         writeFile("progress.txt", progressString);
 
     }
     public static void resetProgress(){
-        //System.out.println("current progress (update): \n"+progress);
+        ////System.out.println("current progress (update): \n"+progress);
         String progressString = "username:player; lv:0; alive:true; chapter1:0-2";
         writeFile("progress.txt", progressString);
 
@@ -71,7 +72,7 @@ public class Main {
 
         String fileContent = readFile(filePath);
         if (fileContent.isEmpty()) fileContent = "username:player; lv:0; alive:true; chapter1:0-2";
-        //System.out.println(fileContent);
+        ////System.out.println(fileContent);
         progress = new ProgressData(fileContent);
 
     }
