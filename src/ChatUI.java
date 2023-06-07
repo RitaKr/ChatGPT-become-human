@@ -30,7 +30,7 @@ public class ChatUI extends JFrame {
         levelLabel.updateUI();
     }
     public ChatUI() {
-        setTitle("ChatGPT");
+        super("ChatGPT: become human");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(chatBg);
         setUpperPanel();

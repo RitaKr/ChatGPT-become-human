@@ -171,7 +171,7 @@ public class ChooseMazeUI extends JFrame {
         }
     }
     public ChooseMazeUI() {
-        super("Choose maze");
+        super("ChatGPT: become human");
         progressData = Main.getProgress();
         setAll();
         // Make JFrame visible

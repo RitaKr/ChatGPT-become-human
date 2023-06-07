@@ -42,7 +42,7 @@ public class InstructionUI extends JFrame {
     JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel, teleportLabel, finishLabel;
 
     public InstructionUI() {
-        super("Інструкція до гри");
+        super("ChatGPT: become human");
         try {
 
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -63,7 +63,7 @@ public class MazeUI extends JFrame {
     }
 
     public MazeUI(){
-
+        super("ChatGPT: become human");
         //System.out.println("Maze Game");
         game = new MazeGame(false, Main.getProgress().getLv());
 
@@ -87,7 +87,7 @@ public class MazeUI extends JFrame {
 
     }
     public MazeUI(int level){
-
+        super("ChatGPT: become human");
         //System.out.println("Maze Game");
         game = new MazeGame(true, level);
 
