@@ -15,14 +15,73 @@ public class MazeUI extends JFrame {
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
     static Color bg = new Color(45, 36, 58);
+    static boolean lv1completed;
+    static boolean lv2completed;
+    static boolean lv3completed;
+
+    public boolean isLv1completed() {
+        return lv1completed;
+    }
+
+    public void setLv1completed(boolean lv1completed) {
+        MazeUI.lv1completed = lv1completed;
+    }
+
+    public boolean isLv2completed() {
+        return lv2completed;
+    }
+
+    public void setLv2completed(boolean lv2completed) {
+        MazeUI.lv2completed = lv2completed;
+    }
+
+    public boolean isLv3completed() {
+        return lv3completed;
+    }
+
+    public void setLv3completed(boolean lv3completed) {
+        MazeUI.lv3completed = lv3completed;
+    }
 
     static int menuHeight = 40;
+    static boolean mazeCompleted = false;
 
+    public boolean isMazeCompleted() {
+        return mazeCompleted;
+    }
+
+    public void setMazeCompleted(boolean mazeCompleted) {
+        MazeUI.mazeCompleted = mazeCompleted;
+    }
 
     public MazeUI(){
 
         System.out.println("Maze Game");
-        game = new MazeGame(Main.getProgress().getLv());
+        game = new MazeGame(false, Main.getProgress().getLv());
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+
+
+        getContentPane().setLayout(new BorderLayout());
+        setUpperPanel();
+        add(upperPanel, BorderLayout.NORTH);
+
+        add(game, BorderLayout.CENTER);
+        pack();
+        setLocationRelativeTo(null);
+        //setVisible(true);
+
+        // Register arrow key listeners to move the character
+        game.addKeyListener(new ArrowKeyListener(game));
+        game.requestFocus();
+
+
+    }
+    public MazeUI(int level){
+
+        System.out.println("Maze Game");
+        game = new MazeGame(true, level);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);

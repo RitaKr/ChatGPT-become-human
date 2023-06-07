@@ -31,8 +31,8 @@ public class RotatingDoor extends Item{
         this.clockwise = clockwise;
         this.settings = settings;
         changeWall(originSide, 1);
-        calculateCoordinates();
         setRotationSettings();
+        calculateCoordinates();
         super.setX(originX);
         super.setY(originY);
         currentAngle = 0;
@@ -41,7 +41,7 @@ public class RotatingDoor extends Item{
         switch (originSide){
             case LEFT: {
                 originX = col*(Maze.cellSize + Maze.wallSize);
-                originY = (destinationSide==Side.TOP ? Maze.wallSize : 0) + row*(Maze.cellSize + Maze.wallSize);
+                originY = (destinationSide==Side.BOTTOM ? Maze.wallSize : 0)+ row*(Maze.cellSize + Maze.wallSize);
                 break;
             }
             case TOP: {
@@ -55,7 +55,7 @@ public class RotatingDoor extends Item{
                 break;
             }
             case BOTTOM: {
-                originX  = (destinationSide==Side.LEFT ? Maze.wallSize : 0) + col*(Maze.cellSize + Maze.wallSize);
+                originX  =  col*(Maze.cellSize + Maze.wallSize);
                 originY = (row+1)*(Maze.cellSize + Maze.wallSize);
                 break;
             }
@@ -73,8 +73,9 @@ public class RotatingDoor extends Item{
 
         if (destinationSide==Side.TOP && originSide==Side.LEFT || destinationSide==Side.LEFT && originSide==Side.TOP) rotationCorner=Corner.topLeft;
         else if (destinationSide==Side.TOP && originSide==Side.RIGHT || destinationSide==Side.RIGHT && originSide==Side.TOP) rotationCorner=Corner.topRight;
-        else if (destinationSide==Side.BOTTOM && originSide==Side.LEFT || destinationSide==Side.LEFT && originSide==Side.BOTTOM) rotationCorner=Corner.bottomLeft;
-        else if (destinationSide==Side.BOTTOM && originSide==Side.RIGHT || destinationSide==Side.RIGHT && originSide==Side.BOTTOM) rotationCorner=Corner.bottomRight;
+        else if (destinationSide==Side.BOTTOM && originSide==Side.LEFT) rotationCorner=Corner.bottomRight;
+        else if (destinationSide==Side.LEFT && originSide==Side.BOTTOM) rotationCorner=Corner.topLeft;
+        else if (destinationSide==Side.BOTTOM && originSide==Side.RIGHT || destinationSide==Side.RIGHT && originSide==Side.BOTTOM) rotationCorner=Corner.bottomLeft;
     }
     @Override
     public void draw(Graphics g) {

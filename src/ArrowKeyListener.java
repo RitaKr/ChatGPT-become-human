@@ -38,7 +38,7 @@ public class ArrowKeyListener implements KeyListener{
                 }
                 if (game.key!=null && game.isCollisionWithMob(game.key)){
                     game.moveRotatingDoor();
-                    game.key.remove();
+                    game.key=null;
                 }
                 break;
             case KeyEvent.VK_ENTER:
@@ -58,6 +58,7 @@ public class ArrowKeyListener implements KeyListener{
 
                 break;
             case KeyEvent.VK_ESCAPE: {
+                MazeUI.mazeCompleted = false;
                 MazeUI.quit();
                 break;
             }

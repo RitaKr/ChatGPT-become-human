@@ -3,9 +3,16 @@ import java.util.Arrays;
 class ProgressData {
     private static String username;
     private static int lv;
-    private static int msg;
-    private static int plot;
     private static String chapter1;
+    private static boolean alive;
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        ProgressData.alive = alive;
+    }
 
     public static String getChapter1() {
         return chapter1;
@@ -15,12 +22,6 @@ class ProgressData {
         ProgressData.chapter1 = chapter1;
     }
 
-    public ProgressData(String username, int lv, int msg, int plot) {
-        this.username = username;
-        this.lv = lv;
-        this.msg = msg;
-        this.plot = plot;
-    }
 
     public ProgressData(String dataString) {
         setProgressData(dataString);
@@ -43,21 +44,6 @@ class ProgressData {
         this.lv = lv;
     }
 
-    public int getMsg() {
-        return msg;
-    }
-
-    public void setMsg(int msg) {
-        this.msg = msg;
-    }
-
-    public int getPlot() {
-        return plot;
-    }
-
-    public void setPlot(int plot) {
-        this.plot = plot;
-    }
 
     public void setProgressData(String dataString) {
         String[] lines = dataString.split(";");
@@ -75,11 +61,8 @@ class ProgressData {
                 case "lv":
                     lv = Integer.parseInt(value);
                     break;
-                case "msg":
-                    msg = Integer.parseInt(value);
-                    break;
-                case "plot":
-                    plot = Integer.parseInt(value);
+                case "alive":
+                    alive = Boolean.parseBoolean(value);
                     break;
                 case "chapter1":
                     chapter1 = value;
@@ -112,8 +95,7 @@ class ProgressData {
     public String toString(){
         return "Username: " + username+";\n"
                 +"Level: " + lv+";\n"
-                +"Last message id: " + msg+";\n"
-                +"Plot: " + plot+";\n"
+                +"Alive: " + alive+";\n"
                 +"Chapter1: " + chapter1+";\n";
     }
 

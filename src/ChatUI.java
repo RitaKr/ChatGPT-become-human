@@ -9,9 +9,9 @@ import java.awt.event.KeyListener;
 public class ChatUI extends JFrame {
     static JPanel chatArea = new JPanel(new GridBagLayout());
     static JPanel upperPanel = new JPanel(new BorderLayout());
+    static JLabel levelLabel = new JLabel();
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
-    static ImageIcon sendIcon = new ImageIcon("images/send.png");
     static Color upperPanelBg = new Color(45, 36, 58);
     static Color chatBg = new Color(85, 82, 93);
     static Color userMsgBg = new Color(59, 57, 66);
@@ -20,7 +20,6 @@ public class ChatUI extends JFrame {
     static JButton sendButton = new JButton();
     static Font font = new Font("Arial", Font.PLAIN, 16);
     GridBagConstraints gbc = new GridBagConstraints();
-    ProgressData progressData;
     ChatData chatData = new ChatData();
     JButton answer1;
     JButton answer2;
@@ -108,7 +107,7 @@ public class ChatUI extends JFrame {
 
 
         //final boolean answered = dialog.isCompleted();
-        if (!dialog.isCompleted()) {
+        if (!dialog.isCompleted() && Main.getProgress().isAlive()) {
             answer1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -125,11 +124,17 @@ public class ChatUI extends JFrame {
                             //System.out.println("next dialog " + newDialog);
                             addMessage(newDialog);
                         } catch (IndexOutOfBoundsException ex) {
+                            System.out.println("plot "+dialog.getUser()[0].getPlot());
                             //dispose();
                             if (dialog.getUser()[0].getPlot() == chatData.chapter1.getDialogs().size()) {
                                 //System.out.println(true);
+                                if (Main.getProgress().getLv()==0) Main.updateLevel();
                                 Main.startMazeGame();
                                 SwingUtilities.invokeLater(() -> dispose());
+                            } else {
+                                System.out.println("exit game");
+                                dispose();
+                                System.exit(0); // Exit the program
                             }
                         }
                     }
@@ -151,10 +156,16 @@ public class ChatUI extends JFrame {
                             addMessage(newDialog);
                         } catch (IndexOutOfBoundsException ex) {
                             //dispose();
+                            System.out.println("plot "+dialog.getUser()[0].getPlot());
                             if (dialog.getUser()[1].getPlot() == chatData.chapter1.getDialogs().size()) {
                                 //System.out.println(true);
+                                if (Main.getProgress().getLv()==0) Main.updateLevel();
                                 Main.startMazeGame();
                                 SwingUtilities.invokeLater(() -> dispose());
+                            } else {
+                                System.out.println("exit game");
+                                dispose();
+                                System.exit(0); // Exit the program
                             }
                         }
                     }
@@ -181,7 +192,13 @@ public class ChatUI extends JFrame {
             addMessage(dialog);
             //}
         }
+        if (!Main.getProgress().isAlive()) {
+            addDeathMessage();
+        }
 
+    }
+    public void addDeathMessage(){
+        addMessage(chatData.deathDialog);
     }
     private JButton setIconButton(ImageIcon icon,int size, int padding) {
         JButton button = new JButton(icon);
@@ -212,10 +229,9 @@ public class ChatUI extends JFrame {
         upperPanel.setAlignmentX(CENTER_ALIGNMENT);
         upperPanel.setAlignmentY(CENTER_ALIGNMENT);
 
-        //levelLabel = new JLabel("Level "+game.getLevel());
-        //levelLabel.setForeground(Color.WHITE);
+        levelLabel = new JLabel("Current level "+Main.getProgress().getLv());
+        levelLabel.setForeground(Color.WHITE);
 
-        //heartsPanel.setBackground(null);
 
         quitButton = setIconButton(crossIcon, 30, 0);
 
@@ -226,8 +242,7 @@ public class ChatUI extends JFrame {
             }
         });
 
-        //upperPanel.add(levelLabel, BorderLayout.WEST);
-        //upperPanel.add(heartsPanel, BorderLayout.CENTER);
+        upperPanel.add(levelLabel, BorderLayout.WEST);
         upperPanel.add(quitButton, BorderLayout.EAST);
 
     }

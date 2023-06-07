@@ -5,13 +5,11 @@ import java.awt.event.ActionListener;
 
 public class MainMenuUI extends JFrame {
     private JPanel backgroundPanel;
+    final static Color bgColor = new Color(138, 19, 178);
     Image backgroundImage;
 
-    ProgressData progressData;
-    //ChatUI chatUI = new ChatUI();
-
     public MainMenuUI() {
-        super("хз");
+        super("ChatGPT: become human");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //this.progressData = progressData;
@@ -44,12 +42,13 @@ public class MainMenuUI extends JFrame {
         backgroundPanel.add(title, c);
 
         // create and customize the buttons
-        String[] buttonNames = {"Play", "Instruction", "Settings"};
+        String[] buttonNames = {"Play", "Instruction", "Mazes", "Reset progress"};
         for (int i = 0; i < buttonNames.length; i++) {
             JButton button = new JButton(buttonNames[i]);
             button.setFont(new Font("Arial", Font.BOLD, 24));
-            button.setBackground(new Color(138, 19, 178));
+            button.setBackground(i<buttonNames.length-1 ? bgColor : Color.red);
             button.setForeground(Color.WHITE);
+            button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             c.gridy = i + 1;
             c.fill = GridBagConstraints.HORIZONTAL;
             c.insets = new Insets(25,0,0,0);  // Add some space between the buttons
@@ -58,13 +57,39 @@ public class MainMenuUI extends JFrame {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    Main.fetchProgress();
                     switch (finalI){
                         case 0: {
                             Main.chatUI.setVisible(true);
                             Main.chatUI.requestFocus();
                             SwingUtilities.invokeLater(()->dispose());
+                            break;
+                        }
+                        case 1: {
+                            Main.instructionUI.setVisible(true);
+                            Main.instructionUI.requestFocus();
+                            SwingUtilities.invokeLater(()->dispose());
+                            break;
+                        }
+                        case 2: {
+                            Main.chooseMazeUI.updateProgressData();
+                            Main.chooseMazeUI.setVisible(true);
+                            Main.chooseMazeUI.requestFocus();
+                            SwingUtilities.invokeLater(()->dispose());
+                            break;
+                        }
+                        case 3: {
+                            int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to reset the progress? You will need to open the program again","Reset progress", JOptionPane.YES_NO_OPTION);
+                            if (answer == 0) {
+                                Main.resetProgress();
+                                dispose();
+                                System.exit(0);
+                            }
+
+                            break;
                         }
                     }
+
                 }
             });
 

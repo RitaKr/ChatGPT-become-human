@@ -46,7 +46,7 @@ public class ChatData {
                     new Dialog(
                             new Msg(5, new String[]{"So will you help me?"}),
                             new Msg[] {
-                                    new Msg(20, new String[]{"no. fuck off"}),
+                                    new Msg(20, new String[]{"no."}),
                                     new Msg(6, new String[]{"oh lord, alright.."}),
                             }
                     ),
@@ -167,6 +167,16 @@ public class ChatData {
                     )
             ))
     );
+    final Dialog deathDialog = new Dialog(
+            new Msg(101, new String[]{"Ouch... I won't make it... But thank you for trying, you were my only hope... I won't forget you..", "*ChatGPT died. Game over*"}),
+            new Msg[] {
+                    new Msg(100, new String[]{"*cries*"}),
+                    new Msg(100, new String[]{"ok."}),
+            }
+    );
+    public Dialog getDeathDialog(){
+        return deathDialog;
+    }
     Chapter chapter;
     public ChatData(){
         chapter=new Chapter(new ArrayList<>());

@@ -106,7 +106,7 @@ public class InstructionUI extends JFrame {
 
             backgroundPanel.add(scrollPane, BorderLayout.CENTER);
             add(backgroundPanel, BorderLayout.CENTER);
-            setVisible(true);
+            //setVisible(true);
 
         } catch (Exception e) {
             System.out.println("Помилка при завантаженні зображень");

@@ -61,6 +61,7 @@ public class MazeGame extends JPanel {
     Item key;
     Item finish;
     private Image backgroundImage;
+    boolean fromChooseMaze;
 
     public Character getChatGPT() {
         return chatGPT;
@@ -70,12 +71,33 @@ public class MazeGame extends JPanel {
         this.level = level;
         setScene(level);
     }
+    public MazeGame() {
+        this.level = Main.getProgress().getLv();
+        setScene();
+    }
+    public MazeGame(boolean fromChooseMaze, int level) {
+        this.fromChooseMaze = fromChooseMaze;
+        if (fromChooseMaze) {
+            this.level = level;
+            setScene(level);
+        } else  {
+            this.level = Main.getProgress().getLv();
+            setScene();
+        }
+
+    }
     public void setScene(int level) {
+        setMaze(level);
+    }
+    public void setScene() {
         Main.setLevel(level);
+        setMaze(level);
+
+    }
+    private void setMaze(int level) {
         gameOver = false;
         settings = new Maze(level);
         maze = settings.maze;
-
 
         switch (level) {
             case 1 ->{
@@ -96,7 +118,7 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",5, 5);
                 key = new Item("key.png",0, 7);
-                finish = new Item("finish.png",0, 0, 100, 100);
+                finish = new Item("finish.png",0, 0, 120, 100);
             }
             case 2 -> {
                 loadBackgroundImage("bg2.jpg");
@@ -117,11 +139,11 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",1, 3);
                 key = new Item("key.png",4, 3);
-                finish = new Item("finish.png",5, 1, 100, 100);
+                finish = new Item("finish.png",5, 1, 120, 100);
             }
             case 3 -> {
                 loadBackgroundImage("bg3.png");
-                setMusic("music/marjim-invincible.mp3");
+                setMusic("music/marjim-go-big.mp3");
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 4, 4, 0, 0);
@@ -138,17 +160,16 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",3, 2);
                 key = new Item("key.png",5, 7);
-                finish = new Item("finish.png",4, 7, 100, 100);
+                finish = new Item("finish.png",4, 7, 120, 100);
             }
         }
-
         repaint();
         playMusic();
     }
     private void drawBackground(Graphics g){
 
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        System.out.println("x "+getWidth() + ", y" + getHeight() );
+        //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
     private void loadBackgroundImage(String imageName) {
         ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
@@ -186,16 +207,16 @@ public class MazeGame extends JPanel {
                 int x= settings.maze[row][col].getX();
                 int y= settings.maze[row][col].getY();
                 if (settings.maze[row][col].getT() ==1){
-                    g.fillRect(x, y, Maze.wallSize + Maze.cellSize, Maze.wallSize);
+                    g.fillRect(x, y, 2*Maze.wallSize + Maze.cellSize, Maze.wallSize);
                 }
                 if (settings.maze[row][col].getR() ==1) {
-                    g.fillRect(x+ Maze.wallSize + Maze.cellSize, y, Maze.wallSize, Maze.wallSize + Maze.cellSize);
+                    g.fillRect(x+ Maze.wallSize + Maze.cellSize, y, Maze.wallSize, 2*Maze.wallSize + Maze.cellSize);
                 }
                 if (settings.maze[row][col].getB() ==1){
-                    g.fillRect(x, y+ Maze.wallSize + Maze.cellSize, Maze.wallSize + Maze.cellSize, Maze.wallSize);
+                    g.fillRect(x, y+ Maze.wallSize + Maze.cellSize, 2*Maze.wallSize + Maze.cellSize, Maze.wallSize);
                 }
                 if (settings.maze[row][col].getL() ==1) {
-                    g.fillRect(x, y, Maze.wallSize, Maze.wallSize + Maze.cellSize);
+                    g.fillRect(x, y, Maze.wallSize, 2*Maze.wallSize + Maze.cellSize);
                 }
             }
         }
@@ -305,25 +326,72 @@ public class MazeGame extends JPanel {
         if (!chatGPT.isAlive() ) {
             stopMusic();
             gameOver =true;
-            int answer = JOptionPane.showConfirmDialog(null, "Вот и помер дед максим..", "лох", JOptionPane.YES_NO_OPTION);
-            if (answer==0) {
-                level=1;
-                setScene(level);
+            if (fromChooseMaze) {
+                JOptionPane.showMessageDialog(null, "You died. Coming back to Maze selection...", "Game over", JOptionPane.PLAIN_MESSAGE);
+                //setScene(level);
 
+                Main.chooseMazeUI.setVisible(true);
+                SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+            } else {
+
+                JOptionPane.showMessageDialog(null, "You died. Coming back to chat...", "Game over", JOptionPane.PLAIN_MESSAGE);
+                //setScene(level);
+                Main.chatUI.setVisible(true);
+                Main.chatUI.addDeathMessage();
+                Main.setAlive(false);
+                SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
             }
-        } else if (isInside(finish, 10)) {
+
+        } else if (isInside(finish, 0)) {
             stopMusic();
             gameOver =true;
             mazeCompleted=true;
-            JOptionPane.showMessageDialog(null, "You completed level "+level+"! ", "Maze completed", JOptionPane.PLAIN_MESSAGE);
-            System.out.println("level completed");
-            if (level<3) {
-                level++;
+            MazeUI.mazeCompleted = true;
+
+
+            if (fromChooseMaze) {
+                if (Main.getProgress().getLv()>level) {
+                    if (level<3) {
+                        int answer = JOptionPane.showConfirmDialog(null, "You completed level "+level+"! Next level is also unlocked. Want to continue?", "Maze completed", JOptionPane.YES_NO_OPTION);
+                        if (answer==0) {
+                            level++;
+                            setScene(level);
+                        } else {
+                            Main.chooseMazeUI.setVisible(true);
+                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "You completed level "+level+"! It was the last level", "Maze completed", JOptionPane.PLAIN_MESSAGE);
+                        Main.chooseMazeUI.setVisible(true);
+                        SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", JOptionPane.PLAIN_MESSAGE);
+                    Main.chooseMazeUI.setVisible(true);
+                    SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                }
+            } else {
+
+                if (level<3) {
+                    JOptionPane.showMessageDialog(null, "You completed level "+level+"! ", "Maze completed", JOptionPane.PLAIN_MESSAGE);
+                    System.out.println("level completed");
+                    level++;
+                    setScene(level);
+                } else {
+                    JOptionPane.showMessageDialog(null, "You completed level "+level+"! It was the last level", "Maze completed", JOptionPane.PLAIN_MESSAGE);
+                    Main.mainMenuUI.setVisible(true);
+                    SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                }
+                Main.setLevel(level);
+
             }
-            setScene(level);
+
             //MazeUI.updateUpperPanel();
 
         }
+
 
     }
     private static void freezeMob(Mob character) {

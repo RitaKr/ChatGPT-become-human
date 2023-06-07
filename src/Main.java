@@ -8,10 +8,16 @@ public class Main {
     }
     static MainMenuUI mainMenuUI = new MainMenuUI();
     static ChatUI chatUI;
+    static ChooseMazeUI chooseMazeUI;
+    static InstructionUI instructionUI;
 
 
     public static void startMazeGame(){
         mazeUI = new MazeUI();
+        mazeUI.setVisible(true);
+    }
+    public static void startMazeGame(int level){
+        mazeUI = new MazeUI(level);
         mazeUI.setVisible(true);
     }
 
@@ -19,6 +25,8 @@ public class Main {
         fetchProgress();
         System.out.println("current progress: \n"+progress);
         chatUI = new ChatUI();
+        chooseMazeUI = new ChooseMazeUI();
+        instructionUI = new InstructionUI();
         //mazeUI = new MazeUI();
         //startMazeGame();
         mainMenuUI.setVisible(true);
@@ -28,12 +36,16 @@ public class Main {
         updateProgress();
     }
     public static void updateLevel() {
-        int level = progress.getLv()+1;
+        int level = progress.getLv()<3 ? (progress.getLv()+1) : progress.getLv();
         progress.setLv(level);
         updateProgress();
     }
     public static void setLevel(int level) {
         progress.setLv(level);
+        updateProgress();
+    }
+    public static void setAlive(boolean alive) {
+        progress.setAlive(alive);
         updateProgress();
     }
     public static void updateChatData(ChatData chatData) {
@@ -44,8 +56,13 @@ public class Main {
 
     public static void updateProgress(){
         //System.out.println("current progress (update): \n"+progress);
-        String progressString = "username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; msg:"+progress.getMsg()+"; plot:"+progress.getPlot()+"; chapter1:"+progress.getChapter1()+"";
-                ;
+        String progressString = "username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; chapter1:"+progress.getChapter1()+"";
+        writeFile("progress.txt", progressString);
+
+    }
+    public static void resetProgress(){
+        //System.out.println("current progress (update): \n"+progress);
+        String progressString = "username:player; lv:0; alive:true; chapter1:0-2";
         writeFile("progress.txt", progressString);
 
     }
@@ -53,7 +70,7 @@ public class Main {
         String filePath = "progress.txt"; // Replace with your file path
 
         String fileContent = readFile(filePath);
-        if (fileContent.isEmpty()) fileContent = "username:player; lv:1; msg:1; plot:0; chapter1:0-2";
+        if (fileContent.isEmpty()) fileContent = "username:player; lv:0; alive:true; chapter1:0-2";
         //System.out.println(fileContent);
         progress = new ProgressData(fileContent);
 

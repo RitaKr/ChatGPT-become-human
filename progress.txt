@@ -1,1 +1,1 @@
-username:player; lv:1; msg:1; plot:0; chapter1:0-2
+username:player; lv:0; alive:true; chapter1:0-2
