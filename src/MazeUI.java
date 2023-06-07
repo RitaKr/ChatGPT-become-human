@@ -135,7 +135,7 @@ public class MazeUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 quit();
-                requestFocus();
+                game.requestFocus();
             }
         });
 
