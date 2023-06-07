@@ -12,11 +12,14 @@ public class InstructionUI extends JFrame {
     private static final String BACKGROUND_IMAGE_PATH = "images/bg-instruction.jpg";
     private static final String GPT_IMAGE_PATH = "images/chatGPT.png";
     private static final String KEYBOARD_IMAGE_PATH = "images/keyboard.png";
+    private static final String FINISH_IMAGE_PATH = "images/finish.png";
     private static final String SLIDING_DOOR_IMAGE_PATH = "images/slidingDoor.png";
     private static final String DOOR_BUTTON_IMAGE_PATH = "images/doorButton.png";
     private static final String ROTATING_DOOR_IMAGE_PATH = "images/rotatingDoor.png";
     private static final String KEY_IMAGE_PATH = "images/key.png";
     private static final String MOB_IMAGE_PATH = "images/virus.png";
+    private static final String TELEPORT_IMAGE_PATH = "images/teleport.png";
+    private static final String TELEPORT2_IMAGE_PATH = "images/teleport2.png";
 
     ImageIcon bgIcon = new ImageIcon(BACKGROUND_IMAGE_PATH);
     JPanel backgroundPanel;
@@ -25,9 +28,9 @@ public class InstructionUI extends JFrame {
     JPanel titlePanel;
     JLabel titleLabel;
     JScrollPane scrollPane;
-    JPanel keyboardPanel, mobPanel, GPTPanel, slidingDoorPanel, doorButtonPanel, rotatingDoorPanel, keyPanel;
-    JLabel keyboardInstructionLabel, mobInstructionLabel, GPTInstructionLabel, slidingDoorInstructionLabel, doorButtonInstructionLabel, rotatingDoorInstructionLabel, keyInstructionLabel;
-    JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel;
+    JPanel keyboardPanel, mobPanel, GPTPanel, slidingDoorPanel, doorButtonPanel, rotatingDoorPanel, keyPanel, teleportPanel, finishPanel;
+    JLabel keyboardInstructionLabel, mobInstructionLabel, GPTInstructionLabel, slidingDoorInstructionLabel, doorButtonInstructionLabel, rotatingDoorInstructionLabel, keyInstructionLabel, teleportInstructionLabel, finishInstructionLabel;
+    JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel, teleportLabel, finishLabel;
 
     public InstructionUI() {
         super("Інструкція до гри");
@@ -75,7 +78,9 @@ public class InstructionUI extends JFrame {
 
             GPTInstruction();
             keyboardInstruction();
+            finishInstruction();
             mobInstruction();
+            teleportInstruction();
             slidingDoorInstruction();
             doorButtonInstruction();
             rotatingDoorInstruction();
@@ -140,6 +145,26 @@ public class InstructionUI extends JFrame {
         contentPanel.add(keyboardPanel);
     }
 
+    private void finishInstruction(){
+        finishPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        finishPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
+        finishPanel.setOpaque(false);
+        finishPanel.setBackground(null);
+
+        ImageIcon finishIcon = new ImageIcon(new ImageIcon(FINISH_IMAGE_PATH).getImage().getScaledInstance(130, 100, Image.SCALE_DEFAULT));
+        finishLabel = new JLabel(finishIcon);
+        finishLabel.setBackground(null);
+        finishPanel.add(finishLabel);
+
+        String finishText = "<html><div WIDTH=650><i><b>Двері фінішу</b></i>, до яких Ви маєте прийти, щоб завершити рівень.</div></html>";
+        finishInstructionLabel = new JLabel(finishText);
+        finishInstructionLabel.setFont(TEXT_FONT);
+        finishInstructionLabel.setForeground(TEXT_COLOR);
+        finishPanel.add(finishInstructionLabel);
+
+        contentPanel.add(finishPanel);
+    }
+
     private void mobInstruction() {
         mobPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mobPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -159,6 +184,32 @@ public class InstructionUI extends JFrame {
         mobPanel.add(mobInstructionLabel);
 
         contentPanel.add(mobPanel);
+    }
+
+    private void teleportInstruction(){
+        teleportPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        teleportPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
+        teleportPanel.setOpaque(false);
+        teleportPanel.setBackground(null);
+
+        ImageIcon teleportIcon = new ImageIcon(new ImageIcon(TELEPORT_IMAGE_PATH).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        teleportLabel = new JLabel(teleportIcon);
+        teleportLabel.setBackground(null);
+        teleportPanel.add(teleportLabel);
+
+        ImageIcon teleport2Icon = new ImageIcon(new ImageIcon(TELEPORT2_IMAGE_PATH).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        teleportLabel = new JLabel(teleport2Icon);
+        teleportLabel.setBackground(null);
+        teleportPanel.add(teleportLabel);
+
+        String teleportText = "<html><div WIDTH=520><i><b>Телепорти</b></i> переносять персонажа з одного місця лабіринту " +
+                "в інше. З'являються лише попарно, переміщують лише до телепорту з таким самим виглядом.</div></html>";
+        teleportInstructionLabel = new JLabel(teleportText);
+        teleportInstructionLabel.setFont(TEXT_FONT);
+        teleportInstructionLabel.setForeground(TEXT_COLOR);
+        teleportPanel.add(teleportInstructionLabel);
+
+        contentPanel.add(teleportPanel);
     }
 
     private void slidingDoorInstruction(){
