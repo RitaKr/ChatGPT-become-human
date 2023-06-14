@@ -1,6 +1,3 @@
-import javafx.scene.media.MediaPlayer;
-
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -34,9 +31,12 @@ public class ArrowKeyListener implements KeyListener{
                 break;
             case KeyEvent.VK_SPACE:
                 if (game.slideDoorButton!=null && game.isCollisionWithMob(game.slideDoorButton)){
+                    game.playEffect("button.wav", 0.6);
                     game.moveSlidingDoor();
+
                 }
                 if (game.key!=null && game.isCollisionWithMob(game.key)){
+                    game.playEffect("pickup.wav", 0.5);
                     game.moveRotatingDoor();
                     game.key=null;
                 }

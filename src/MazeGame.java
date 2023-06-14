@@ -102,7 +102,7 @@ public class MazeGame extends JPanel {
         switch (level) {
             case 1 ->{
                 loadBackgroundImage("bg1.jpg");
-                setMusic("music/marjim-dizzy.mp3");
+                setMusic("music/marjim-dizzy.mp3", 0.05);
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 2, 4, 3, 1);
@@ -122,7 +122,7 @@ public class MazeGame extends JPanel {
             }
             case 2 -> {
                 loadBackgroundImage("bg2.jpg");
-                setMusic("music/marjim-invincible.mp3");
+                setMusic("music/marjim-invincible.mp3", 0.05);
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 4, 0, 0, 1);
@@ -143,7 +143,7 @@ public class MazeGame extends JPanel {
             }
             case 3 -> {
                 loadBackgroundImage("bg3.png");
-                setMusic("music/marjim-go-big.mp3");
+                setMusic("music/marjim-go-big.mp3", 0.05);
                 chatGPT = new Character(8, 5, 0, false);
 
                 mob1 = new Mob("virus.png", 4, 4, 0, 0);
@@ -264,7 +264,7 @@ public class MazeGame extends JPanel {
             if (mob1!=null && isCollisionWithMob(mob1) && mob1.isDamaging() || mob2!=null && isCollisionWithMob(mob2) && mob2.isDamaging() || mob3!=null && isCollisionWithMob(mob3) && mob3.isDamaging()) {
                 chatGPT.looseLife();
                 Main.mazeUI.repaintHeartsPanel();
-
+                playEffect("mob-collision.wav", 0.15);
                //System.out.println("shimmer in chatGPT");
                 shimmerCharacter(chatGPT);
                 if (mob1!=null && isCollisionWithMob(mob1)) freezeMob(mob1);
@@ -275,15 +275,19 @@ public class MazeGame extends JPanel {
             }
             // Checking if character is in teleport
             if (teleport1!=null && isInside(teleport1, 0)) {
+                playEffect("teleport.wav", 0.6);
                 teleport1.teleportCharacter();
 
             } else if (teleport2!=null && isInside(teleport2, 0)) {
                 teleport2.teleportCharacter();
+                playEffect("teleport.wav", 0.6);
             }
             if (teleport3!=null && isInside(teleport3, 0)) {
                 teleport3.teleportCharacter();
+                playEffect("teleport.wav", 0.6);
             } else if (teleport4!=null && isInside(teleport4, 0)) {
                 teleport4.teleportCharacter();
+                playEffect("teleport.wav", 0.6);
             }
             checkGameOver();
 
@@ -313,6 +317,7 @@ public class MazeGame extends JPanel {
                     chatGPT.looseLife();
                     //MazeUI.HeartsPanel.repaintHeartsPanel();
                     Main.mazeUI.repaintHeartsPanel();
+                    playEffect("mob-collision.wav", 0.15);
                     shimmerCharacter(chatGPT);
                     checkGameOver();
 
@@ -329,6 +334,7 @@ public class MazeGame extends JPanel {
         if (!chatGPT.isAlive() ) {
             stopMusic();
             gameOver =true;
+            playEffect("gameover.wav", 0.3);
             if (fromChooseMaze) {
                 JOptionPane.showMessageDialog(null, "You died. Coming back to Maze selection...", "Game over", JOptionPane.PLAIN_MESSAGE);
                 //setScene(level);
@@ -347,6 +353,7 @@ public class MazeGame extends JPanel {
 
         } else if (isInside(finish, 0)) {
             stopMusic();
+            playEffect("level-complete.wav", 0.3);
             gameOver =true;
             mazeCompleted=true;
             MazeUI.mazeCompleted = true;
@@ -444,6 +451,7 @@ public class MazeGame extends JPanel {
 
     public void moveSlidingDoor(){
         if (slidingDoor!=null) {
+            playEffect("sliding-door-open.wav", 0.8);
             slidingDoor.move();
             settings = slidingDoor.getSettings();
             repaint();
@@ -451,6 +459,7 @@ public class MazeGame extends JPanel {
     }
     public void moveRotatingDoor(){
         if (rotatingDoor!=null) {
+            playEffect("rotating-door-open.wav", 0.1);
             rotatingDoor.move();
             settings = rotatingDoor.getSettings();
             repaint();
@@ -541,11 +550,6 @@ public class MazeGame extends JPanel {
 
 
 
-
-    public void playMusic() {
-        if (mediaPlayer!=null) mediaPlayer.play();
-
-    }
     public boolean isMusicPlaying() {
         MediaPlayer.Status status = mediaPlayer.getStatus();
 
@@ -560,7 +564,27 @@ public class MazeGame extends JPanel {
         }
 
     }
-    public void setMusic(String path) {
+    public void playEffect(String path, double volume) {
+        new JFXPanel();
+
+
+        // Create a File object with the MP3 file
+        File musicFile = new File("music/"+path);
+
+        // Create a Media object with the File object
+        Media media = new Media(musicFile.toURI().toString());
+
+        // Create a MediaPlayer object to play the media
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+        // Configure the MediaPlayer to loop the music
+        mediaPlayer.setCycleCount(1);
+
+        // Start playing the music
+        mediaPlayer.setVolume(volume);
+        mediaPlayer.play();
+    }
+    public void setMusic(String path, double volume) {
         // Initialize JavaFX environment
         new JFXPanel();
 
@@ -578,8 +602,12 @@ public class MazeGame extends JPanel {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         // Start playing the music
-        mediaPlayer.setVolume(0.1);
+        mediaPlayer.setVolume(volume);
 
+
+    }
+    public void playMusic() {
+        if (mediaPlayer!=null) mediaPlayer.play();
 
     }
     public void pauseMusic() {
