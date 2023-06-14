@@ -23,7 +23,7 @@ public class Main {
         mazeUI.setVisible(true);
     }
     public static void startMazeGame(int level){
-        stopMusic();
+        pauseMusic();
         mazeUI = new MazeUI(level);
         mazeUI.setVisible(true);
     }

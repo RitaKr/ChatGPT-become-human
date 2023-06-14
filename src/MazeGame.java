@@ -2,12 +2,12 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 
@@ -373,30 +373,55 @@ public class MazeGame extends JPanel {
                         }
 
                     } else {
-                        JOptionPane.showMessageDialog(null, "You completed level "+level+"! It was the last level", "Maze completed", JOptionPane.PLAIN_MESSAGE);
-                        Main.chooseMazeUI.setVisible(true);
-                        SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
-                        stopMusic();
+                        MessageWindow messageWindow = new MessageWindow(this, "You completed level " + level + "! It was the last level", "Maze completed");
+
+                        messageWindow.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                // Run the remaining code here
+                                Main.chooseMazeUI.setVisible(true);
+                                SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                                stopMusic();
+                            }
+                        });
+
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(null, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", JOptionPane.PLAIN_MESSAGE);
-                    Main.chooseMazeUI.setVisible(true);
-                    SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
-                    stopMusic();
+                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed");
+
+                    messageWindow.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            // Run the remaining code here
+                            Main.chooseMazeUI.setVisible(true);
+                            SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                            stopMusic();
+                        }
+                    });
                 }
             } else {
 
                 if (level<3) {
-                    JOptionPane.showMessageDialog(null, "You completed level "+level+"! ", "Maze completed", JOptionPane.PLAIN_MESSAGE);
-                   //System.out.println("level completed");
-                    level++;
-                    setScene(level);
+                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! ", "Maze completed");
+                    messageWindow.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            level++;
+                            setScene(level);
+                        }
+                    });
+
                 } else {
-                    JOptionPane.showMessageDialog(null, "You completed level "+level+"! It was the last level", "Maze completed", JOptionPane.PLAIN_MESSAGE);
-                    Main.mainMenuUI.setVisible(true);
-                    SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
-                    stopMusic();
+                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! It was the last level", "Maze completed");
+                    messageWindow.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            Main.mainMenuUI.setVisible(true);
+                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                            stopMusic();
+                        }
+                    });
                 }
                 Main.setLevel(level);
 
