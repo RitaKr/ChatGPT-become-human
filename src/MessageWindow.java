@@ -1,7 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MessageWindow extends JFrame {
     private JPanel contentPane;
@@ -18,12 +19,34 @@ public class MessageWindow extends JFrame {
     private final int width = 400;
     private final int height = 250;
     private int btnHeight = 80;
-    private int btnWidth = 200;
-    public MessageWindow(Component parent, String message, String title) {
+    private int btnWidth = 180;
+    private boolean yes;
+    public boolean isYes() {
+        return yes;
+    }
+    private boolean confirmDialog;
+
+    private String btnText1;
+    private String btnText2;
+    public MessageWindow(Component parent, String message, String title, String btnText1, String btnText2) {
         this.message = message;
         this.title = title;
         this.parent = parent;
-
+        confirmDialog = true;
+        btnWidth = 180;
+        this.btnText1 = btnText1;
+        this.btnText2 = btnText2;
+        backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        buttonImage = new ImageIcon("images/button-lightblue.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
+        initializeUI();
+    }
+    public MessageWindow(Component parent, String message, String title, String btnText2) {
+        this.message = message;
+        this.title = title;
+        this.parent = parent;
+        confirmDialog = false;
+        btnWidth = 200;
+        this.btnText2 = btnText2;
         backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         buttonImage = new ImageIcon("images/button-lightblue.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
         initializeUI();
@@ -55,7 +78,36 @@ public class MessageWindow extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
         buttonPanel.setBorder(new EmptyBorder(new Insets(20, 0, 60, 0)));
-        JButton btnOk = new JButton(new ImageIcon(buttonImage)) {
+        if (confirmDialog) {
+            JButton btnYes = createButton(btnText1);
+            buttonPanel.add(btnYes);
+            btnYes.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    yes = true;
+                    dispose();
+                }
+            });
+        }
+        JButton btnNo = createButton(btnText2);
+        buttonPanel.add(btnNo);
+
+        gbc.gridy = 1;
+        gbc.weighty = 0.0;
+        contentPane.add(buttonPanel, gbc);
+
+        JLabel lblBackground = new JLabel(new ImageIcon(backgroundImage));
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        contentPane.add(lblBackground, gbc);
+
+        setTitle(title);
+        setVisible(true);
+    }
+
+
+    private JButton createButton(String text) {
+        JButton btn = new JButton(new ImageIcon(buttonImage)) {
             @Override
             protected void paintComponent(Graphics g) {
                 // Make the background transparent
@@ -71,52 +123,31 @@ public class MessageWindow extends JFrame {
             }
         };
 
-        btnOk.setLayout(new BorderLayout()); // Set button layout to BorderLayout
+        btn.setLayout(new BorderLayout()); // Set button layout to BorderLayout
 
-        JLabel lblButtonText = new JLabel("OK");
+        JLabel lblButtonText = new JLabel(text);
         lblButtonText.setHorizontalAlignment(SwingConstants.CENTER);
         lblButtonText.setVerticalAlignment(SwingConstants.CENTER);
         lblButtonText.setForeground(buttonColor);
         lblButtonText.setFont(font1);
-        btnOk.add(lblButtonText, BorderLayout.CENTER); // Add the label to the button's center
+        btn.add(lblButtonText, BorderLayout.CENTER); // Add the label to the button's center
 
-        btnOk.setContentAreaFilled(false);
-        btnOk.setFocusPainted(false);
-        btnOk.setBorderPainted(false);
-        btnOk.setOpaque(false);
-        btnOk.setPreferredSize(new Dimension(btnWidth, btnHeight));
+        btn.setContentAreaFilled(false);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(false);
+        btn.setPreferredSize(new Dimension(btnWidth, btnHeight));
 
-        btnOk.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnOk.setMargin(null);
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btn.setMargin(null);
 
-        btnOk.addActionListener(e -> dispose());
-        buttonPanel.add(btnOk);
-
-
-        gbc.gridy = 1;
-        gbc.weighty = 0.0;
-        contentPane.add(buttonPanel, gbc);
-
-        JLabel lblBackground = new JLabel(new ImageIcon(backgroundImage));
-        gbc.gridy = 0;
-        gbc.gridheight = 2;
-        contentPane.add(lblBackground, gbc);
-
-        setTitle(title);
-        setVisible(true);
-    }
-
-    private static class CustomButtonUI extends BasicButtonUI {
-        @Override
-        protected void installDefaults(AbstractButton button) {
-            super.installDefaults(button);
-            button.setContentAreaFilled(false);
-        }
+        btn.addActionListener(e -> dispose());
+        return btn;
     }
 
 
     public static void main(String[] args) {
-        MessageWindow messageWindow = new MessageWindow(null, "You completed level " +1+ "!", "Maze completed");
+        MessageWindow messageWindow = new MessageWindow(null, "You completed level " +1+ "!", "Maze completed", "OK");
 
     }
 }

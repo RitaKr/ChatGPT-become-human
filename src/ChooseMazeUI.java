@@ -11,6 +11,7 @@ public class ChooseMazeUI extends JFrame {
     static JLabel levelLabel = new JLabel();
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
+    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
     static Color upperPanelBg = new Color(45, 36, 58);
     private JPanel backgroundPanel;
     private JPanel buttonsPanel;
@@ -188,7 +189,7 @@ public class ChooseMazeUI extends JFrame {
         levelLabel.setForeground(Color.WHITE);
 
 
-        quitButton = setIconButton(crossIcon, 30, 0);
+        quitButton = setIconButton(new ImageIcon(crossImage), 30, 0);
 
         quitButton.addActionListener(new ActionListener() {
             @Override
@@ -214,12 +215,9 @@ public class ChooseMazeUI extends JFrame {
         return button;
     }
     private void quit(){
-        int answer = JOptionPane.showConfirmDialog(null, "Do you want to go back to the main menu?","Quit maze selection", JOptionPane.YES_NO_OPTION);
-        if (answer == 0) {
-            //mainMenuUI = new MainMenuUI(Main.getProgress());
-            Main.mainMenuUI.setVisible(true);
-            SwingUtilities.invokeLater(this::dispose);
-        }
+        Main.mainMenuUI.setVisible(true);
+        SwingUtilities.invokeLater(this::dispose);
+
     }
     private void drawBackground(Graphics g) {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);

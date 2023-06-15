@@ -336,19 +336,30 @@ public class MazeGame extends JPanel {
             gameOver =true;
             playEffect("gameover.wav", 0.3);
             if (fromChooseMaze) {
-                JOptionPane.showMessageDialog(null, "You died. Coming back to Maze selection...", "Game over", JOptionPane.PLAIN_MESSAGE);
+                MessageWindow messageWindow = new MessageWindow(this, "You died. Coming back to Maze selection...", "Game over", "Ok...");
                 //setScene(level);
+                messageWindow.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        Main.chooseMazeUI.setVisible(true);
+                        SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                    }
+                });
 
-                Main.chooseMazeUI.setVisible(true);
-                SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
             } else {
 
-                JOptionPane.showMessageDialog(null, "You died. Coming back to chat...", "Game over", JOptionPane.PLAIN_MESSAGE);
+                MessageWindow messageWindow = new MessageWindow(this, "You died. Coming back to chat...", "Game over", "Ok...");
                 //setScene(level);
-                Main.chatUI.setVisible(true);
-                Main.chatUI.addDeathMessage();
-                Main.setAlive(false);
-                SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                messageWindow.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        Main.chatUI.setVisible(true);
+                        Main.chatUI.addDeathMessage();
+                        Main.setAlive(false);
+                        SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                    }
+                });
+
             }
 
         } else if (isInside(finish, 0)) {
@@ -362,18 +373,24 @@ public class MazeGame extends JPanel {
             if (fromChooseMaze) {
                 if (Main.getProgress().getLv()>level) {
                     if (level<3) {
-                        int answer = JOptionPane.showConfirmDialog(null, "You completed level "+level+"! Next level is also unlocked. Want to continue?", "Maze completed", JOptionPane.YES_NO_OPTION);
-                        if (answer==0) {
-                            level++;
-                            setScene(level);
-                        } else {
-                            Main.chooseMazeUI.setVisible(true);
-                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
-                            stopMusic();
-                        }
+                        MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! Next level is also unlocked. Want to continue?", "Maze completed", "Yes", "No");
+                        messageWindow.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                if (messageWindow.isYes()) {
+                                    level++;
+                                    setScene(level);
+                                } else {
+                                    Main.chooseMazeUI.setVisible(true);
+                                    SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                                    stopMusic();
+                                }
+                            }
+                        });
+
 
                     } else {
-                        MessageWindow messageWindow = new MessageWindow(this, "You completed level " + level + "! It was the last level", "Maze completed");
+                        MessageWindow messageWindow = new MessageWindow(this, "You completed level " + level + "! It was the last level", "Maze completed", "Go to maze selection");
 
                         messageWindow.addWindowListener(new WindowAdapter() {
                             @Override
@@ -388,7 +405,7 @@ public class MazeGame extends JPanel {
                     }
 
                 } else {
-                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed");
+                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", "Go to maze selection");
 
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
@@ -403,7 +420,7 @@ public class MazeGame extends JPanel {
             } else {
 
                 if (level<3) {
-                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! ", "Maze completed");
+                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! ", "Maze completed", "Start next level");
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
@@ -413,7 +430,7 @@ public class MazeGame extends JPanel {
                     });
 
                 } else {
-                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! It was the last level", "Maze completed");
+                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! It was the last level", "Maze completed", "Go to menu");
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {

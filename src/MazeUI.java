@@ -3,6 +3,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MazeUI extends JFrame {
     static MazeGame game;
@@ -10,7 +12,7 @@ public class MazeUI extends JFrame {
     JLabel levelLabel = new JLabel();
     JPanel heartsPanel = new HeartsPanel();
     static JButton quitButton;
-    static ImageIcon crossIcon = new ImageIcon("images/cross.png");
+    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
     static Color bg = new Color(45, 36, 58);
     static boolean lv1completed;
     static boolean lv2completed;
@@ -119,7 +121,7 @@ public class MazeUI extends JFrame {
 
         heartsPanel.setBackground(null);
 
-        quitButton = new JButton(crossIcon);
+        quitButton = new JButton(new ImageIcon(crossImage));
         quitButton.setBackground(null);
 
         quitButton.setPreferredSize(new Dimension(30, 30));
@@ -145,17 +147,25 @@ public class MazeUI extends JFrame {
     static void quit() {
         if (game.isMusicPlaying()) game.pauseMusic();
         //System.out.println(game.isMusicPlaying());
-        int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
-        if (answer == 0) {
-            Main.mazeUI.updateUpperPanel();
-            if (Main.mazeUI.getGame().fromChooseMaze) Main.chooseMazeUI.setVisible(true);
-            else Main.mainMenuUI.setVisible(true);
-            SwingUtilities.invokeLater(()->{Main.mazeUI.setVisible(false); Main.playMusic();});
-        } else {
-            game.playMusic();
+        //int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
 
-            game.requestFocus();
-        }
+        MessageWindow messageWindow = new MessageWindow(MazeUI.game, "Do you really want to quit maze?", "Quit maze", "Yes", "No");
+        //setScene(level);
+        messageWindow.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (messageWindow.isYes()) {
+                    Main.mazeUI.updateUpperPanel();
+                    if (Main.mazeUI.getGame().fromChooseMaze) Main.chooseMazeUI.setVisible(true);
+                    else Main.mainMenuUI.setVisible(true);
+                    SwingUtilities.invokeLater(()->{Main.mazeUI.setVisible(false); Main.playMusic();});
+                } else {
+                    game.playMusic();
+
+                    game.requestFocus();
+                }
+            }
+        });
     }
     public void updateUpperPanel() {
         levelLabel.setText("Level " + game.getLevel());
