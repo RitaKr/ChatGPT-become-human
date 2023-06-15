@@ -1,1 +1,1 @@
-username:player; lv:3; alive:false; chapter1:0-1,7-1,8-0,10-1,13-1,15-0,16-1,18-0
+username:player; lv:0; alive:true; chapter1:0-2
