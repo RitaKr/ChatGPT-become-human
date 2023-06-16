@@ -3,23 +3,27 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class MessageWindow extends JFrame {
+public class MessageWindow extends JDialog {
+    private final int width = 400;
+    private final int height = 220;
+    private int btnHeight = 60;
+    private int btnWidth = 180;
     private JPanel contentPane;
     Component parent;
     private String message;
     private String title;
 
-    private Image backgroundImage;
-    private Image buttonImage;
-    private Font font = new Font("Arial", Font.BOLD, 20);
+    private Image backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    private Image buttonImage = new ImageIcon("images/button-lightblue-tansparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
+    private Image buttonHoverImage = new ImageIcon("images/button-white-transparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
+    private Font font = new Font("Arial", Font.BOLD, 18);
     private Font font1 = new Font("Arial", Font.PLAIN, 16);
     private Color textColor = Color.WHITE;
     private Color buttonColor = Color.WHITE;
-    private final int width = 400;
-    private final int height = 250;
-    private int btnHeight = 80;
-    private int btnWidth = 180;
+
     private boolean yes;
     public boolean isYes() {
         return yes;
@@ -28,32 +32,35 @@ public class MessageWindow extends JFrame {
 
     private String btnText1;
     private String btnText2;
+
     public MessageWindow(Component parent, String message, String title, String btnText1, String btnText2) {
+        super((Window) SwingUtilities.getWindowAncestor(parent), title, ModalityType.APPLICATION_MODAL);
         this.message = message;
         this.title = title;
         this.parent = parent;
         confirmDialog = true;
-        btnWidth = 180;
         this.btnText1 = btnText1;
         this.btnText2 = btnText2;
-        backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        buttonImage = new ImageIcon("images/button-lightblue.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
         initializeUI();
     }
+
     public MessageWindow(Component parent, String message, String title, String btnText2) {
+        super((Window) SwingUtilities.getWindowAncestor(parent), title, ModalityType.APPLICATION_MODAL);
         this.message = message;
         this.title = title;
         this.parent = parent;
         confirmDialog = false;
         btnWidth = 200;
+
+        buttonImage = new ImageIcon("images/button-lightblue-tansparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
+        buttonHoverImage = new ImageIcon("images/button-white-transparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
+
         this.btnText2 = btnText2;
-        backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        buttonImage = new ImageIcon("images/button-lightblue.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
         initializeUI();
     }
 
     private void initializeUI() {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
         setSize(new Dimension(width, height));
         setLocationRelativeTo(parent);
@@ -62,11 +69,12 @@ public class MessageWindow extends JFrame {
         contentPane.setLayout(new GridBagLayout());
         setContentPane(contentPane);
 
-        JLabel lblMessage = new JLabel("<html><div style=\"text-align: center;\">"+message+"</div></html>");
+        JLabel lblMessage = new JLabel("<html><div style=\"text-align: center; padding: 0 10px\">"+message+"</div></html>");
         lblMessage.setHorizontalAlignment(SwingConstants.CENTER);
         lblMessage.setVerticalAlignment(SwingConstants.CENTER);
         lblMessage.setFont(font);
         lblMessage.setForeground(textColor);
+        lblMessage.setBorder(new EmptyBorder(new Insets(20, 0, 00, 0)));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -77,7 +85,7 @@ public class MessageWindow extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
-        buttonPanel.setBorder(new EmptyBorder(new Insets(20, 0, 60, 0)));
+        buttonPanel.setBorder(new EmptyBorder(new Insets(10, 0, 40, 0)));
         if (confirmDialog) {
             JButton btnYes = createButton(btnText1);
             buttonPanel.add(btnYes);
@@ -142,12 +150,30 @@ public class MessageWindow extends JFrame {
         btn.setMargin(null);
 
         btn.addActionListener(e -> dispose());
+
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btn.setIcon(new ImageIcon(buttonHoverImage));  // Set the hover image
+                //startFadeIn(btn);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btn.setIcon(new ImageIcon(buttonImage));  // Restore the default image
+                //startFadeOut(btn);
+            }
+        });
         return btn;
     }
 
-
     public static void main(String[] args) {
-        MessageWindow messageWindow = new MessageWindow(null, "You completed level " +1+ "!", "Maze completed", "OK");
+        JFrame parent = new JFrame("Parent Frame");
+        parent.setSize(500, 300);
+        parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        parent.setLocationRelativeTo(null);
+        parent.setVisible(true);
 
+        MessageWindow messageWindow = new MessageWindow(parent, "You completed level 1!", "Maze completed", "OK");
     }
 }

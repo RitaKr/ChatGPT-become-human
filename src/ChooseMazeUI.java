@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 public class ChooseMazeUI extends JFrame {
     static JPanel upperPanel = new JPanel(new BorderLayout());
@@ -12,6 +9,7 @@ public class ChooseMazeUI extends JFrame {
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
     static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
     static Color upperPanelBg = new Color(45, 36, 58);
     private JPanel backgroundPanel;
     private JPanel buttonsPanel;
@@ -20,6 +18,7 @@ public class ChooseMazeUI extends JFrame {
     final static Color transparent = new Color(0,0,0, 0.00f);
     ProgressData progressData;
     GridBagConstraints c = new GridBagConstraints();
+    MessageWindow messageWindow;
     public void updateProgressData(){
         Main.fetchProgress();
         progressData = Main.getProgress();
@@ -141,7 +140,13 @@ public class ChooseMazeUI extends JFrame {
                                 Main.startMazeGame(1);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-                                JOptionPane.showMessageDialog(ChooseMazeUI.super.getContentPane(), "You haven't unlocked this level yet! Try too chat with GPT more", "level unavailable", JOptionPane.ERROR_MESSAGE);
+                                messageWindow = new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! Try too chat with GPT more", "level unavailable", "OK");
+                                messageWindow.addWindowListener(new WindowAdapter() {
+                                    @Override
+                                    public void windowClosed(WindowEvent e) {
+
+                                    }
+                                });
                             }
                             break;
                         }
@@ -150,7 +155,13 @@ public class ChooseMazeUI extends JFrame {
                                 Main.startMazeGame(2);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-                                JOptionPane.showMessageDialog(ChooseMazeUI.super.getContentPane(), "You haven't unlocked this level yet! You need to complete level 1 and chat chapter 2 first", "level unavailable", JOptionPane.ERROR_MESSAGE);
+                                messageWindow = new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! You need to complete level 1 and chat chapter 2 first", "level unavailable", "OK");
+                                messageWindow.addWindowListener(new WindowAdapter() {
+                                    @Override
+                                    public void windowClosed(WindowEvent e) {
+
+                                    }
+                                });
                             }
                             break;
                         }
@@ -159,7 +170,14 @@ public class ChooseMazeUI extends JFrame {
                                 Main.startMazeGame(3);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-                                JOptionPane.showMessageDialog(ChooseMazeUI.super.getContentPane(), "You haven't unlocked this level yet! You need to complete level 2 and chat chapter 3 first", "level unavailable", JOptionPane.ERROR_MESSAGE);
+
+                                messageWindow = new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! You need to complete level 2 and chat chapter 3 first", "level unavailable", "OK");
+                                messageWindow.addWindowListener(new WindowAdapter() {
+                                    @Override
+                                    public void windowClosed(WindowEvent e) {
+
+                                    }
+                                });
                             }
                             break;
                         }
@@ -175,6 +193,7 @@ public class ChooseMazeUI extends JFrame {
         super("ChatGPT: become human");
         progressData = Main.getProgress();
         setAll();
+
         // Make JFrame visible
         //setVisible(true);
     }
@@ -189,7 +208,7 @@ public class ChooseMazeUI extends JFrame {
         levelLabel.setForeground(Color.WHITE);
 
 
-        quitButton = setIconButton(new ImageIcon(crossImage), 30, 0);
+        quitButton = setIconButton(new ImageIcon(crossImage), new ImageIcon(crossHoverImage),30, 0);
 
         quitButton.addActionListener(new ActionListener() {
             @Override
@@ -203,7 +222,7 @@ public class ChooseMazeUI extends JFrame {
         upperPanel.add(quitButton, BorderLayout.EAST);
 
     }
-    private JButton setIconButton(ImageIcon icon,int size, int padding) {
+    private JButton setIconButton(ImageIcon icon,ImageIcon hoverIcon,int size, int padding) {
         JButton button = new JButton(icon);
         button.setBackground(null);
 
@@ -211,7 +230,22 @@ public class ChooseMazeUI extends JFrame {
         button.setMargin(new Insets(padding, padding, padding, padding));
         button.setBorder(null);
         button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(false);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setIcon(hoverIcon);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setIcon(icon);
+
+            }
+        });
         return button;
     }
     private void quit(){

@@ -61,6 +61,7 @@ public class MazeGame extends JPanel {
     Item key;
     Item finish;
     private Image backgroundImage;
+    //private ImageIcon backgroundImage;
     boolean fromChooseMaze;
 
     public Character getChatGPT() {
@@ -101,7 +102,7 @@ public class MazeGame extends JPanel {
 
         switch (level) {
             case 1 ->{
-                loadBackgroundImage("bg1.jpg");
+                loadBackgroundImage("bg1-blur.gif");
                 setMusic("music/marjim-dizzy.mp3", 0.05);
                 chatGPT = new Character(8, 5, 0, false);
 
@@ -121,7 +122,7 @@ public class MazeGame extends JPanel {
                 finish = new Item("finish.png",0, 0, 120, 100);
             }
             case 2 -> {
-                loadBackgroundImage("bg2.jpg");
+                loadBackgroundImage("bg2-blur.gif");
                 setMusic("music/marjim-invincible.mp3", 0.05);
                 chatGPT = new Character(8, 5, 0, false);
 
@@ -142,7 +143,7 @@ public class MazeGame extends JPanel {
                 finish = new Item("finish.png",5, 1, 120, 100);
             }
             case 3 -> {
-                loadBackgroundImage("bg3.png");
+                loadBackgroundImage("bg3-blur.gif");
                 setMusic("music/marjim-go-big.mp3", 0.05);
                 chatGPT = new Character(8, 5, 0, false);
 
@@ -166,16 +167,34 @@ public class MazeGame extends JPanel {
         repaint();
         playMusic();
     }
+
     private void drawBackground(Graphics g){
 
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
-    private void loadBackgroundImage(String imageName) {
-        ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
-        backgroundImage = icon.getImage();
+//    private void drawBackground(Graphics g) {
+//        if (backgroundImage != null) {
+//            backgroundImage.paintIcon(this, g, 0, 0);
+//        }
+//    }
+//    private void loadBackgroundImage(String imageName) {
+//        ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
+//        backgroundImage = icon.getImage();
+//
+//    }
+private void loadBackgroundImage(String imageName) {
+    String imagePath = "images/" + imageName;
 
+    if (imagePath.toLowerCase().endsWith(".gif")) {
+        backgroundImage = Toolkit.getDefaultToolkit().createImage(imagePath);
+    } else {
+        backgroundImage = new ImageIcon(imagePath).getImage();
     }
+}
+
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

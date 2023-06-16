@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 public class InstructionUI extends JFrame {
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 35);
@@ -29,6 +26,8 @@ public class InstructionUI extends JFrame {
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
     static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+
     static Color upperPanelBg = new Color(45, 36, 58);;
 
     ImageIcon bgIcon = new ImageIcon(BACKGROUND_IMAGE_PATH);
@@ -155,7 +154,7 @@ public class InstructionUI extends JFrame {
         levelLabel.setForeground(Color.WHITE);
 
 
-        quitButton = setIconButton(new ImageIcon(crossImage), 30, 0);
+        quitButton = setIconButton(new ImageIcon(crossImage), new ImageIcon(crossHoverImage), 30, 0);
 
         quitButton.addActionListener(new ActionListener() {
             @Override
@@ -170,7 +169,7 @@ public class InstructionUI extends JFrame {
         upperPanel.add(quitButton, BorderLayout.EAST);
 
     }
-    private JButton setIconButton(ImageIcon icon,int size, int padding) {
+    private JButton setIconButton(ImageIcon icon,ImageIcon hoverIcon,int size, int padding) {
         JButton button = new JButton(icon);
         button.setBackground(null);
 
@@ -178,7 +177,22 @@ public class InstructionUI extends JFrame {
         button.setMargin(new Insets(padding, padding, padding, padding));
         button.setBorder(null);
         button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(false);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setIcon(hoverIcon);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setIcon(icon);
+
+            }
+        });
         return button;
     }
     private void quit(){

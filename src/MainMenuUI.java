@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class MainMenuUI extends JFrame {
     private JPanel backgroundPanel;
@@ -9,9 +8,15 @@ public class MainMenuUI extends JFrame {
     final static Color bgColor = new Color(138, 19, 178);
     Image backgroundImage;
     Image startImage = new ImageIcon("images/start.png").getImage();
+    Image buttonImage = new ImageIcon("images/button-pattern.png").getImage();
+    Image redButtonImage = new ImageIcon("images/button-pattern-red.png").getImage();
+    Image startHoverImage = new ImageIcon("images/start-white.png").getImage();
+    Image buttonHoverImage = new ImageIcon("images/button-pattern-white.png").getImage();
     GridBagConstraints c = new GridBagConstraints();
     private Font font = new Font("Arial", Font.BOLD, 22);
-    private Color buttonColor = new Color(255, 255, 255);
+    private Color buttonColor = new Color(45, 114, 255);
+    private Color buttonColor1 = new Color(222, 68, 68);
+    private Color buttonColorHover = new Color(225, 225, 255);
     int btnWidth = 280;
     int btnHeight = 90;
 
@@ -49,10 +54,10 @@ public class MainMenuUI extends JFrame {
         c.gridy = 0;
         backgroundPanel.add(title, c);
 
-        JButton startButton = createButton("", startImage);
+        JButton startButton = createButton("", buttonColor, startImage, startHoverImage);
         c.gridy = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(25,0,0,0);  // Add some space between the buttons
+        c.insets = new Insets(25,100,0,100);  // Add some space between the buttons
         backgroundPanel.add(startButton, c);
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -67,11 +72,11 @@ public class MainMenuUI extends JFrame {
         // create and customize the buttons
         String[] buttonNames = {"Instruction", "Mazes", "Reset progress"};
         for (int i = 1; i <= buttonNames.length; i++) {
-            JButton button = createButton(buttonNames[i-1], new ImageIcon("images/button-pattern.png").getImage());
+            JButton button = createButton(buttonNames[i-1],(i<buttonNames.length ? buttonColor : buttonColor1), (i<buttonNames.length ? buttonImage : redButtonImage), buttonHoverImage);
 
             c.gridy = i + 1;
             c.fill = GridBagConstraints.HORIZONTAL;
-            c.insets = new Insets(10,0,0,0);  // Add some space between the buttons
+            c.insets = new Insets(10,100,0,100);  // Add some space between the buttons
             backgroundPanel.add(button, c);
             int finalI = i;
             button.addActionListener(new ActionListener() {
@@ -94,12 +99,17 @@ public class MainMenuUI extends JFrame {
                             break;
                         }
                         case 3: {
-                            int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to reset the progress? You will need to open the program again","Reset progress", JOptionPane.YES_NO_OPTION);
-                            if (answer == 0) {
-                                Main.resetProgress();
-                                dispose();
-                                System.exit(0);
-                            }
+                            MessageWindow messageWindow = new MessageWindow(MainMenuUI.this, "Are you sure you want to reset the progress? You will need to open the program again", "Reset progress", "Yes", "No");
+                            messageWindow.addWindowListener(new WindowAdapter() {
+                                @Override
+                                public void windowClosed(WindowEvent e) {
+                                    if (messageWindow.isYes()) {
+                                        Main.resetProgress();
+                                        dispose();
+                                        System.exit(0);
+                                    }
+                                }
+                            });
 
                             break;
                         }
@@ -113,7 +123,7 @@ public class MainMenuUI extends JFrame {
         // Make JFrame visible
         //setVisible(true);
     }
-    private JButton createButton(String text, Image backgroundImage) {
+    private JButton createButton(String text, Color textColor, Image backgroundImage, Image hoverImage) {
         JButton button = new JButton(new ImageIcon(backgroundImage.getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH))) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -138,7 +148,7 @@ public class MainMenuUI extends JFrame {
         buttonText.setPreferredSize(new Dimension(btnWidth, btnHeight));
         buttonText.setHorizontalAlignment(SwingConstants.CENTER);
         buttonText.setVerticalAlignment(SwingConstants.CENTER);
-        buttonText.setForeground(buttonColor);
+        buttonText.setForeground(textColor);
         buttonText.setFont(font);
         button.add(buttonText, BorderLayout.CENTER); // Add the label to the button's center
 
@@ -151,7 +161,21 @@ public class MainMenuUI extends JFrame {
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         button.setMargin(null);
         button.setSize(new Dimension(btnWidth, btnHeight));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                buttonText.setForeground(buttonColorHover);
+                button.setIcon(new ImageIcon(hoverImage.getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH)));  // Set the hover image
+                //startFadeIn(btn);
+            }
 
+            @Override
+            public void mouseExited(MouseEvent e) {
+                buttonText.setForeground(textColor);
+                button.setIcon(new ImageIcon(backgroundImage.getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH)));  // Restore the default image
+                //startFadeOut(btn);
+            }
+        });
 
         return button;
     }
