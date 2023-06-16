@@ -183,15 +183,15 @@ public class MazeGame extends JPanel {
 //        backgroundImage = icon.getImage();
 //
 //    }
-private void loadBackgroundImage(String imageName) {
-    String imagePath = "images/" + imageName;
+    private void loadBackgroundImage(String imageName) {
+        String imagePath = "images/" + imageName;
 
-    if (imagePath.toLowerCase().endsWith(".gif")) {
-        backgroundImage = Toolkit.getDefaultToolkit().createImage(imagePath);
-    } else {
-        backgroundImage = new ImageIcon(imagePath).getImage();
+        if (imagePath.toLowerCase().endsWith(".gif")) {
+            backgroundImage = Toolkit.getDefaultToolkit().createImage(imagePath);
+        } else {
+            backgroundImage = new ImageIcon(imagePath).getImage();
+        }
     }
-}
 
 
 

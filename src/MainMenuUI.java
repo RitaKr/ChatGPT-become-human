@@ -30,7 +30,7 @@ public class MainMenuUI extends JFrame {
         setSize(890, 710);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        loadBackgroundImage("bg-menu.png");
+        loadBackgroundImage("bg-menu4.gif");
 
         backgroundPanel = new JPanel(new GridBagLayout()) {
             @Override
@@ -184,17 +184,26 @@ public class MainMenuUI extends JFrame {
         //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
 
+//    private void loadBackgroundImage(String imageName) {
+//        try {
+//            ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
+//            backgroundImage = icon.getImage();
+//            if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+//                //System.out.println("Failed to load image: " + imageName);
+//                backgroundImage = null;
+//            }
+//        } catch (Exception e) {
+//            //System.out.println("Failed to load image: " + imageName);
+//            e.printStackTrace();
+//        }
+//    }
     private void loadBackgroundImage(String imageName) {
-        try {
-            ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
-            backgroundImage = icon.getImage();
-            if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-                //System.out.println("Failed to load image: " + imageName);
-                backgroundImage = null;
-            }
-        } catch (Exception e) {
-            //System.out.println("Failed to load image: " + imageName);
-            e.printStackTrace();
+        String imagePath = "images/" + imageName;
+
+        if (imagePath.toLowerCase().endsWith(".gif")) {
+            backgroundImage = Toolkit.getDefaultToolkit().createImage(imagePath);
+        } else {
+            backgroundImage = new ImageIcon(imagePath).getImage();
         }
     }
 }
