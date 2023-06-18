@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 public class ChatUI extends JFrame {
     static JPanel chatArea = new JPanel(new GridBagLayout());
@@ -12,7 +9,8 @@ public class ChatUI extends JFrame {
     static JLabel levelLabel = new JLabel();
     static JButton quitButton;
     static ImageIcon crossIcon = new ImageIcon("images/cross.png");
-    static Color upperPanelBg = new Color(45, 36, 58);
+    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);static Color upperPanelBg = new Color(45, 36, 58);
     static Color chatBg = new Color(85, 82, 93);
     static Color userMsgBg = new Color(59, 57, 66);
     JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -94,12 +92,9 @@ public class ChatUI extends JFrame {
         //setVisible(true);
     }
     private void quit(){
-        int answer = JOptionPane.showConfirmDialog(null, "Do you want to go back to the main menu?","Quit chat", JOptionPane.YES_NO_OPTION);
-        if (answer == 0) {
-            //mainMenuUI = new MainMenuUI(Main.getProgress());
-            Main.mainMenuUI.setVisible(true);
-            SwingUtilities.invokeLater(this::dispose);
-        }
+        Main.mainMenuUI.setVisible(true);
+        SwingUtilities.invokeLater(this::dispose);
+
     }
     private void addMessage(ChatData.Dialog dialog){
         for (String text : dialog.getGpt().getTexts()) {
@@ -126,6 +121,7 @@ public class ChatUI extends JFrame {
                             chatData.chapter.getDialogs().add(newDialog);
                             ////System.out.println("dialogs after user answer " + chatData.chapter.getDialogs());
                             ////System.out.println("next dialog " + newDialog);
+
                             addMessage(newDialog);
                         } catch (IndexOutOfBoundsException ex) {
                             //System.out.println("plot "+dialog.getUser()[0].getPlot());
@@ -206,7 +202,7 @@ public class ChatUI extends JFrame {
     public void addDeathMessage(){
         addMessage(chatData.deathDialog);
     }
-    private JButton setIconButton(ImageIcon icon,int size, int padding) {
+    private JButton setIconButton(ImageIcon icon,ImageIcon hoverIcon,int size, int padding) {
         JButton button = new JButton(icon);
         button.setBackground(null);
 
@@ -214,7 +210,22 @@ public class ChatUI extends JFrame {
         button.setMargin(new Insets(padding, padding, padding, padding));
         button.setBorder(null);
         button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(false);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setIcon(hoverIcon);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setIcon(icon);
+
+            }
+        });
         return button;
     }
     public JButton setAnswerOption(String text) {
@@ -239,7 +250,7 @@ public class ChatUI extends JFrame {
         levelLabel.setForeground(Color.WHITE);
 
 
-        quitButton = setIconButton(crossIcon, 30, 0);
+        quitButton = setIconButton(new ImageIcon(crossImage), new ImageIcon(crossHoverImage),30, 0);
 
         quitButton.addActionListener(new ActionListener() {
             @Override

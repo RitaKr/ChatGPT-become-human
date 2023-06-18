@@ -1,8 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class MazeUI extends JFrame {
     static MazeGame game;
@@ -10,7 +9,9 @@ public class MazeUI extends JFrame {
     JLabel levelLabel = new JLabel();
     JPanel heartsPanel = new HeartsPanel();
     static JButton quitButton;
-    static ImageIcon crossIcon = new ImageIcon("images/cross.png");
+    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+
     static Color bg = new Color(45, 36, 58);
     static boolean lv1completed;
     static boolean lv2completed;
@@ -119,7 +120,7 @@ public class MazeUI extends JFrame {
 
         heartsPanel.setBackground(null);
 
-        quitButton = new JButton(crossIcon);
+        quitButton = setIconButton(new ImageIcon(crossImage), new ImageIcon(crossHoverImage),30, 0);
         quitButton.setBackground(null);
 
         quitButton.setPreferredSize(new Dimension(30, 30));
@@ -142,20 +143,54 @@ public class MazeUI extends JFrame {
         upperPanel.add(quitButton, BorderLayout.EAST);
 
     }
+    private JButton setIconButton(ImageIcon icon,ImageIcon hoverIcon,int size, int padding) {
+        JButton button = new JButton(icon);
+        button.setBackground(null);
+
+        button.setPreferredSize(new Dimension(size, size));
+        button.setMargin(new Insets(padding, padding, padding, padding));
+        button.setBorder(null);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setIcon(hoverIcon);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setIcon(icon);
+
+            }
+        });
+        return button;
+    }
     static void quit() {
         if (game.isMusicPlaying()) game.pauseMusic();
         //System.out.println(game.isMusicPlaying());
-        int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
-        if (answer == 0) {
-            Main.mazeUI.updateUpperPanel();
-            if (Main.mazeUI.getGame().fromChooseMaze) Main.chooseMazeUI.setVisible(true);
-            else Main.mainMenuUI.setVisible(true);
-            SwingUtilities.invokeLater(()->{Main.mazeUI.setVisible(false); Main.playMusic();});
-        } else {
-            game.playMusic();
+        //int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
 
-            game.requestFocus();
-        }
+        MessageWindow messageWindow = new MessageWindow(MazeUI.game, "Do you really want to quit maze?", "Quit maze", "Yes", "No");
+        //setScene(level);
+        messageWindow.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (messageWindow.isYes()) {
+                    Main.mazeUI.updateUpperPanel();
+                    if (Main.mazeUI.getGame().fromChooseMaze) Main.chooseMazeUI.setVisible(true);
+                    else Main.mainMenuUI.setVisible(true);
+                    SwingUtilities.invokeLater(()->{Main.mazeUI.setVisible(false); Main.playMusic();});
+                } else {
+                    game.playMusic();
+
+                    game.requestFocus();
+                }
+            }
+        });
     }
     public void updateUpperPanel() {
         levelLabel.setText("Level " + game.getLevel());
