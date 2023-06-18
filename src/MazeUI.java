@@ -1,16 +1,18 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class MazeUI extends JFrame {
+public class MazeUI extends UI {
     static MazeGame game;
-    JPanel upperPanel = new JPanel(new BorderLayout());
-    JLabel levelLabel = new JLabel();
+//    JPanel upperPanel = new JPanel(new BorderLayout());
+//    JLabel levelLabel = new JLabel();
     JPanel heartsPanel = new HeartsPanel();
-    static JButton quitButton;
-    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+//    static JButton quitButton;
+//    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+//    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 
     static Color bg = new Color(45, 36, 58);
     static boolean lv1completed;
@@ -49,7 +51,6 @@ public class MazeUI extends JFrame {
         MazeUI.lv3completed = lv3completed;
     }
 
-    static int menuHeight = 40;
     static boolean mazeCompleted = false;
 
     public boolean isMazeCompleted() {
@@ -61,115 +62,47 @@ public class MazeUI extends JFrame {
     }
 
     public MazeUI(){
-        super("ChatGPT: become human");
+        super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
         game = new MazeGame(false, Main.getProgress().getLv());
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-
-
-        getContentPane().setLayout(new BorderLayout());
-        setUpperPanel();
-        add(upperPanel, BorderLayout.NORTH);
-
-        add(game, BorderLayout.CENTER);
-        pack();
-        setLocationRelativeTo(null);
-        //setVisible(true);
-
-        // Register arrow key listeners to move the character
-        game.addKeyListener(new ArrowKeyListener(game));
-        game.requestFocus();
-
+        setUI();
 
     }
     public MazeUI(int level){
-        super("ChatGPT: become human");
+        super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
         game = new MazeGame(true, level);
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-
-
-        getContentPane().setLayout(new BorderLayout());
-        setUpperPanel();
-        add(upperPanel, BorderLayout.NORTH);
-
-        add(game, BorderLayout.CENTER);
-        pack();
-        setLocationRelativeTo(null);
-        //setVisible(true);
-
-        // Register arrow key listeners to move the character
-        game.addKeyListener(new ArrowKeyListener(game));
-        game.requestFocus();
-
+        setUI();
 
     }
-    public void setUpperPanel(){
-        upperPanel.setBorder(new EmptyBorder(5, 20, 5, 20));
-        upperPanel.setBackground(bg);
-        upperPanel.setPreferredSize(new Dimension(game.getWidth(), menuHeight));
-        upperPanel.setAlignmentX(CENTER_ALIGNMENT);
-        upperPanel.setAlignmentY(CENTER_ALIGNMENT);
 
-        levelLabel = new JLabel("Level "+game.getLevel());
-        levelLabel.setForeground(Color.WHITE);
+    private void setUI() {
+        setResizable(false);
 
+        getContentPane().setLayout(new BorderLayout());
+        setUpperPanel(this);
         heartsPanel.setBackground(null);
-
-        quitButton = setIconButton(new ImageIcon(crossImage), new ImageIcon(crossHoverImage),30, 0);
-        quitButton.setBackground(null);
-
-        quitButton.setPreferredSize(new Dimension(30, 30));
-        quitButton.setMargin(null);
-        quitButton.setBorder(null);
-        quitButton.setBorderPainted(false);
-        quitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+        super.upperPanel.add(heartsPanel, BorderLayout.CENTER);
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                quit();
+                confirmQuit();
                 game.requestFocus();
             }
         });
 
+        add(super.upperPanel, BorderLayout.NORTH);
 
-        upperPanel.add(levelLabel, BorderLayout.WEST);
-        upperPanel.add(heartsPanel, BorderLayout.CENTER);
-        upperPanel.add(quitButton, BorderLayout.EAST);
+        add(game, BorderLayout.CENTER);
+        pack();
 
+
+        // Register arrow key listeners to move the character
+        game.addKeyListener(new ArrowKeyListener(game));
+        game.requestFocus();
     }
-    private JButton setIconButton(ImageIcon icon,ImageIcon hoverIcon,int size, int padding) {
-        JButton button = new JButton(icon);
-        button.setBackground(null);
 
-        button.setPreferredSize(new Dimension(size, size));
-        button.setMargin(new Insets(padding, padding, padding, padding));
-        button.setBorder(null);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setOpaque(false);
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setIcon(hoverIcon);
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setIcon(icon);
-
-            }
-        });
-        return button;
-    }
-    static void quit() {
+    void confirmQuit() {
         if (game.isMusicPlaying()) game.pauseMusic();
         //System.out.println(game.isMusicPlaying());
         //int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
@@ -181,12 +114,17 @@ public class MazeUI extends JFrame {
             public void windowClosed(WindowEvent e) {
                 if (messageWindow.isYes()) {
                     Main.mazeUI.updateUpperPanel();
-                    if (Main.mazeUI.getGame().fromChooseMaze) Main.chooseMazeUI.setVisible(true);
-                    else Main.mainMenuUI.setVisible(true);
-                    SwingUtilities.invokeLater(()->{Main.mazeUI.setVisible(false); Main.playMusic();});
+                    if (Main.mazeUI.getGame().fromChooseMaze) {
+                        quit(Main.chooseMazeUI);
+                    }
+                    else {
+                        quit(Main.mainMenuUI);
+                    }
+                    Main.playMusic();
+                    //SwingUtilities.invokeLater(()->{Main.mazeUI.setVisible(false); Main.playMusic();});
                 } else {
-                    game.playMusic();
 
+                    game.playMusic();
                     game.requestFocus();
                 }
             }

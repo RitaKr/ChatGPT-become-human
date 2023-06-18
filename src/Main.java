@@ -104,7 +104,16 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public static void playEffect(String path, double volume) {
+        new JFXPanel();
 
+        File musicFile = new File("music/"+path);
+        Media media = new Media(musicFile.toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(1);
+        mediaPlayer.setVolume(volume);
+        mediaPlayer.play();
+    }
     public static void setMusic(String path, double volume) {
         // Initialize JavaFX environment
         new JFXPanel();

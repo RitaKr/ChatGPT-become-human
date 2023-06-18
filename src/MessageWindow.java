@@ -149,11 +149,12 @@ public class MessageWindow extends JDialog {
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.setMargin(null);
 
-        btn.addActionListener(e -> dispose());
+        btn.addActionListener(e -> {Main.playEffect("click.wav", 0.2);dispose();});
 
         btn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
+                Main.playEffect("hover.wav", 0.2);
                 btn.setIcon(new ImageIcon(buttonHoverImage));  // Set the hover image
                 //startFadeIn(btn);
             }

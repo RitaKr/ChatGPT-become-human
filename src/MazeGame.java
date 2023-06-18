@@ -628,20 +628,10 @@ public class MazeGame extends JPanel {
     public void playEffect(String path, double volume) {
         new JFXPanel();
 
-
-        // Create a File object with the MP3 file
         File musicFile = new File("music/"+path);
-
-        // Create a Media object with the File object
         Media media = new Media(musicFile.toURI().toString());
-
-        // Create a MediaPlayer object to play the media
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-
-        // Configure the MediaPlayer to loop the music
         mediaPlayer.setCycleCount(1);
-
-        // Start playing the music
         mediaPlayer.setVolume(volume);
         mediaPlayer.play();
     }

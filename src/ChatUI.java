@@ -3,35 +3,21 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ChatUI extends JFrame {
+public class ChatUI extends UI {
     static JPanel chatArea = new JPanel(new GridBagLayout());
-    static JPanel upperPanel = new JPanel(new BorderLayout());
-    static JLabel levelLabel = new JLabel();
-    static JButton quitButton;
-    static ImageIcon crossIcon = new ImageIcon("images/cross.png");
-    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);static Color upperPanelBg = new Color(45, 36, 58);
     static Color chatBg = new Color(85, 82, 93);
     static Color userMsgBg = new Color(59, 57, 66);
     JPanel bottomPanel = new JPanel(new BorderLayout());
     static JPanel answersPanel = new JPanel(new BorderLayout());
-    static JButton sendButton = new JButton();
-    static Font font = new Font("Arial", Font.PLAIN, 16);
     GridBagConstraints gbc = new GridBagConstraints();
     ChatData chatData = new ChatData();
     JButton answer1;
     JButton answer2;
     JScrollPane scrollPane;
-    public void updateProgressData(){
-        Main.fetchProgress();
-        levelLabel.setText("Current level: "+Main.getProgress().getLv());
-        levelLabel.updateUI();
-    }
+
     public ChatUI() {
-        super("ChatGPT: become human");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(chatBg);
-        setUpperPanel();
+        super("ChatGPT: become human", Main.mainMenuUI);
+        setUpperPanel(this);
 
         chatData = Main.getProgress().getChatData();
 
@@ -61,39 +47,7 @@ public class ChatUI extends JFrame {
         getContentPane().add(scrollPane, BorderLayout.CENTER);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
         pack();
-        setLocationRelativeTo(null);
 
-        setFocusable(true);
-        requestFocusInWindow();
-        super.addKeyListener(new KeyListener(){
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-
-                switch (keyCode) {
-                    case KeyEvent.VK_ESCAPE: {
-                        //System.out.println("quit");
-                        quit();
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
-        //setVisible(true);
-    }
-    private void quit(){
-        Main.mainMenuUI.setVisible(true);
-        SwingUtilities.invokeLater(this::dispose);
 
     }
     private void addMessage(ChatData.Dialog dialog){
@@ -202,35 +156,10 @@ public class ChatUI extends JFrame {
     public void addDeathMessage(){
         addMessage(chatData.deathDialog);
     }
-    private JButton setIconButton(ImageIcon icon,ImageIcon hoverIcon,int size, int padding) {
-        JButton button = new JButton(icon);
-        button.setBackground(null);
 
-        button.setPreferredSize(new Dimension(size, size));
-        button.setMargin(new Insets(padding, padding, padding, padding));
-        button.setBorder(null);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setOpaque(false);
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setIcon(hoverIcon);
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setIcon(icon);
-
-            }
-        });
-        return button;
-    }
     public JButton setAnswerOption(String text) {
         JButton answer = new JButton(HTMLfyText(text));
-        answer.setFont(font);
+        answer.setFont(font16);
         answer.setBackground(chatBg);
         answer.setAlignmentX(CENTER_ALIGNMENT);
         answer.setAlignmentY(CENTER_ALIGNMENT);
@@ -239,30 +168,7 @@ public class ChatUI extends JFrame {
         answer.setPreferredSize(new Dimension(430, 70));
         return answer;
     }
-    public void setUpperPanel(){
-        upperPanel.setBorder(new EmptyBorder(5, 20, 5, 20));
-        upperPanel.setBackground(upperPanelBg);
-        upperPanel.setPreferredSize(new Dimension(MazeGame.getMazeWidth(), MazeUI.menuHeight));
-        upperPanel.setAlignmentX(CENTER_ALIGNMENT);
-        upperPanel.setAlignmentY(CENTER_ALIGNMENT);
 
-        levelLabel = new JLabel("Current level "+Main.getProgress().getLv());
-        levelLabel.setForeground(Color.WHITE);
-
-
-        quitButton = setIconButton(new ImageIcon(crossImage), new ImageIcon(crossHoverImage),30, 0);
-
-        quitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                quit();
-            }
-        });
-
-        upperPanel.add(levelLabel, BorderLayout.WEST);
-        upperPanel.add(quitButton, BorderLayout.EAST);
-
-    }
     public static void main(String[] args) {
         Main.fetchProgress();
         new ChatUI();
@@ -290,7 +196,7 @@ public class ChatUI extends JFrame {
 
             messageLabel = new JLabel(HTMLfyText(text));
             messageLabel.setForeground(Color.WHITE);
-            messageLabel.setFont(font);
+            messageLabel.setFont(font16);
             messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
             contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));

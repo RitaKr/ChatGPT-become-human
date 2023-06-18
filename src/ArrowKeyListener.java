@@ -58,8 +58,8 @@ public class ArrowKeyListener implements KeyListener{
 
                 break;
             case KeyEvent.VK_ESCAPE: {
-                MazeUI.mazeCompleted = false;
-                MazeUI.quit();
+                Main.mazeUI.mazeCompleted = false;
+                Main.mazeUI.confirmQuit();
                 break;
             }
         }
