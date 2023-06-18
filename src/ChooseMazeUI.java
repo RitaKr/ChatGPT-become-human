@@ -51,7 +51,7 @@ public class ChooseMazeUI  extends UI  {
 
 
             JLabel buttonLabel = new JLabel("Level " + (i+1), SwingConstants.CENTER);
-            buttonLabel.setFont(new Font("Arial", Font.BOLD, 24));
+            buttonLabel.setFont(font);
             buttonLabel.setForeground(Color.WHITE);
             buttonLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
 
@@ -76,6 +76,7 @@ public class ChooseMazeUI  extends UI  {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    Main.playEffect("click.wav", 0.2);
                     switch (finalI){
                         case 0: {
                             if (progressData.getLv()>=1) {
@@ -109,6 +110,23 @@ public class ChooseMazeUI  extends UI  {
                         }
                     }
 
+                    requestFocusInWindow();
+                }
+            });
+            button.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (progressData.getLv()>finalI) Main.playEffect("hover.wav", 0.2);
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
                     requestFocusInWindow();
                 }
             });

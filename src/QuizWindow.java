@@ -161,12 +161,15 @@ public class QuizWindow extends JFrame {
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.setMargin(null);
 
-        btn.addActionListener(e -> {quiz.setCompleted(true);});
+        btn.addActionListener(e -> {Main.playEffect("click.wav", 0.2);quiz.setCompleted(true);});
 
             btn.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    if (!quiz.isCompleted()) btn.setIcon(new ImageIcon(buttonHoverImage));  // Set the hover image
+                    if (!quiz.isCompleted()) {
+                        Main.playEffect("hover.wav", 0.2);
+                        btn.setIcon(new ImageIcon(buttonHoverImage));
+                    }  // Set the hover image
                     //startFadeIn(btn);
                 }
 

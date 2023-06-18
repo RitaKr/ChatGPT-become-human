@@ -6,6 +6,8 @@ import java.awt.event.*;
 public class ChatUI extends UI {
     static JPanel chatArea = new JPanel(new GridBagLayout());
     static Color chatBg = new Color(85, 82, 93);
+    static Color answerBtnColor = chatBg;
+    static Color answerBtnHoverColor = new Color(129, 125, 140);
     static Color userMsgBg = new Color(59, 57, 66);
     JPanel bottomPanel = new JPanel(new BorderLayout());
     static JPanel answersPanel = new JPanel(new BorderLayout());
@@ -65,6 +67,7 @@ public class ChatUI extends UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (!dialog.isCompleted()) {
+                        Main.playEffect("click.wav", 0.2);
                         //answered[0] = true;
                         dialog.getUser()[0].setChosen(true);
                         dialog.setCompleted(true);
@@ -101,6 +104,7 @@ public class ChatUI extends UI {
                 public void actionPerformed(ActionEvent e) {
                     if (!dialog.isCompleted()) {
                         //answered[0] = true;
+                        Main.playEffect("click.wav", 0.2);
                         dialog.getUser()[1].setChosen(true);
                         dialog.setCompleted(true);
                         MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0]));
@@ -128,6 +132,40 @@ public class ChatUI extends UI {
                     ChatUI.super.requestFocus();
                 }
             });
+            answer1.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (!dialog.isCompleted()) {
+                        Main.playEffect("hover.wav", 0.2);
+                        answer1.setBackground(answerBtnHoverColor);
+                    }
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (!dialog.isCompleted()) answer1.setBackground(answerBtnColor);
+
+                }
+            });
+
+            answer2.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (!dialog.isCompleted()) {
+                        Main.playEffect("hover.wav", 0.2);
+                        answer2.setBackground(answerBtnHoverColor);
+                    }
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (!dialog.isCompleted()) answer2.setBackground(answerBtnColor);
+
+                }
+            });
+
         }
         if (dialog.isCompleted()) {
             MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0] ));
@@ -160,12 +198,13 @@ public class ChatUI extends UI {
     public JButton setAnswerOption(String text) {
         JButton answer = new JButton(HTMLfyText(text));
         answer.setFont(font16);
-        answer.setBackground(chatBg);
+        answer.setBackground(answerBtnColor);
         answer.setAlignmentX(CENTER_ALIGNMENT);
         answer.setAlignmentY(CENTER_ALIGNMENT);
         answer.setBorderPainted(false);
-        answer.setForeground(Color.WHITE);
+        answer.setForeground(textColor);
         answer.setPreferredSize(new Dimension(430, 70));
+        answer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return answer;
     }
 
@@ -195,7 +234,7 @@ public class ChatUI extends UI {
 
 
             messageLabel = new JLabel(HTMLfyText(text));
-            messageLabel.setForeground(Color.WHITE);
+            messageLabel.setForeground(textColor);
             messageLabel.setFont(font16);
             messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -208,10 +247,6 @@ public class ChatUI extends UI {
 
         }
 
-        private void loadImage() {
-            avatarImage = chatGPTIcon.getImage();
-            ////System.out.println("w: "+width+", h:"+ height);
-        }
 
     }
 }
