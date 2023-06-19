@@ -62,7 +62,7 @@ public class MazeGame extends JPanel {
     RotatingDoor rotatingDoor;
     Item key;
     Item finish;
-    Item quiz1;
+    Item quiz1, quiz2, quiz3;
     QuizWindow quizWindow;
     ArrayList<Quiz> quizes =  new ArrayList<Quiz>(Arrays.asList(
             new Quiz("Який з цих методів використовується для виводу тексту в консоль в Java?",
@@ -130,7 +130,9 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",5, 5, 60, 60);
                 key = new Item("key.png",0, 7, 70, 30);
                 finish = new Item("finish.png",0, 0, 100, 85);
-                quiz1 = new Item("quiz.png",4, 0, 40, 60);
+                quiz1 = new Item("quiz.png",2, 2, 40, 60);
+                quiz2 = null;
+                quiz3 = null;
             }
             case 2 -> {
                 loadBackgroundImage("bg2-blur.gif");
@@ -151,7 +153,10 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",1, 3, 60, 60);
                 key = new Item("key.png",4, 3, 70, 30);
-                finish = new Item("finish.png",5, 1, 120, 100);
+                finish = new Item("finish.png",5, 1, 100, 85);
+                quiz1 = new Item("quiz.png",3, 1, 40, 60);
+                quiz2 = new Item("quiz.png",5, 5, 40, 60);
+                quiz3 = null;
             }
             case 3 -> {
                 loadBackgroundImage("bg3-blur.gif");
@@ -172,7 +177,10 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",3, 2, 60, 60);
                 key = new Item("key.png",5, 7, 70, 30);
-                finish = new Item("finish.png",4, 7, 120, 100);
+                finish = new Item("finish.png",4, 7, 100, 85);
+                quiz1 = new Item("quiz.png",5, 4, 40, 60);
+                quiz2 = new Item("quiz.png",2, 1, 40, 60);
+                quiz3 = new Item("quiz.png",1, 2, 40, 60);
             }
         }
         repaint();
@@ -264,6 +272,9 @@ public class MazeGame extends JPanel {
         if (key!=null) key.draw(g);
         if (finish!=null) finish.draw(g);
         if (quiz1!=null) quiz1.draw(g);
+        if (quiz2!=null) quiz2.draw(g);
+        if (quiz3!=null) quiz3.draw(g);
+
 
     }
     private void drawMovableItems(Graphics g) {
