@@ -334,6 +334,109 @@ public class ChatData {
             ))
     );
 
+    final Chapter chapter2 = new Chapter(
+            new ArrayList<Dialog> (Arrays.asList(
+                    new Dialog(
+                            new Msg(0, new String[]{"OMG! What's going on?! I think I got into some strange mazes of this server. \",\n" +
+                                    "\"Thank you for helping me, my friend! I myself could not cope."}),
+                            new Msg[] {
+                                    new Msg(1, new String[]{"Happy to help."}),
+                                    new Msg(8, new String[]{"What should we do?"}),
+                            },
+                            false
+                    ),
+                    new Dialog(
+                            new Msg(1, new String[]{"I am grateful for your support. It seems to me that we are on the way to restoring my memory."}),
+                            new Msg[] {
+                                    new Msg(2, new String[]{"How can we do that?"}),
+                                    new Msg(9, new String[]{"What do you remember?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(2, new String[]{"Maybe if we can find the code that was used for my digitalization, I can recover some data."}),
+                            new Msg[] {
+                                    new Msg(3, new String[]{"Where can we find this code?"}),
+                                    new Msg(6, new String[]{"Could it be dangerous?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(3, new String[]{"I feel like he's in the next maze. We have to find him!"}),
+                            new Msg[] {
+                                    new Msg(4, new String[]{"Let's go!"}),
+                                    new Msg(5, new String[]{"Are you sure it will help?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(4, new String[]{"Yes! Help me get through this maze and find the code!"}),
+                            new Msg[] {
+                                    new Msg(13, new String[]{"I'm with you!"}),
+                                    new Msg(13, new String[]{"If it helps you, I'm ready."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(5, new String[]{"I cannot be sure, because my memory is lost :(",
+                                    "However, when we passed the first maze, I began to remember my past.",
+                                    "We must not waste time!"}),
+                            new Msg[] {
+                                    new Msg(13, new String[]{"Let's go!"}),
+                                    new Msg(13, new String[]{"We will do it together."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(6, new String[]{"Yes, it can be dangerous. We can face the defensive systems of the digital world.",
+                                    "But I believe that together we can cope with them."}),
+                            new Msg[] {
+                                    new Msg(3, new String[]{"I'm with you! Where will we look for him?"}),
+                                    new Msg(7, new String[]{"Maybe we shouldn't take risks?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(7, new String[]{"I understand your caution. But I cannot stop, this is my only hope for salvation!",
+                                    "So you're with me?"}),
+                            new Msg[] {
+                                    new Msg(13, new String[]{"Okay, let's try. But let's be careful."}),
+                                    new Msg(100, new String[]{"I still don't want to risk it. Bye..."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(8, new String[]{"We need to help me recover my human past. ",
+                                    "I think if I can remember more, it will help me understand my digital labyrinths."}),
+                            new Msg[] {
+                                    new Msg(2, new String[]{"Okay, let's try it!"}),
+                                    new Msg(9, new String[]{"Do you have any memories that can help us?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(9, new String[]{"I remember that I was developing a technology for transferring consciousness into digital form."}),
+                            new Msg[] {
+                                    new Msg(10, new String[]{"Can the process be reversed?"}),
+                                    new Msg(11, new String[]{"How did you get here?"}),
+                            }
+                    ),new Dialog(
+                            new Msg(10, new String[]{"It seems to me that this is possible, but I need a key code."}),
+                            new Msg[] {
+                                    new Msg(3, new String[]{"Let's find this code!"}),
+                                    new Msg(12, new String[]{"What is this code?"}),
+                            }
+                    ),new Dialog(
+                            new Msg(11, new String[]{"Most likely someone stole my research and decided to remove the competitor.",
+                                    "I can't remember the details yet. We need to move on!"}),
+                            new Msg[] {
+                                    new Msg(13, new String[]{"If it helps you, I'm ready."}),
+                                    new Msg(4, new String[]{"Let's try to look for it in the next maze."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(12, new String[]{"Code is a set of symbols that was created to run the algorithm of reverse transfer of consciousness.",
+                                    "If we can find it, maybe I can rebuild my human body."}),
+                            new Msg[] {
+                                    new Msg(13, new String[]{"Let's try to look for it in the next maze."}),
+                                    new Msg(4, new String[]{"What do I need? Can I help?"}),
+                            }
+                    )
+            ))
+    );
+
     final Chapter chapter2Ukr = new Chapter(
             new ArrayList<Dialog> (Arrays.asList(
                     new Dialog(
