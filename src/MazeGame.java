@@ -127,9 +127,9 @@ public class MazeGame extends JPanel {
                 teleport3 = null;
                 teleport4 = null;
 
-                slideDoorButton = new Item("doorButton.png",5, 5);
-                key = new Item("key.png",0, 7);
-                finish = new Item("finish.png",0, 0, 120, 100);
+                slideDoorButton = new Item("doorButton.png",5, 5, 60, 60);
+                key = new Item("key.png",0, 7, 70, 30);
+                finish = new Item("finish.png",0, 0, 100, 85);
                 quiz1 = new Item("quiz.png",4, 0, 40, 60);
             }
             case 2 -> {
@@ -149,8 +149,8 @@ public class MazeGame extends JPanel {
                 teleport3 = new Teleport("teleport2.png",4, 4, 5, 2, Side.LEFT);
                 teleport4 = new Teleport("teleport2.png",5, 2, 4, 4, Side.BOTTOM);
 
-                slideDoorButton = new Item("doorButton.png",1, 3);
-                key = new Item("key.png",4, 3);
+                slideDoorButton = new Item("doorButton.png",1, 3, 60, 60);
+                key = new Item("key.png",4, 3, 70, 30);
                 finish = new Item("finish.png",5, 1, 120, 100);
             }
             case 3 -> {
@@ -170,8 +170,8 @@ public class MazeGame extends JPanel {
                 teleport3 = new Teleport("teleport2.png",1, 1, 2, 5, Side.LEFT);
                 teleport4 = new Teleport("teleport2.png",2, 5, 1, 1, Side.TOP);
 
-                slideDoorButton = new Item("doorButton.png",3, 2);
-                key = new Item("key.png",5, 7);
+                slideDoorButton = new Item("doorButton.png",3, 2, 60, 60);
+                key = new Item("key.png",5, 7, 70, 30);
                 finish = new Item("finish.png",4, 7, 120, 100);
             }
         }

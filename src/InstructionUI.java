@@ -129,7 +129,7 @@ public class InstructionUI extends UI {
         finishPanel.setOpaque(false);
         finishPanel.setBackground(null);
 
-        ImageIcon finishIcon = new ImageIcon(new ImageIcon(FINISH_IMAGE_PATH).getImage().getScaledInstance(130, 100, Image.SCALE_DEFAULT));
+        ImageIcon finishIcon = new ImageIcon(new ImageIcon(FINISH_IMAGE_PATH).getImage().getScaledInstance(100, 85, Image.SCALE_DEFAULT));
         finishLabel = new JLabel(finishIcon);
         finishLabel.setBackground(null);
         finishPanel.add(finishLabel);
@@ -217,7 +217,8 @@ public class InstructionUI extends UI {
         doorButtonPanel.setOpaque(false);
         doorButtonPanel.setBackground(null);
 
-        ImageIcon keyboardIcon = new ImageIcon(DOOR_BUTTON_IMAGE_PATH);
+//        ImageIcon keyboardIcon = new ImageIcon(DOOR_BUTTON_IMAGE_PATH);
+        ImageIcon keyboardIcon = new ImageIcon(new ImageIcon(DOOR_BUTTON_IMAGE_PATH).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
         doorButtonLabel = new JLabel(keyboardIcon);
         doorButtonLabel.setBackground(null);
         doorButtonPanel.add(doorButtonLabel);
@@ -259,8 +260,9 @@ public class InstructionUI extends UI {
         keyPanel.setOpaque(false);
         keyPanel.setBackground(null);
 
-        ImageIcon keyboardIcon = new ImageIcon(KEY_IMAGE_PATH);
-        keyLabel = new JLabel(keyboardIcon);
+//        ImageIcon keyIcon = new ImageIcon(KEY_IMAGE_PATH);
+        ImageIcon keyIcon = new ImageIcon(new ImageIcon(KEY_IMAGE_PATH).getImage().getScaledInstance(100, 50, Image.SCALE_DEFAULT));
+        keyLabel = new JLabel(keyIcon);
         keyLabel.setBackground(null);
         keyPanel.add(keyLabel);
 
