@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class MessageWindow extends JDialog {
     private final int width = 400;
@@ -19,8 +20,8 @@ public class MessageWindow extends JDialog {
     private Image backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
     private Image buttonImage = new ImageIcon("images/button-lightblue-tansparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
     private Image buttonHoverImage = new ImageIcon("images/button-white-transparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
-    private Font font = new Font("Arial", Font.BOLD, 18);
-    private Font font1 = new Font("Arial", Font.PLAIN, 16);
+    private Font font = loadCustomFont(18, Font.BOLD);
+    private Font font1 = loadCustomFont(16, Font.PLAIN);
     private Color textColor = Color.WHITE;
     private Color buttonColor = Color.WHITE;
 
@@ -32,6 +33,18 @@ public class MessageWindow extends JDialog {
 
     private String btnText1;
     private String btnText2;
+    public Font loadCustomFont(float fontSize, int fontConstant) {
+        try {
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/font.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+            System.out.println("font registered successfully");
+            return customFont.deriveFont(fontSize).deriveFont(fontConstant);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            return new Font(Font.SANS_SERIF, fontConstant, (int) fontSize);
+        }
+    }
 
     public MessageWindow(Component parent, String message, String title, String btnText1, String btnText2) {
         super((Window) SwingUtilities.getWindowAncestor(parent), title, ModalityType.APPLICATION_MODAL);
@@ -74,7 +87,7 @@ public class MessageWindow extends JDialog {
         lblMessage.setVerticalAlignment(SwingConstants.CENTER);
         lblMessage.setFont(font);
         lblMessage.setForeground(textColor);
-        lblMessage.setBorder(new EmptyBorder(new Insets(20, 0, 00, 0)));
+        lblMessage.setBorder(new EmptyBorder(new Insets(20, 0, 0, 0)));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;

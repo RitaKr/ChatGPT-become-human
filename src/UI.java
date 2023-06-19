@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class UI extends JFrame {
     GridBagConstraints c = new GridBagConstraints();
@@ -10,7 +11,8 @@ public class UI extends JFrame {
     JPanel backgroundPanel;
     Image backgroundImage;
     Font font16 = new Font("Arial", Font.PLAIN, 16);
-    Font font = new Font("Arial", Font.BOLD, 22);
+    Font font22 = new Font("Arial", Font.BOLD, 22);
+    Font font24 = new Font("Arial", Font.BOLD, 24);
     Font titleFont = new Font("Arial", Font.BOLD, 35);
     Color buttonColor = new Color(45, 114, 255);
     Color buttonColorHover = new Color(225, 225, 255);
@@ -91,6 +93,23 @@ public class UI extends JFrame {
     }
 
     private void setUI() {
+
+        try {
+            // Load the font file
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/font.ttf"));
+
+            // Set the font size and style as desired
+            titleFont = customFont.deriveFont(35f).deriveFont(Font.BOLD);
+            font16 = customFont.deriveFont(16f).deriveFont(Font.PLAIN);
+            font22 = customFont.deriveFont(22f).deriveFont(Font.BOLD);
+            font24 = customFont.deriveFont(24f).deriveFont(Font.BOLD);
+            // Use the custom font in your Swing components
+
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
+
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //this.progressData = progressData;
@@ -173,7 +192,7 @@ public class UI extends JFrame {
         buttonText.setHorizontalAlignment(SwingConstants.CENTER);
         buttonText.setVerticalAlignment(SwingConstants.CENTER);
         buttonText.setForeground(textColor);
-        buttonText.setFont(font);
+        buttonText.setFont(font22);
         button.add(buttonText, BorderLayout.CENTER); // Add the label to the button's center
 
         button.setContentAreaFilled(false);
@@ -239,7 +258,8 @@ public class UI extends JFrame {
         upperPanel.setAlignmentY(CENTER_ALIGNMENT);
 
         levelLabel = new JLabel("Current level: "+Main.getProgress().getLv());
-        levelLabel.setForeground(Color.WHITE);
+        levelLabel.setForeground(textColor);
+        levelLabel.setFont(font16);
 
 
         quitButton = setIconButton(new ImageIcon(crossImage), new ImageIcon(crossHoverImage),30, 0);
@@ -290,4 +310,12 @@ public class UI extends JFrame {
         SwingUtilities.invokeLater(this::dispose);
 
     }
+
+
+
+
+
+
+
+
 }

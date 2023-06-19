@@ -19,6 +19,7 @@ public class InstructionUI extends UI {
     private static final String MOB_IMAGE_PATH = "images/virus.png";
     private static final String TELEPORT_IMAGE_PATH = "images/teleport.png";
     private static final String TELEPORT2_IMAGE_PATH = "images/teleport2.png";
+
     ImageIcon bgIcon = new ImageIcon(BACKGROUND_IMAGE_PATH);
     JPanel backgroundPanel;
     Image backgroundImage = bgIcon.getImage(); //.getScaledInstance(890, 670, Image.SCALE_DEFAULT);

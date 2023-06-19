@@ -57,9 +57,10 @@ public class ChatUI extends UI {
             MessagePanel message = new MessagePanel(true, text);
             chatArea.add(message, gbc);
         }
-        answer1.setText(HTMLfyText(dialog.getUser()[0].getTexts()[0]));
-        answer2.setText(HTMLfyText(dialog.getUser()[1].getTexts()[0]));
-
+//        answer1.setText(HTMLfyText(dialog.getUser()[0].getTexts()[0]));
+//        answer2.setText(HTMLfyText(dialog.getUser()[1].getTexts()[0]));
+        answer1.setText(dialog.getUser()[0].getTexts()[0]);
+        answer2.setText(dialog.getUser()[1].getTexts()[0]);
 
         //final boolean answered = dialog.isCompleted();
         if (!dialog.isCompleted() && Main.getProgress().isAlive()) {
@@ -196,7 +197,8 @@ public class ChatUI extends UI {
     }
 
     public JButton setAnswerOption(String text) {
-        JButton answer = new JButton(HTMLfyText(text));
+        //JButton answer = new JButton(HTMLfyText(text));
+        JButton answer = new JButton(text);
         answer.setFont(font16);
         answer.setBackground(answerBtnColor);
         answer.setAlignmentX(CENTER_ALIGNMENT);
@@ -225,23 +227,35 @@ public class ChatUI extends UI {
         ImageIcon userIcon = new ImageIcon("images/user-icon.png");
 
         public MessagePanel(boolean chatGPT, String text){
-            setPreferredSize(new Dimension(890, 100));
+            setPreferredSize(new Dimension(890, 90));
             setBackground(chatGPT ? chatBg : userMsgBg);
             contentPanel.setBackground(chatGPT ? chatBg : userMsgBg);
 
             avatarImageLabel = new JLabel(chatGPT ? chatGPTIcon : userIcon);
             avatarImageLabel.setPreferredSize(new Dimension(40, 40));
+            avatarImageLabel.setVerticalAlignment(SwingConstants.TOP);
 
 
-            messageLabel = new JLabel(HTMLfyText(text));
+            //messageLabel = new JLabel(HTMLfyText(text));
+            JTextArea messageLabel = new JTextArea(text);
+            messageLabel.setAlignmentX(CENTER_ALIGNMENT);
+            messageLabel.setEditable(false);
+            messageLabel.setLineWrap(true);
+            messageLabel.setWrapStyleWord(true);
+            messageLabel.setFont(font16);
+            messageLabel.setForeground(textColor);
+            messageLabel.setOpaque(false);
+            messageLabel.setBorder(new EmptyBorder(0, 10, 0, 10));
+            messageLabel.setPreferredSize(new Dimension(500, 100));
+            //messageLabel.setMaximumSize(new Dimension(600 - 40, 200));
             messageLabel.setForeground(textColor);
             messageLabel.setFont(font16);
-            messageLabel.setVerticalAlignment(SwingConstants.CENTER);
+            //messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
             contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
             contentPanel.add(avatarImageLabel, BorderLayout.WEST);
             contentPanel.add(messageLabel, BorderLayout.CENTER);
-            contentPanel.setPreferredSize(new Dimension(600, 100));
+            //contentPanel.setMinimumSize(new Dimension(600, 100));
 
             add(contentPanel);
 

@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class QuizWindow extends JFrame {
+public class QuizWindow extends JDialog {
     private final int width = 500;
     private final int height = 500;
     private int btnHeight = 80;
@@ -13,7 +13,7 @@ public class QuizWindow extends JFrame {
     private JPanel contentPane;
     Component parent;
     private String message;
-    private String title;
+    private String title = "Quiz";
 
     private Image backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
@@ -41,12 +41,13 @@ public class QuizWindow extends JFrame {
     }
     private Timer timer;
     private float alpha;
+    private static int chosenAnswer;
     public QuizWindow(Component parent, Quiz quiz) {
-        this.title = "Quiz";
+        super((Window) SwingUtilities.getWindowAncestor(parent), "Quiz", ModalityType.APPLICATION_MODAL);
         this.parent = parent;
         this.quiz = quiz;
         this.message = quiz.getQuestion();
-
+        if (chosenAnswer == quiz.getCorrectAnswerIndex()) answeredCorrectly = true;
 
         initializeUI();
     }
@@ -88,6 +89,8 @@ public class QuizWindow extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (!quiz.isCompleted()) {
+                            Main.playEffect("click.wav", 0.2);
+                            chosenAnswer = finalI;
                             if (finalI == quiz.getCorrectAnswerIndex()) {
                                 answeredCorrectly = true;
                                 answerBtn.setIcon(new ImageIcon(correctAnswerImage));
@@ -95,7 +98,7 @@ public class QuizWindow extends JFrame {
                                 answeredCorrectly = false;
                                 answerBtn.setIcon(new ImageIcon(wrongAnswerImage));
                             }
-                            Timer timer = new Timer(4000, new ActionListener() {
+                            Timer timer = new Timer(2000, new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     dispose();
@@ -106,7 +109,10 @@ public class QuizWindow extends JFrame {
                         }
                     }
                 });
-
+            if (quiz.isCompleted() && i==chosenAnswer) {
+                if (i == quiz.getCorrectAnswerIndex()) answerBtn.setIcon(new ImageIcon(correctAnswerImage));
+                else answerBtn.setIcon(new ImageIcon(wrongAnswerImage));
+            }
 
         }
 
@@ -161,7 +167,7 @@ public class QuizWindow extends JFrame {
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.setMargin(null);
 
-        btn.addActionListener(e -> {Main.playEffect("click.wav", 0.2);quiz.setCompleted(true);});
+        btn.addActionListener(e -> {quiz.setCompleted(true);});
 
             btn.addMouseListener(new MouseAdapter() {
                 @Override

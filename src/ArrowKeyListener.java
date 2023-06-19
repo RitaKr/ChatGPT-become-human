@@ -40,6 +40,10 @@ public class ArrowKeyListener implements KeyListener{
                     game.moveRotatingDoor();
                     game.key=null;
                 }
+                if (game.quiz1!=null && game.isCollisionWithMob(game.quiz1)) {
+                    game.quizWindow = new QuizWindow(Main.mazeUI, game.quizes.get(0));
+                    System.out.println("is completed: "+ game.quizes.get(0).isCompleted()+", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
+                }
                 break;
             case KeyEvent.VK_ENTER:
                 game.moveRotatingDoor();

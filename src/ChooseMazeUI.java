@@ -51,7 +51,7 @@ public class ChooseMazeUI  extends UI  {
 
 
             JLabel buttonLabel = new JLabel("Level " + (i+1), SwingConstants.CENTER);
-            buttonLabel.setFont(font);
+            buttonLabel.setFont(font22);
             buttonLabel.setForeground(Color.WHITE);
             buttonLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
 

@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MazeGame extends JPanel {
@@ -60,6 +62,14 @@ public class MazeGame extends JPanel {
     RotatingDoor rotatingDoor;
     Item key;
     Item finish;
+    Item quiz1;
+    QuizWindow quizWindow;
+    ArrayList<Quiz> quizes =  new ArrayList<Quiz>(Arrays.asList(
+            new Quiz("Який з цих методів використовується для виводу тексту в консоль в Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. System.out.display()"), new Answer("B. System.out.print()", true), new Answer("C. Console.write()"), new Answer("D. Print.console()")))),
+            new Quiz("Який з наступних операторів використовується для порівняння двох значень на рівність в Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. =", true), new Answer("C. equals()"), new Answer("D. match()"))))
+            ));
     private Image backgroundImage;
     //private ImageIcon backgroundImage;
     boolean fromChooseMaze;
@@ -120,6 +130,7 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",5, 5);
                 key = new Item("key.png",0, 7);
                 finish = new Item("finish.png",0, 0, 120, 100);
+                quiz1 = new Item("quiz.png",4, 0, 40, 60);
             }
             case 2 -> {
                 loadBackgroundImage("bg2-blur.gif");
@@ -173,16 +184,7 @@ public class MazeGame extends JPanel {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
-//    private void drawBackground(Graphics g) {
-//        if (backgroundImage != null) {
-//            backgroundImage.paintIcon(this, g, 0, 0);
-//        }
-//    }
-//    private void loadBackgroundImage(String imageName) {
-//        ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
-//        backgroundImage = icon.getImage();
-//
-//    }
+
     private void loadBackgroundImage(String imageName) {
         String imagePath = "images/" + imageName;
 
@@ -261,6 +263,7 @@ public class MazeGame extends JPanel {
         if (slideDoorButton!=null) slideDoorButton.draw(g);
         if (key!=null) key.draw(g);
         if (finish!=null) finish.draw(g);
+        if (quiz1!=null) quiz1.draw(g);
 
     }
     private void drawMovableItems(Graphics g) {
@@ -308,6 +311,8 @@ public class MazeGame extends JPanel {
                 teleport4.teleportCharacter();
                 playEffect("teleport.wav", 0.6);
             }
+
+
             checkGameOver();
 
         }
