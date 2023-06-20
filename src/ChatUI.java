@@ -58,10 +58,11 @@ public class ChatUI extends UI {
             MessagePanel message = new MessagePanel(true, text);
             chatArea.add(message, gbc);
         }
-        if (Main.getProgress().getDialogCount()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+additionalDialogs)) dialog.setId(Main.getProgress().getDialogCount());
+        //if (Main.getProgress().getDialogCount()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)) dialog.setId(Main.getProgress().getDialogCount());
+        dialog.setId(Main.getProgress().getDialogCount());
         System.out.println("set id "+Main.getProgress().getDialogCount()+" in addMessage");
         System.out.println("adding message. cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
-        System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+additionalDialogs)+"");
+        System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
 
 //        answer1.setText(HTMLfyText(dialog.getUser()[0].getTexts()[0]));
 //        answer2.setText(HTMLfyText(dialog.getUser()[1].getTexts()[0]));
@@ -77,11 +78,11 @@ public class ChatUI extends UI {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("pressed answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
 
-                    //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+additionalDialogs)+"");
+                    //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
 
 
                     //                    if (!dialog.isCompleted() && dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()-1)) {
-                    if (!dialog.isCompleted() || dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+additionalDialogs-1)) {
+                    if (!dialog.isCompleted() || dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs-1)) {
                         //if (!dialog.isCompleted() && (dialog.getUser()[0].getPlot()<chatData.chapter1.getDialogs().size() && !chatData.yourChapter1.getDialogs().contains(chatData.chapter1.getDialogs().get(dialog.getUser()[0].getPlot())) || dialog.getUser()[0].getPlot()>=chatData.chapter1.getDialogs().size())) {
                         Main.playEffect("click.wav", 0.2);
                         //answered[0] = true;
@@ -129,13 +130,22 @@ public class ChatUI extends UI {
                                     addMessage(newDialog, 2);
                                     break;
                                 }
+                                case 3: {
+                                    Dialog newDialog = Main.getLanguage().equals("en") ?
+                                            chatData.chapter3.getDialogs().get(dialog.getUser()[0].getPlot()) :
+                                            chatData.chapter3Ukr.getDialogs().get(dialog.getUser()[0].getPlot());
+                                    chatData.yourChapter3.getDialogs().add(newDialog);
+                                    addMessage(newDialog, 3);
+                                    break;
+                                }
                             }
 
                         } catch (IndexOutOfBoundsException ex) {
                             //System.out.println("plot "+dialog.getUser()[0].getPlot());
                             //dispose();
                             if (dialog.getUser()[0].getPlot() == chatData.chapter1.getDialogs().size() && level<2
-                                    || dialog.getUser()[0].getPlot() == chatData.chapter2.getDialogs().size() && level==2) {
+                                    || dialog.getUser()[0].getPlot() == chatData.chapter2.getDialogs().size() && level==2
+                                    || dialog.getUser()[0].getPlot() == chatData.chapter3.getDialogs().size() && level==3) {
                                 ////System.out.println(true);
                                 //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
                                 if (Main.getProgress().getLv()==0) Main.updateLevel();
@@ -143,6 +153,7 @@ public class ChatUI extends UI {
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
                                 //System.out.println("exit game");
+
                                 dispose();
                                 System.exit(0); // Exit the program
                             }
@@ -167,10 +178,10 @@ public class ChatUI extends UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("pressed answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
-                    //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+additionalDialogs)+"");
+                    //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
 
                     //                    if (!dialog.isCompleted() && dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()-1)) {
-                    if (!dialog.isCompleted() || dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+additionalDialogs-1)) {
+                    if (!dialog.isCompleted() || dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs-1)) {
                         //answered[0] = true;
                         Main.playEffect("click.wav", 0.2);
                         dialog.getUser()[1].setChosen(true);
@@ -217,12 +228,21 @@ public class ChatUI extends UI {
                                     addMessage(newDialog, 2);
                                     break;
                                 }
+                                case 3: {
+                                    Dialog newDialog = Main.getLanguage().equals("en") ?
+                                            chatData.chapter3.getDialogs().get(dialog.getUser()[1].getPlot()) :
+                                            chatData.chapter3Ukr.getDialogs().get(dialog.getUser()[1].getPlot());
+                                    chatData.yourChapter3.getDialogs().add(newDialog);
+                                    addMessage(newDialog, 3);
+                                    break;
+                                }
                             }
                         } catch (IndexOutOfBoundsException ex) {
                             //dispose();
                             //System.out.println("plot "+dialog.getUser()[0].getPlot());
                             if (dialog.getUser()[1].getPlot() == chatData.chapter1.getDialogs().size() && level<2
-                                    || dialog.getUser()[1].getPlot() == chatData.chapter2.getDialogs().size() && level==2) {
+                                    || dialog.getUser()[1].getPlot() == chatData.chapter2.getDialogs().size() && level==2
+                                    || dialog.getUser()[1].getPlot() == chatData.chapter3.getDialogs().size() && level==3) {
                                 ////System.out.println(true);
                                 //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
                                 if (Main.getProgress().getLv()==0) Main.updateLevel();
@@ -287,7 +307,7 @@ public class ChatUI extends UI {
 
         }
         Msg chosen = dialog.getUser()[0].isChosen() ? dialog.getUser()[0] : dialog.getUser()[1];
-        if (dialog.isCompleted() && dialog.getId()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+additionalDialogs-1)) {
+        if (dialog.isCompleted() && dialog.getId()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs-1)) {
             MessagePanel message = new MessagePanel(false, chosen.getTexts()[0]);
             System.out.println("i added message: "+chosen.getTexts()[0]);
             chatArea.add(message, gbc);
@@ -327,7 +347,23 @@ public class ChatUI extends UI {
                         //}
                     }
                 }
+                if (!Main.getProgress().isAlive()) {
+                    if (Main.getDeathReason().equals("mob")) addDeathMessage(0);
+                    else {
+                        addDeathMessage(1);
+                    }
+                } else {
+                    if (Main.getProgress().getLv()>2) {
+                        if (chatData.yourChapter3.getDialogs().size()>0) {
+                            for (Dialog dialog : chatData.yourChapter3.getDialogs() ) {
+                                //if (dialog.isCompleted()) {
+                                addMessage(dialog, 3);
+                                //}
+                            }
+                        }
 
+                    }
+                }
             }
         }
 
@@ -369,6 +405,19 @@ public class ChatUI extends UI {
             chatData.yourChapter2.getDialogs().add(chatData.chapter2.getDialogs().get(0));
             Main.updateChatData(chatData);
             addMessage(chatData.chapter2.getDialogs().get(0), 2);
+        }
+        //Main.updateDialogCount();
+    }
+    public void startChapter3(){
+        if (Main.getLanguage().equals("uk")) {
+            chatData.yourChapter3.getDialogs().add(chatData.chapter3Ukr.getDialogs().get(0));
+            Main.updateChatData(chatData);
+            addMessage(chatData.chapter3Ukr.getDialogs().get(0), 3);
+        }
+        else if (Main.getLanguage().equals("en")) {
+            chatData.yourChapter3.getDialogs().add(chatData.chapter3.getDialogs().get(0));
+            Main.updateChatData(chatData);
+            addMessage(chatData.chapter3.getDialogs().get(0), 3);
         }
         //Main.updateDialogCount();
     }

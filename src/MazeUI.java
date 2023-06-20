@@ -134,7 +134,7 @@ public class MazeUI extends UI {
         });
     }
     public void updateUpperPanel() {
-        levelLabel.setText("Level " + game.getLevel());
+        levelLabel.setText((Main.getLanguage().equals("en") ? "Level " : "Рівень ") + game.getLevel());
         levelLabel.updateUI();
         heartsPanel.repaint();
     }

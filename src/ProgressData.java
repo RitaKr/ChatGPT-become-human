@@ -24,18 +24,10 @@ class ProgressData {
         ProgressData.totalDialogCount = totalDialogCount;
     }
 
-    public static String getChapter3String() {
-        return chapter3String;
-    }
-
-    public static void setChapter3String(String chapter3String) {
-        ProgressData.chapter3String = chapter3String;
-    }
-
     private static String chapter1String;
     private static String chapter2String;
-    private static boolean alive;
     private static String chapter3String;
+    private static boolean alive;
     private static String language;
 
     public String getLanguage() {
@@ -69,6 +61,16 @@ class ProgressData {
     public void setChapter2String(String chapter2String) {
         ProgressData.chapter2String = chapter2String;
     }
+
+    public String getChapter3String() {
+        return chapter3String;
+    }
+
+    public void setChapter3String(String chapter3String) {
+        ProgressData.chapter3String = chapter3String;
+    }
+
+
     public ProgressData(String dataString) {
         setProgressData(dataString);
     }
@@ -131,6 +133,9 @@ class ProgressData {
                 case "chapter2":
                     chapter2String = value;
                     break;
+                case "chapter3":
+                    chapter3String = value;
+                    break;
                 default:
                     // Handle unrecognized keys, if needed
                     break;
@@ -179,6 +184,28 @@ class ProgressData {
         } catch (NumberFormatException e) {
             System.out.println("chapter2 is not unlocked yet");
         }
+
+        //setting chapter3
+        String[] chapter3dialogs = chapter3String.split(",");
+        try  {
+            for (int i = 0; i < chapter3dialogs.length; i++) {
+                String[] parts = chapter3dialogs[i].split("-");
+                int key = Integer.parseInt(parts[0].trim());
+                int value = Integer.parseInt(parts[1].trim());
+                if (Objects.equals(language, "en")) {
+                    data.yourChapter3.getDialogs().add(data.chapter3.getDialogs().get(key));
+                } else if (Objects.equals(language, "uk")) {
+                    data.yourChapter3.getDialogs().add(data.chapter3Ukr.getDialogs().get(key));
+                }
+                if (value != 2) {
+                    data.yourChapter3.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter3.getDialogs().get(i).setCompleted(true);
+                }
+                //data.chapter1.getDialogs().get(key).setCompleted(value);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("chapter3 is not unlocked yet");
+        }
         //System.out.println(data);
         return data;
     }
@@ -192,7 +219,8 @@ class ProgressData {
                 +"DeathReason: " + alive+";\n"
                 +"DialogCount: " + dialogCount +";\n"
                 +"Chapter1: " + chapter1String +";\n"
-                +"Chapter2: " + chapter2String +";\n";
+                +"Chapter2: " + chapter2String +";\n"
+                +"Chapter3: " + chapter3String +";\n";
     }
 
 }

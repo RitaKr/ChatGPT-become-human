@@ -78,18 +78,19 @@ public class Main {
 
         progress.setChapter1String(chatData.yourChapter1.toString());
         progress.setChapter2String(chatData.yourChapter2.toString());
+        progress.setChapter3String(chatData.yourChapter3.toString());
         updateProgress();
     }
 
     public static void updateProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "lang:"+progress.getLanguage()+"; username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; deathReason:"+progress.getDeathReason()+"; msgCount:"+progress.getDialogCount()+"; chapter1:"+progress.getChapter1String()+"; chapter2:"+progress.getChapter2String()+"";
+        String progressString = "lang:"+progress.getLanguage()+"; username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; deathReason:"+progress.getDeathReason()+"; msgCount:"+progress.getDialogCount()+"; chapter1:"+progress.getChapter1String()+"; chapter2:"+progress.getChapter2String()+"; chapter3:"+progress.getChapter3String();
         writeFile("progress.txt", progressString);
 
     }
     public static void resetProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "lang:en; username:player; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null";
+        String progressString = "lang:en; username:player; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null; chapter3:null";
         writeFile("progress.txt", progressString);
 
     }
@@ -97,7 +98,7 @@ public class Main {
         String filePath = "progress.txt"; // Replace with your file path
 
         String fileContent = readFile(filePath);
-        if (fileContent.isEmpty()) fileContent = "lang:en; username:player; lv:0; msgCount:0; alive:true; deathReason:none; chapter1:0-2; chapter2:null";
+        if (fileContent.isEmpty()) fileContent = "lang:en; username:player; lv:0; msgCount:0; alive:true; deathReason:none; chapter1:0-2; chapter2:null; chapter3:null";
         ////System.out.println(fileContent);
         progress = new ProgressData(fileContent);
 

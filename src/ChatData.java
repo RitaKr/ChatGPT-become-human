@@ -1008,6 +1008,7 @@ class Chapter {
             str+=dialog.getGpt().getPlot()+"-"+(chosenIndex)+",";
         }
         if (str.length()>0) str=str.substring(0, str.length()-1);
+        else return "null";
         return str;
     }
 }
