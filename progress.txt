@@ -1,1 +1,1 @@
-lang:uk; username:player; lv:0; alive:true; deathReason:mob; msgCount:0; chapter1:0-2; chapter2:
+lang:en; username:player; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null; chapter3:null

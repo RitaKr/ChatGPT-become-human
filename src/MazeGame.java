@@ -532,7 +532,8 @@ public class MazeGame extends JPanel {
                             level++;
                             Main.setLevel(level);
                             Main.chatUI.updateProgressData();
-                            Main.chatUI.startChapter2();
+                            if (level==2)  Main.chatUI.startChapter2();
+                            else Main.chatUI.startChapter3();
                             Main.chatUI.setVisible(true);
                             stopMusic();
                             SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
