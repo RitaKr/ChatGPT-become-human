@@ -360,27 +360,34 @@ public class MazeGame extends JPanel {
             gameOver =true;
             playEffect("gameover.wav", 0.3);
             if (fromChooseMaze) {
-                MessageWindow messageWindow = new MessageWindow(this, "You died. Coming back to Maze selection...", "Game over", "Ok...");
-                //setScene(level);
+                MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                        new MessageWindow(this, "You died. Coming back to Maze selection...", "Game over", "Ok...")
+                    : new MessageWindow(this, "Ви померли. Повертаємось до вибору лабіринтів...", "Гру закінчено", "Ок...");
+            //setScene(level);
                 messageWindow.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         Main.chooseMazeUI.setVisible(true);
                         SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                        Main.playMusic();
                     }
                 });
 
             } else {
 
-                MessageWindow messageWindow = new MessageWindow(this, "You died. Coming back to chat...", "Game over", "Ok...");
+                MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                        new MessageWindow(this, "You died. Coming back to chat...", "Game over", "Ok...")
+                        : new MessageWindow(this, "Ви померли. Повертаємось до чату...", "Гру закінчено", "Ок...");
+
                 //setScene(level);
                 messageWindow.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         Main.chatUI.setVisible(true);
-                        Main.chatUI.addDeathMessage();
+                        Main.chatUI.addDeathMessage(0);
                         Main.setAlive(false);
                         SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                        Main.playMusic();
                     }
                 });
 
@@ -397,7 +404,9 @@ public class MazeGame extends JPanel {
             if (fromChooseMaze) {
                 if (Main.getProgress().getLv()>level) {
                     if (level<3) {
-                        MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! Next level is also unlocked. Want to continue?", "Maze completed", "Yes", "No");
+                        MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                                new MessageWindow(this, "You completed level "+level+"! Next level is also unlocked. Want to continue?", "Maze completed", "Yes", "No")
+                                : new MessageWindow(this, "Ви пройшли рівень "+level+"! Наступний рівень також доступний. Хочете продовжити?", "Лабіринт пройдено", "Так", "Ні");
                         messageWindow.addWindowListener(new WindowAdapter() {
                             @Override
                             public void windowClosed(WindowEvent e) {
@@ -414,7 +423,9 @@ public class MazeGame extends JPanel {
 
 
                     } else {
-                        MessageWindow messageWindow = new MessageWindow(this, "You completed level " + level + "! It was the last level", "Maze completed", "Go to maze selection");
+                        MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                                new MessageWindow(this, "You completed level " + level + "! It was the last level", "Maze completed", "Go to maze selection")
+                                : new MessageWindow(this, "Ви пройшли рівень "+level+"! Це був останній рівень", "Лабіринт пройдено", "Повернутись до лабіринтів");
 
                         messageWindow.addWindowListener(new WindowAdapter() {
                             @Override
@@ -429,7 +440,9 @@ public class MazeGame extends JPanel {
                     }
 
                 } else {
-                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", "Go to maze selection");
+                    MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                            new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", "Go to maze selection")
+                            : new MessageWindow(this, "Ви пройшли рівень "+level+"! Але наступний рівень ще не розблокований", "Лабіринт пройдено", "Повернутись до лабіринтів");
 
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
@@ -441,30 +454,44 @@ public class MazeGame extends JPanel {
                         }
                     });
                 }
-            } else {
+            } else {//came here from chat
+                Main.mazeUI.setMazeCompleted(true);
 
                 if (level<3) {
-                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! ", "Maze completed", "Start next level");
+                    MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                            new MessageWindow(this, "You completed level "+level+"!", "Maze completed", "Go to chat")
+                            : new MessageWindow(this, "Ви пройшли рівень "+level+"!", "Лабіринт пройдено", "Повернутись до чату");
+
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
                             level++;
-                            setScene(level);
+                            Main.setLevel(level);
+                            Main.chatUI.updateProgressData();
+                            Main.chatUI.startChapter2();
+                            Main.chatUI.setVisible(true);
+                            stopMusic();
+                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                            Main.playMusic();
                         }
                     });
 
                 } else {
-                    MessageWindow messageWindow = new MessageWindow(this, "You completed level "+level+"! It was the last level", "Maze completed", "Go to menu");
+                    MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                            new MessageWindow(this, "You completed level "+level+"! It was the last level", "Maze completed", "Go to chat")
+                            : new MessageWindow(this, "Ви пройшли рівень "+level+"! Це був останній рівень", "Лабіринт пройдено", "Повернутись до чату");
+
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
-                            Main.mainMenuUI.setVisible(true);
-                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                            Main.chatUI.setVisible(true);
                             stopMusic();
+                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                            Main.playMusic();
                         }
                     });
                 }
-                Main.setLevel(level);
+
 
             }
 

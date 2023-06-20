@@ -49,6 +49,16 @@ public class Main {
         progress.setLv(level);
         updateProgress();
     }
+    public static void updateDialogCount() {
+        int dialogCount = progress.getDialogCount()+1;
+        progress.setDialogCount(dialogCount);
+        updateProgress();
+    }
+    public static void updateTotalDialogCount() {
+        int dialogCount = progress.getTotalDialogCount()+1;
+        progress.setTotalDialogCount(dialogCount);
+        updateProgress();
+    }
     public static void setLevel(int level) {
         progress.setLv(level);
         updateProgress();
@@ -57,21 +67,29 @@ public class Main {
         progress.setAlive(alive);
         updateProgress();
     }
+    public static void setDeathReason(String reason) {
+        progress.setDeathReason(reason);
+        updateProgress();
+    }
+    public static String getDeathReason() {
+        return progress.getDeathReason();
+    }
     public static void updateChatData(ChatData chatData) {
 
-        progress.setChapter1(chatData.chapter.toString());
+        progress.setChapter1String(chatData.yourChapter1.toString());
+        progress.setChapter2String(chatData.yourChapter2.toString());
         updateProgress();
     }
 
     public static void updateProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; chapter1:"+progress.getChapter1()+"";
+        String progressString = "lang:"+progress.getLanguage()+"; username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; deathReason:"+progress.getDeathReason()+"; msgCount:"+progress.getDialogCount()+"; chapter1:"+progress.getChapter1String()+"; chapter2:"+progress.getChapter2String()+"";
         writeFile("progress.txt", progressString);
 
     }
     public static void resetProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "username:player; lv:0; alive:true; chapter1:0-2";
+        String progressString = "lang:en; username:player; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null";
         writeFile("progress.txt", progressString);
 
     }
@@ -79,7 +97,7 @@ public class Main {
         String filePath = "progress.txt"; // Replace with your file path
 
         String fileContent = readFile(filePath);
-        if (fileContent.isEmpty()) fileContent = "username:player; lv:0; alive:true; chapter1:0-2";
+        if (fileContent.isEmpty()) fileContent = "lang:en; username:player; lv:0; msgCount:0; alive:true; deathReason:none; chapter1:0-2; chapter2:null";
         ////System.out.println(fileContent);
         progress = new ProgressData(fileContent);
 
@@ -147,6 +165,14 @@ public class Main {
     public static void stopMusic() {
 
         if (backgroundMediaPlayer!=null) backgroundMediaPlayer.stop();
+    }
+
+    public static String getLanguage() {
+        return progress==null ? "en" : progress.getLanguage();
+    }
+    public static void setLanguage(String language) {
+        progress.setLanguage(language);
+        updateProgress();
     }
 }
 

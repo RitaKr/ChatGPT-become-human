@@ -65,18 +65,18 @@ public class MazeUI extends UI {
         super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
         game = new MazeGame(false, Main.getProgress().getLv());
-        setUI();
+        setThisUI();
 
     }
     public MazeUI(int level){
         super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
         game = new MazeGame(true, level);
-        setUI();
+        setThisUI();
 
     }
 
-    private void setUI() {
+    private void setThisUI() {
         setResizable(false);
 
         getContentPane().setLayout(new BorderLayout());
@@ -107,7 +107,9 @@ public class MazeUI extends UI {
         //System.out.println(game.isMusicPlaying());
         //int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
 
-        MessageWindow messageWindow = new MessageWindow(MazeUI.game, "Do you really want to quit maze?", "Quit maze", "Yes", "No");
+        MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                new MessageWindow(MazeUI.game, "Do you really want to quit maze?", "Quit maze", "Yes", "No")
+                : new MessageWindow(MazeUI.game, "Ви точно хочете покинути лабіринт?", "Покинути лабіринт", "Так", "Ні");
         //setScene(level);
         messageWindow.addWindowListener(new WindowAdapter() {
             @Override
@@ -118,7 +120,8 @@ public class MazeUI extends UI {
                         quit(Main.chooseMazeUI);
                     }
                     else {
-                        quit(Main.mainMenuUI);
+                        Main.chatUI.addFinishMazeMessage();
+                        quit(Main.chatUI);
                     }
                     Main.playMusic();
                     //SwingUtilities.invokeLater(()->{Main.mazeUI.setVisible(false); Main.playMusic();});

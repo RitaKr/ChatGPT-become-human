@@ -92,7 +92,7 @@ public class UI extends JFrame {
         setUI();
     }
 
-    private void setUI() {
+    void setUI() {
 
         try {
             // Load the font file
@@ -137,6 +137,7 @@ public class UI extends JFrame {
 
 
         backgroundPanel.setPreferredSize(new Dimension(frameWidth, frameHeight));
+
         add(backgroundPanel, BorderLayout.CENTER);
 
         setFocusable(true);
@@ -231,7 +232,7 @@ public class UI extends JFrame {
     }
     public void updateProgressData(){
         Main.fetchProgress();
-        levelLabel.setText("Current level: "+Main.getProgress().getLv());
+        levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ") +Main.getProgress().getLv());
         levelLabel.updateUI();
     }
     private void drawBackground(Graphics g) {
@@ -257,7 +258,7 @@ public class UI extends JFrame {
         upperPanel.setAlignmentX(CENTER_ALIGNMENT);
         upperPanel.setAlignmentY(CENTER_ALIGNMENT);
 
-        levelLabel = new JLabel("Current level: "+Main.getProgress().getLv());
+        levelLabel = new JLabel((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ")+Main.getProgress().getLv());
         levelLabel.setForeground(textColor);
         levelLabel.setFont(font16);
 

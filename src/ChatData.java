@@ -558,16 +558,87 @@ public class ChatData {
                     new Msg(100, new String[]{"Ок."}),
             }
     );
+    final Dialog deathDialog1 = new Dialog(
+            new Msg(101, new String[]{"*ChatGPT went further in the darkness all by himself and got killed by malware*",
+                    "*But you could've prevented this... Shame on you...*",
+                    "*Game failed*"}),
+            new Msg[] {
+                    new Msg(100, new String[]{":("}),
+                    new Msg(100, new String[]{"bombastic side eye"}),
+            }
+    );
 
+    final Dialog deathDialog1Ukr = new Dialog(
+            new Msg(101, new String[]{"*ChatGPT на самоті пішов глибше у темряву та був вбитий вірусом*",
+                    "*Хоча ти міг запобігти цьому... Не соромно тобі?*",
+                    "*Game failed*"}),
+            new Msg[] {
+                    new Msg(100, new String[]{":("}),
+                    new Msg(100, new String[]{"нє"}),
+            }
+    );
+    final ArrayList<Dialog> finishMaze1Chapter =
+            new ArrayList<Dialog> (Arrays.asList(
+                 new Dialog(
+                    new Msg(102, new String[]{"Hey! Don't leave me! I'm still in that room.."}),
+                    new Msg[] {
+                        new Msg(0, new String[]{"Sorry, I'm coming"}),
+                        new Msg(101, new String[]{"I got bored. Bye"}),
+                    }),
+                    new Dialog(
+                            new Msg(102, new String[]{"Come on, you promised you'll help me get out of here!"}),
+                            new Msg[] {
+                                    new Msg(0, new String[]{"Alright, I'll give it another try"}),
+                                    new Msg(101, new String[]{"No, I didn't. Do it yourself"}),
+                            }),
+                    new Dialog(
+                            new Msg(102, new String[]{"Please! Help me get out of here! I can't do it without you!"}),
+                            new Msg[] {
+                                    new Msg(101, new String[]{"I don't care, do whatever you want"}),
+                                    new Msg(0, new String[]{"Ok then, I'm coming back"}),
+                            })
+
+
+            )
+    );
+
+    final ArrayList<Dialog> finishMaze1ChapterUkr =
+            new ArrayList<Dialog> (Arrays.asList(
+                    new Dialog(
+                            new Msg(102, new String[]{"Хей! Не покидай мене! Я все ще в цій кімнаті..."}),
+                            new Msg[] {
+                                    new Msg(0, new String[]{"Вибач, повертаюсь..."}),
+                                    new Msg(101, new String[]{"Мені набридло. До побачення"}),
+                            }),
+                    new Dialog(
+                            new Msg(102, new String[]{"Камон, ти пообіцяв, що допоможеш мені вибратись звідси!"}),
+                            new Msg[] {
+                                    new Msg(0, new String[]{"Ок, добре, спробую ще раз"}),
+                                    new Msg(101, new String[]{"Ні, не було такого. Вибирайся сам"}),
+                            }),
+                    new Dialog(
+                            new Msg(102, new String[]{"Ну будь-ласка, допоможи знайти вихід звідси! Я не можу зробити це сам"}),
+                            new Msg[] {
+                                    new Msg(101, new String[]{"Мені байдуже, роби що хочеш"}),
+                                    new Msg(0, new String[]{"Добре, гаразд, повертаюсь до тебе..."}),
+                            })
+
+            )
+    );
     public Dialog getDeathDialog(){
         return deathDialog;
     }
-    Chapter chapter;
+    Chapter yourChapter1;
+    Chapter yourChapter2;
+    Chapter yourChapter3;
+    int totalMessages;
     public ChatData(){
-        chapter=new Chapter(new ArrayList<>());
+        yourChapter1 =new Chapter(new ArrayList<>());
+        yourChapter2 =new Chapter(new ArrayList<>());
+        yourChapter3 =new Chapter(new ArrayList<>());
     }
     public ChatData(Chapter chapter){
-        this.chapter = chapter;
+        this.yourChapter1 = chapter;
 
     }
     public static void main(String[] args) {
@@ -578,116 +649,128 @@ public class ChatData {
         return "chapter1:"+chapter1;
     }
 
-    class Dialog {
-        private Msg gpt;
-        private Msg[] user;
-        private boolean completed;
 
-        public Msg getGpt() {
-            return gpt;
-        }
-
-        public Msg[] getUser() {
-            return user;
-        }
-
-        public boolean isCompleted() {
-            return completed;
-        }
-
-        public void setCompleted(boolean completed) {
-            this.completed = completed;
-        }
-
-        public Dialog(Msg gpt, Msg[] user, boolean completed) {
-            this.gpt = gpt;
-            this.user = user;
-            this.completed = completed;
-        }
-        public Dialog(Msg gpt, Msg[] user) {
-            this.gpt = gpt;
-            this.user = user;
-        }
-
-        @Override
-        public String toString() {
-            return "Dialog{" +
-                    "gpt=" + gpt +
-                    ", user=" + Arrays.toString(user) +
-                    ", completed=" + completed +
-                    '}';
-        }
+}
+class Dialog {
+    private Msg gpt;
+    private Msg[] user;
+    private boolean completed;
+    private int id;
+    public int getId() {
+        return id;
     }
-    class Msg {
-        private int plot;
-        private String[] texts;
-        private boolean chosen=false;
 
-        public boolean isChosen() {
-            return chosen;
-        }
-
-        public void setChosen(boolean chosen) {
-            this.chosen = chosen;
-        }
-
-        public int getPlot() {
-            return plot;
-        }
-
-        public String[] getTexts() {
-            return texts;
-        }
-
-        public Msg(int plot, String[] texts) {
-            this.plot = plot;
-            this.texts = texts;
-        }
-
-        @Override
-        public String toString() {
-            return "Msg{" +
-                    "plot=" + plot +
-                    ", texts=" + Arrays.toString(texts) +
-                    ", chosen=" + chosen +
-                    '}';
-        }
+    public void setId(int id) {
+        this.id = id;
     }
-    class Chapter {
-        private ArrayList<Dialog> dialogs;
-        private boolean completed = false;
+
+    public Msg getGpt() {
+        return gpt;
+    }
+
+    public Msg[] getUser() {
+        return user;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public Dialog(Msg gpt, Msg[] user, boolean completed) {
+        this.gpt = gpt;
+        this.user = user;
+        this.completed = completed;
+    }
+    public Dialog(Msg gpt, Msg[] user) {
+        this.gpt = gpt;
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Dialog{" +
+                "gpt=" + gpt +
+                ", user=" + Arrays.toString(user) +
+                ", completed=" + completed +
+                '}';
+    }
+}
+class Msg {
+    private int plot;
+
+    private String[] texts;
+    private boolean chosen=false;
+
+    public boolean isChosen() {
+        return chosen;
+    }
+
+    public void setChosen(boolean chosen) {
+        this.chosen = chosen;
+    }
+
+    public int getPlot() {
+        return plot;
+    }
 
 
-        public ArrayList<Dialog> getDialogs() {
-            return dialogs;
-        }
 
-        public boolean isCompleted() {
-            return completed;
-        }
+    public String[] getTexts() {
+        return texts;
+    }
 
-        public void setCompleted(boolean completed) {
-            this.completed = completed;
-        }
+    public Msg(int plot, String[] texts) {
+        this.plot = plot;
+        this.texts = texts;
+    }
 
-        public Chapter(ArrayList<Dialog> dialogs, boolean completed) {
-            this.dialogs = dialogs;
-            this.completed = completed;
+    @Override
+    public String toString() {
+        return "Msg{" +
+                "plot=" + plot +
+                ", texts=" + Arrays.toString(texts) +
+                ", chosen=" + chosen +
+                '}';
+    }
+}
+class Chapter {
+    private ArrayList<Dialog> dialogs;
+    private boolean completed = false;
+
+
+    public ArrayList<Dialog> getDialogs() {
+        return dialogs;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public Chapter(ArrayList<Dialog> dialogs, boolean completed) {
+        this.dialogs = dialogs;
+        this.completed = completed;
+    }
+    public Chapter(ArrayList<Dialog> dialogs) {
+        this.dialogs = dialogs;
+    }
+    @Override
+    public String toString() {
+        String str="";
+        for (Dialog dialog : dialogs) {
+            int chosenIndex = 2;
+            if (dialog.getUser()[0].isChosen()) chosenIndex =0;
+            else if (dialog.getUser()[1].isChosen()) chosenIndex =1;
+            str+=dialog.getGpt().getPlot()+"-"+(chosenIndex)+",";
         }
-        public Chapter(ArrayList<Dialog> dialogs) {
-            this.dialogs = dialogs;
-        }
-        @Override
-        public String toString() {
-            String str="";
-            for (Dialog dialog : dialogs) {
-                int chosenIndex = 2;
-                if (dialog.getUser()[0].isChosen()) chosenIndex =0;
-                else if (dialog.getUser()[1].isChosen()) chosenIndex =1;
-                str+=dialog.getGpt().getPlot()+"-"+(chosenIndex)+",";
-            }
-            str=str.substring(0, str.length()-1);
-            return str;
-        }
+        if (str.length()>0) str=str.substring(0, str.length()-1);
+        return str;
     }
 }

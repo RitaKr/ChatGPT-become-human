@@ -12,6 +12,7 @@ public class MainMenuUI extends UI {
     Image buttonHoverImage = new ImageIcon("images/button-pattern-white.png").getImage();
     Image redButtonImage = new ImageIcon("images/button-pattern-red.png").getImage();
     Image startHoverImage = new ImageIcon("images/start-white.png").getImage();
+    JComboBox languageComboBox = new JComboBox();
 
     GridBagConstraints c = new GridBagConstraints();
     private Font font = new Font("Arial", Font.BOLD, 22);
@@ -24,8 +25,36 @@ public class MainMenuUI extends UI {
 
     public MainMenuUI() {
         super("ChatGPT: become human", "bg-menu4.gif");
-        super.backgroundPanel.setLayout(new GridBagLayout());
 
+        setThisUI();
+        // Make JFrame visible
+        //setVisible(true);
+    }
+    private void setThisUI(){
+        Main.fetchProgress();
+        super.backgroundPanel.setLayout(new GridBagLayout());
+//
+//
+//        languageComboBox = new JComboBox<>(new String[]{"English", "Українська"});
+//        languageComboBox.setSelectedItem("English"); // Set "English" as the default selection
+//        GridBagConstraints constraints = new GridBagConstraints();
+//        constraints.anchor = GridBagConstraints.NORTHEAST; // Установите якорь в верхний правый угол
+//        constraints.gridx = GridBagConstraints.RELATIVE; // Установите относительное положение по горизонтали
+//        constraints.gridy = 0; // Установите положение по вертикали (в данном случае 0 для верхней строки)
+//        constraints.insets = new Insets(10, 10, 10, 10); // Установите отступы, если необходимо
+//
+//        // Добавьте элемент на панель с использованием GridBagConstraints
+//        super.backgroundPanel.add(languageComboBox, constraints);
+//        languageComboBox.setBounds(frameWidth-120, 20, 100, 40);
+//        languageComboBox.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String selectedLanguage = (String) languageComboBox.getSelectedItem();
+//                changeLanguage(selectedLanguage);
+//            }
+//        });
+
+        //super.backgroundPanel.setLayout(new GridBagLayout());
         // create and customize the label
         title = new JLabel("ChatGPT: Become Human", SwingConstants.CENTER);
         title.setFont(titleFont);
@@ -52,7 +81,7 @@ public class MainMenuUI extends UI {
         });
 
         // create and customize the buttons
-        String[] buttonNames = {"Instruction", "Mazes", "Reset progress"};
+        String[] buttonNames = Main.getLanguage().equals("en") ? new String[]{"Instruction", "Mazes", "Reset progress"} : new String[]{"Інструкція", "Лабіринти", "Скинути прогрес"};
         for (int i = 1; i <= buttonNames.length; i++) {
             JButton button = createButton(buttonNames[i-1],(i<buttonNames.length ? buttonColor : buttonColor1), (i<buttonNames.length ? buttonImage : redButtonImage), buttonHoverImage);
 
@@ -65,7 +94,7 @@ public class MainMenuUI extends UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Main.fetchProgress();
-                   // Main.playEffect("click.wav", 0.2);
+                    // Main.playEffect("click.wav", 0.2);
                     switch (finalI){
                         case 1: {
                             Main.instructionUI.updateProgressData();
@@ -82,7 +111,9 @@ public class MainMenuUI extends UI {
                             break;
                         }
                         case 3: {
-                            MessageWindow messageWindow = new MessageWindow(MainMenuUI.this, "Are you sure you want to reset the progress? You will need to open the program again", "Reset progress", "Yes", "No");
+                            MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                                    new MessageWindow(MainMenuUI.this, "Are you sure you want to reset the progress? You will need to open the program again", "Reset progress", "Yes", "No")
+                                    : new MessageWindow(MainMenuUI.this, "Ви впевнені, що хочете скинути прогрес? Вам доведеться відкрити програму знову", "Скинути прогрес", "Так", "Ні");;
                             messageWindow.addWindowListener(new WindowAdapter() {
                                 @Override
                                 public void windowClosed(WindowEvent e) {
@@ -102,9 +133,14 @@ public class MainMenuUI extends UI {
             });
 
         }
+    }
 
-        // Make JFrame visible
-        //setVisible(true);
+    private void changeLanguage(String selectedLanguage) {
+        System.out.println("changeLanguage: " + selectedLanguage);
+        Main.setLanguage(selectedLanguage.equals("English") ? "en" : "uk");
+//        super.remove(super.backgroundPanel);
+        super.setUI();
+        setThisUI();
     }
 
 

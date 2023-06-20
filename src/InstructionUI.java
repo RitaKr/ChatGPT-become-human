@@ -93,7 +93,9 @@ public class InstructionUI extends UI {
 
         String GPTText = "<html><div WIDTH=650><i><b>ChatGPT — головний персонаж</b></i>, " +
                 "яким Ви рухаєтеся коридорами лабіринту та маєте дійти до фінішу </div></html>";
-        GPTInstructionLabel = new JLabel(GPTText);
+        String GPTTextEng = "<html><div WIDTH=650><i><b>ChatGPT — головний персонаж</b></i>, " +
+                "яким Ви рухаєтеся коридорами лабіринту та маєте дійти до фінішу </div></html>";
+        GPTInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? GPTText : GPTTextEng);
         GPTInstructionLabel.setFont(font16);
         GPTInstructionLabel.setForeground(TEXT_COLOR);
         GPTPanel.add(GPTInstructionLabel);
@@ -115,7 +117,9 @@ public class InstructionUI extends UI {
 
         String keyboardText = "<html><div WIDTH=650><i><b>Переміщення по лабіринту</b></i> стандартне. Використовуйте стрілки вверх, вниз, вправо, вліво," +
                 " щоб рухатися в цих напрямках коридорами лабіринту. </div></html>";
-        keyboardInstructionLabel = new JLabel(keyboardText);
+        String keyboardTextEng = "<html><div WIDTH=650><i><b>Переміщення по лабіринту</b></i> стандартне. Використовуйте стрілки вверх, вниз, вправо, вліво," +
+                " щоб рухатися в цих напрямках коридорами лабіринту. </div></html>";
+        keyboardInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? keyboardText : keyboardTextEng);
         keyboardInstructionLabel.setFont(font16);
         keyboardInstructionLabel.setForeground(TEXT_COLOR);
         keyboardPanel.add(keyboardInstructionLabel);
@@ -135,7 +139,9 @@ public class InstructionUI extends UI {
         finishPanel.add(finishLabel);
 
         String finishText = "<html><div WIDTH=650><i><b>Двері фінішу</b></i>, до яких Ви маєте прийти, щоб завершити рівень.</div></html>";
-        finishInstructionLabel = new JLabel(finishText);
+        String finishTextEng = "<html><div WIDTH=650><i><b>Двері фінішу</b></i>, до яких Ви маєте прийти, щоб завершити рівень.</div></html>";
+
+        finishInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? finishText : finishTextEng);
         finishInstructionLabel.setFont(font16);
         finishInstructionLabel.setForeground(TEXT_COLOR);
         finishPanel.add(finishInstructionLabel);
@@ -156,7 +162,9 @@ public class InstructionUI extends UI {
 
         String mobText = "<html><div WIDTH=700><i><b>Моби.</b></i> Це рухомі об'єкти, які створюють труднощі у проходженні гри. " +
                 "Якщо зіштовхнутися з мобом, то ви втрачаєте одне життя.</div></html>";
-        mobInstructionLabel = new JLabel(mobText);
+        String mobTextEng = "<html><div WIDTH=700><i><b>Моби.</b></i> Це рухомі об'єкти, які створюють труднощі у проходженні гри. " +
+                "Якщо зіштовхнутися з мобом, то ви втрачаєте одне життя.</div></html>";
+        mobInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? mobText : mobTextEng);
         mobInstructionLabel.setFont(font16);
         mobInstructionLabel.setForeground(TEXT_COLOR);
         mobPanel.add(mobInstructionLabel);
@@ -182,7 +190,9 @@ public class InstructionUI extends UI {
 
         String teleportText = "<html><div WIDTH=520><i><b>Телепорти</b></i> переносять персонажа з одного місця лабіринту " +
                 "в інше. З'являються лише попарно, переміщують лише до телепорту з таким самим виглядом.</div></html>";
-        teleportInstructionLabel = new JLabel(teleportText);
+        String teleportTextEng = "<html><div WIDTH=520><i><b>Телепорти</b></i> переносять персонажа з одного місця лабіринту " +
+                "в інше. З'являються лише попарно, переміщують лише до телепорту з таким самим виглядом.</div></html>";
+        teleportInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? teleportText : teleportTextEng);
         teleportInstructionLabel.setFont(font16);
         teleportInstructionLabel.setForeground(TEXT_COLOR);
         teleportPanel.add(teleportInstructionLabel);
@@ -203,7 +213,10 @@ public class InstructionUI extends UI {
 
         String slidingDoorText = "<html><div WIDTH=650><i><b>Двері, які ковзають лабіринтом.</b></i> Виглядають як фіолетова стінка. " +
                 "Щоб їх перемістити, натисніть на клавішу ПРОБІЛ, перебуваючи на рожевій кнопці, яка розміщена десь в коридорах лабіринту. </div></html>";
-        slidingDoorInstructionLabel = new JLabel(slidingDoorText);
+        String slidingDoorTextEng = "<html><div WIDTH=650><i><b>Двері, які ковзають лабіринтом.</b></i> Виглядають як фіолетова стінка. " +
+                "Щоб їх перемістити, натисніть на клавішу ПРОБІЛ, перебуваючи на рожевій кнопці, яка розміщена десь в коридорах лабіринту. </div></html>";
+
+        slidingDoorInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? slidingDoorText : slidingDoorTextEng);
         slidingDoorInstructionLabel.setFont(font16);
         slidingDoorInstructionLabel.setForeground(TEXT_COLOR);
         slidingDoorPanel.add(slidingDoorInstructionLabel);
@@ -224,7 +237,8 @@ public class InstructionUI extends UI {
         doorButtonPanel.add(doorButtonLabel);
 
         String doorButtonText = "<html><div WIDTH=650><i><b>Кнопка, що відчиняє двері</b></i>, які ковзають лабіринтом.</div></html>";
-        doorButtonInstructionLabel = new JLabel(doorButtonText);
+        String doorButtonTextEng = "<html><div WIDTH=650><i><b>Кнопка, що відчиняє двері</b></i>, які ковзають лабіринтом.</div></html>";
+        doorButtonInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? doorButtonText : doorButtonTextEng);
         doorButtonInstructionLabel.setFont(font16);
         doorButtonInstructionLabel.setForeground(TEXT_COLOR);
         doorButtonPanel.add(doorButtonInstructionLabel);
@@ -246,7 +260,10 @@ public class InstructionUI extends UI {
         String slidingDoorText = "<html><div WIDTH=650><i><b>Двері, що обертаються.</b></i> Виглядають як сіра стінка. " +
                 "Повертаються на 90 градусів. " +
                 "Щоб їх повернути, знайдіть в коридорах лабіринту ключ та натисніть клавішу ПРОБІЛ. </div></html>";
-        rotatingDoorInstructionLabel = new JLabel(slidingDoorText);
+        String slidingDoorEng = "<html><div WIDTH=650><i><b>Двері, що обертаються.</b></i> Виглядають як сіра стінка. " +
+                "Повертаються на 90 градусів. " +
+                "Щоб їх повернути, знайдіть в коридорах лабіринту ключ та натисніть клавішу ПРОБІЛ. </div></html>";
+        rotatingDoorInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? slidingDoorText : slidingDoorEng);
         rotatingDoorInstructionLabel.setFont(font16);
         rotatingDoorInstructionLabel.setForeground(TEXT_COLOR);
         rotatingDoorPanel.add(rotatingDoorInstructionLabel);
@@ -267,7 +284,8 @@ public class InstructionUI extends UI {
         keyPanel.add(keyLabel);
 
         String keyText = "<html><div WIDTH=650><i><b>Ключ, що відчиняє двері</b></i>, які обертаються.</div></html>";
-        keyInstructionLabel = new JLabel(keyText);
+        String keyTextEng = "<html><div WIDTH=650><i><b>Ключ, що відчиняє двері</b></i>, які обертаються.</div></html>";
+        keyInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? keyText : keyTextEng);
         keyInstructionLabel.setFont(font16);
         keyInstructionLabel.setForeground(TEXT_COLOR);
         keyPanel.add(keyInstructionLabel);
@@ -276,7 +294,7 @@ public class InstructionUI extends UI {
     }
 
     private void drawTitle() {
-        titleLabel = new JLabel("Інструкція до гри", SwingConstants.CENTER);
+        titleLabel = new JLabel(Main.getLanguage().equals("uk") ? "Інструкція до гри" : "Game instruction", SwingConstants.CENTER);
         titleLabel.setFont(titleFont);
         titleLabel.setForeground(TITLE_COLOR);
         //titleLabel.setBorder(new LineBorder(TITLE_COLOR));

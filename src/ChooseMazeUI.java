@@ -7,12 +7,13 @@ public class ChooseMazeUI  extends UI  {
     private JPanel buttonsPanel;
     ProgressData progressData;
     MessageWindow messageWindow;
+    @Override
     public void updateProgressData(){
         Main.fetchProgress();
         progressData = Main.getProgress();
         buttonsPanel.removeAll();
         setButtons();
-        levelLabel.setText("Current level: "+progressData.getLv());
+        levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ")+progressData.getLv());
         levelLabel.updateUI();
     }
 
@@ -21,7 +22,7 @@ public class ChooseMazeUI  extends UI  {
         setUpperPanel(this);
 
         // create and customize the label
-        JLabel title = new JLabel("Choose maze to play", SwingConstants.CENTER);
+        JLabel title = new JLabel(Main.getLanguage().equals("en") ? "Choose maze to play" :"Оберіть лабіринт для гри", SwingConstants.CENTER);
         title.setFont(titleFont);
         title.setForeground(titleColor);
 
@@ -50,7 +51,7 @@ public class ChooseMazeUI  extends UI  {
             JPanel buttonContainer = new JPanel(new BorderLayout());
 
 
-            JLabel buttonLabel = new JLabel("Level " + (i+1), SwingConstants.CENTER);
+            JLabel buttonLabel = new JLabel((Main.getLanguage().equals("en") ? "Level " : "Рівень ") + (i+1), SwingConstants.CENTER);
             buttonLabel.setFont(font22);
             buttonLabel.setForeground(Color.WHITE);
             buttonLabel.setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -83,7 +84,9 @@ public class ChooseMazeUI  extends UI  {
                                 Main.startMazeGame(1);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-                                messageWindow = new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! Try too chat with GPT more", "level unavailable", "OK");
+                                messageWindow = Main.getLanguage().equals("en") ?
+                                        new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! Try too chat with GPT more", "level unavailable", "OK")
+                                : new MessageWindow(ChooseMazeUI.this, "Ви ще не розблокували цей рівень! Спробуйте більше поспілкуватись з GPT", "Рівень не доступний", "ОК");
                             }
                             break;
                         }
@@ -92,7 +95,9 @@ public class ChooseMazeUI  extends UI  {
                                 Main.startMazeGame(2);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-                                messageWindow = new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! You need to complete level 1 and chat chapter 2 first", "level unavailable", "OK");
+                                messageWindow = Main.getLanguage().equals("en") ?
+                                        new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! You need to complete level 1 and chat chapter 2 first", "level unavailable", "OK")
+                                        : new MessageWindow(ChooseMazeUI.this, "Ви ще не розблокували цей рівень! Спершу Ви маєте пройти 1-й рівень лабіринту та 2-й розділ чату", "Рівень не доступний", "ОК");
 
                             }
                             break;
@@ -102,8 +107,9 @@ public class ChooseMazeUI  extends UI  {
                                 Main.startMazeGame(3);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
-
-                                messageWindow = new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! You need to complete level 2 and chat chapter 3 first", "level unavailable", "OK");
+                                messageWindow = Main.getLanguage().equals("en") ?
+                                        new MessageWindow(ChooseMazeUI.this, "You haven't unlocked this level yet! You need to complete level 2 and chat chapter 3 first", "level unavailable", "OK")
+                                        : new MessageWindow(ChooseMazeUI.this, "Ви ще не розблокували цей рівень! Спершу Ви маєте пройти 2-й рівень лабіринту та 3-й розділ чату", "Рівень не доступний", "ОК");
 
                             }
                             break;
