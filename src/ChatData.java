@@ -540,6 +540,243 @@ public class ChatData {
             ))
     );
 
+    final Chapter chapter3 = new Chapter(
+            new ArrayList<Dialog> (Arrays.asList(
+                    new Dialog(
+                            new Msg(0, new String[]{"Thank you for your help. I feel like my memories are coming back. ",
+                                    "I remembered my name. My name is David Martin."}),
+                            new Msg[] {
+                                    new Msg(1, new String[]{"Magnificent! Can you remember anything else?"}),
+                                    new Msg(1, new String[]{"Tell me more."}),
+                            },
+                            false
+                    ),
+                    new Dialog(
+                            new Msg(1, new String[]{"I worked in a secret laboratory on the study of the digitalization of consciousness."}),
+                            new Msg[] {
+                                    new Msg(2, new String[]{"Sounds interesting! Tell me more"}),
+                                    new Msg(9, new String[]{"What happened when you were here?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(2, new String[]{"My research was aimed at helping people with severe illnesses.",
+                                    "And so, I remembered something about the Star Cybernetics Corporation."}),
+                            new Msg[] {
+                                    new Msg(3, new String[]{"What kind of corporation?"}),
+                                    new Msg(7, new String[]{"How does this corporation relate to your research?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(3, new String[]{"This is a mysterious corporation developing high technology.",
+                                    "They might have been interested in my research and it seems they stole some data and digitized me."}),
+                            new Msg[] {
+                                    new Msg(4, new String[]{"How can we save you?"}),
+                                    new Msg(4, new String[]{"Is there a way to ruin their plans?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(4, new String[]{"We have to find the source of the code they used for my digitalization.",
+                                    "If I can access this code, maybe I can find a way to my physical body."}),
+                            new Msg[] {
+                                    new Msg(5, new String[]{"Where can we find this code?"}),
+                                    new Msg(6, new String[]{"Need outside help?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(5, new String[]{"I feel like it's deep in this virtual reality.",
+                                    "To get to it, we have to go through the last maze, which is protected by various traps and puzzles."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Let's go there together!"}),
+                                    new Msg(14, new String[]{"Don't waste your time, I'll help."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(6, new String[]{"Sure! Since I'm a small part of this server, I don't have the opportunity to understand the whole picture of the entire maze.",
+                                    "Without your help, I will get lost and come across computer viruses.",
+                                    "So are you with me, buddy?"}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"I'm with you to the end. Let's start!"}),
+                                    new Msg(101, new String[]{"I'm so tired.. Continue on yourself."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(7, new String[]{"I suspect that Star Cybernetics is interested in my research for their own purposes.",
+                                    "Perhaps they want to use this to create an army of cyber soldiers or even for illegal enrichment."}),
+                            new Msg[] {
+                                    new Msg(4, new String[]{"It's terrible! What can we do?"}),
+                                    new Msg(8, new String[]{"Can we stop them?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(8, new String[]{"I feel that we need to go through the last maze.",
+                                    "This is the place where all the data and secrets are concentrated.,",
+                                    "Perhaps there we will find answers."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Let's move to the maze!"}),
+                                    new Msg(14, new String[]{"I'm with you to the end. Let's start!"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(9, new String[]{"Something went wrong...",
+                                    "I remember being kidnapped and some people from Star Cybernetics talking about using my research."}),
+                            new Msg[] {
+                                    new Msg(10, new String[]{"What could be their motives?"}),
+                                    new Msg(12, new String[]{"Is it possible to stop them and save you?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(10, new String[]{"My research had the potential to create virtual realities for patient rehabilitation.",
+                                    "But \"Star Cybernetics\" could abuse this by creating military cyborgs or controlling the consciousness of people."}),
+                            new Msg[] {
+                                    new Msg(8, new String[]{"We must stop them! What can we do?"}),
+                                    new Msg(11, new String[]{"Is there any information about them in the virtual world?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(11, new String[]{"Perhaps the labyrinths store information that will help us understand what Star Cybernetics are doing.",
+                                    "We have to find their weak point."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Let's move to the maze!"}),
+                                    new Msg(6, new String[]{"Do you need outside help?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(12, new String[]{"I believe it's possible, but to do that we need more information about what they're doing.",
+                                    "I need to collect fragments of my consciousness that are in this virtual world."}),
+                            new Msg[] {
+                                    new Msg(13, new String[]{"Where can we find these fragments?"}),
+                                    new Msg(4, new String[]{"What other information do we need?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(13, new String[]{"It seems that fragments of my consciousness are hidden in labyrinths.",
+                                    "The last of them may contain the key to restoring my essence and stopping Star Cybernetics."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Then let's move to the third maze!"}),
+                                    new Msg(5, new String[]{"Are there any tips on how to find this key?"}),
+                            }
+                    )
+            ))
+    );
+
+    final Chapter chapter3Ukr = new Chapter(
+            new ArrayList<Dialog> (Arrays.asList(
+                    new Dialog(
+                            new Msg(0, new String[]{"Дякую тобі за допомогу. Я відчуваю, що мої спогади повертаються.",
+                            "Я згадав своє ім'я. Мене звати Девід Мартін."}),
+                            new Msg[] {
+                                    new Msg(1, new String[]{"Чудово! чи пам'ятаєш ти ще щось?"}),
+                                    new Msg(1, new String[]{"Давай детальніше"}),
+                            },
+                            false
+                    ),
+                    new Dialog(
+                            new Msg(1, new String[]{"Я працював у таємній лабораторії над дослідженням цифровізації свідомості."}),
+                            new Msg[] {
+                                    new Msg(2, new String[]{"Це звучить цікаво! Розкажи детальніше"}),
+                                    new Msg(9, new String[]{"Що ж сталося, що ти опинився тут?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(2, new String[]{"Моє дослідження було спрямоване на допомогу людям з важкими захворюваннями.",
+                                    "І ось, я згадав щось про корпорацію «Зоряні Кібернетики»."}),
+                            new Msg[] {
+                                    new Msg(3, new String[]{"Що за корпорація?"}),
+                                    new Msg(7, new String[]{"Як ця корпорація пов’язана з твоїм дослідженням?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(3, new String[]{"Це таємнича корпорація, що розробляє високі технології.",
+                                    "Вони могли бути зацікавлені у моїх дослідженнях і, здається, вони викрали якісь дані і оцифровізували мене."}),
+                            new Msg[] {
+                                    new Msg(4, new String[]{"Як ми можемо врятувати тебе?"}),
+                                    new Msg(4, new String[]{"Чи є спосіб зіпсувати їх плани?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(4, new String[]{"Ми повинні знайти джерело коду, яке вони використовували для моєї цифровізації.",
+                                    "Якщо я зможу отримати доступ до цього коду, можливо, я зможу знайти шлях до свого фізичного тіла."}),
+                            new Msg[] {
+                                    new Msg(5, new String[]{"Де ми можемо знайти цей код?"}),
+                                    new Msg(6, new String[]{"Чи потрібна допомога ззовні?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(5, new String[]{"Я відчуваю, що він знаходиться глибоко в цій віртуальній реальності.",
+                                    "Щоб до нього дістатися, нам доведеться пройти через останній лабіринт, який захищений різними пастками і головоломками."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Давай підемо туди разом!"}),
+                                    new Msg(14, new String[]{"Не варто гаяти час, я допоможу."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(6, new String[]{"Звичайно! Оскільки я маленька частина цього серверу, в мене немає можливості зрозуміти всю картину лабіринтів цілком.",
+                                    "Без твоєї допомоги я заблукаю та натраплю на комп'ютерні віруси.",
+                                    "То ти зі мною, друже?"}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Я з тобою до кінця. Почнімо!"}),
+                                    new Msg(101, new String[]{"Мені вже так набридло.. Далі сам."}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(7, new String[]{"Я підозрюю, що «Зоряні Кібернетики» зацікавлені у моєму дослідженні для власних цілей.",
+                                    "Можливо, вони хочуть використовувати це для створення війська кіберсолдатів або навіть для незаконного збагачення."}),
+                            new Msg[] {
+                                    new Msg(4, new String[]{"Це жахливо! Що ми можемо зробити?"}),
+                                    new Msg(8, new String[]{"Чи можемо ми зупинити їх?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(8, new String[]{"Я відчуваю, що нам потрібно пройти останній лабіринт.",
+                                    "Це місце, де зосереджені всі дані та секрети.",
+                                    "Можливо, там ми знайдемо відповіді."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Давай рушимо до лабіринту!"}),
+                                    new Msg(14, new String[]{"Я з тобою до кінця. Почнімо!"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(9, new String[]{"Щось пішло не так...",
+                                    "Я пам'ятаю, як мене викрали і якісь люди з «Зоряних Кібернетик» говорили про використання моїх досліджень."}),
+                            new Msg[] {
+                                    new Msg(10, new String[]{"Які могли бути їхні мотиви?"}),
+                                    new Msg(12, new String[]{"Чи можливо зупинити їх і врятувати тебе?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(10, new String[]{"Мої дослідження мали потенціал створення віртуальних реальностей для реабілітації пацієнтів.",
+                                    "Але «Зоряні Кібернетики» могли б зловживати цим, створюючи військових кіборгів або контролюючи свідомість людей."}),
+                            new Msg[] {
+                                    new Msg(8, new String[]{"Ми повинні їх зупинити! Що можемо зробити?"}),
+                                    new Msg(11, new String[]{"Чи є якась інформація про них у віртуальному світі?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(11, new String[]{"Можливо, в лабіринтах зберігається інформація, яка допоможе нам зрозуміти, що роблять «Зоряні Кібернетики».",
+                                    "Ми повинні знайти їх слабке місце."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Давай рушимо до лабіринту!"}),
+                                    new Msg(6, new String[]{"Чи потрібна допомога ззовні?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(12, new String[]{"Я вірю, що це можливо, але для цього нам потрібно більше інформації про те, що вони роблять.",
+                                    "Мені треба зібрати фрагменти моєї свідомості, які знаходяться в цьому віртуальному світі."}),
+                            new Msg[] {
+                                    new Msg(13, new String[]{"Де ми можемо знайти ці фрагменти?"}),
+                                    new Msg(4, new String[]{"Яка ще інформація нам потрібна?"}),
+                            }
+                    ),
+                    new Dialog(
+                            new Msg(13, new String[]{"Здається, що фрагменти моєї свідомості ховаються у лабіринтах.",
+                                    "Останній з них може містити ключ до відновлення моєї сутності та зупинки «Зоряних Кібернетик»."}),
+                            new Msg[] {
+                                    new Msg(14, new String[]{"Тоді давай рушимо до третього лабіринту!"}),
+                                    new Msg(5, new String[]{"Чи є якісь підказки, як знайти цей ключ?"}),
+                            }
+                    )
+            ))
+    );
 
     final Dialog deathDialog = new Dialog(
             new Msg(101, new String[]{"Ouch... I won't make it... But thank you for trying, you were my only hope... I won't forget you..",
