@@ -62,13 +62,66 @@ public class MazeGame extends JPanel {
     RotatingDoor rotatingDoor;
     Item key;
     Item finish;
-    Item quiz1;
+    Item quiz1, quiz2, quiz3;
     QuizWindow quizWindow;
     ArrayList<Quiz> quizes =  new ArrayList<Quiz>(Arrays.asList(
             new Quiz("Який з цих методів використовується для виводу тексту в консоль в Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. System.out.display()"), new Answer("B. System.out.print()", true), new Answer("C. Console.write()"), new Answer("D. Print.console()")))),
+
             new Quiz("Який з наступних операторів використовується для порівняння двох значень на рівність в Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. =", true), new Answer("C. equals()"), new Answer("D. match()"))))
+                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. =", true), new Answer("C. equals()"), new Answer("D. match()")))),
+
+            new Quiz("Який із наступних варіантів є вірним способом створення масиву int в Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
+
+            new Quiz("Як у Java викликається конструктор суперкласу?",
+                 new ArrayList<>(Arrays.asList(new Answer("A. super()", true), new Answer("B. this()"), new Answer("C. extends()"), new Answer("D. super")))),
+
+            new Quiz("Які ключові слова в Java використовуються для обробки винятків?",
+                             new ArrayList<>(Arrays.asList(new Answer("A. If / Else"), new Answer("B. Throw / Catch"), new Answer("C. Error / Exception"), new Answer("D. Try / Catch", true)))),
+
+            new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
+                             new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
+
+            new Quiz("Що таке в Java \"garbage collector\"?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. Метод для видалення непотрібних файлів"), new Answer("B. Система для автоматичного очищення не використовуваної пам'яті", true), new Answer("C. Метод для зміни значень змінних"), new Answer("D. Сервіс для видалення старих версій Java")))),
+
+            new Quiz("Яке ключове слово в Java використовується для наслідування?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. inherit"), new Answer("B. superclass"), new Answer("C. extends", true), new Answer("D. implements")))),
+
+            new Quiz("Як називається механізм, що дозволяє одному об'єкту набувати властивостей іншого об'єкта в Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. Поліморфізм"), new Answer("B. Капсулювання"), new Answer("C. Наслідування", true), new Answer("D. Абстракція")))),
+
+            new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
+
+            new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
+
+            new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
+
+            new Quiz("Що відбувається при спробі поділити число на 0 в Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. Виникає помилка виконання ArithmeticException", true), new Answer("B. Повертається 0"), new Answer("C. Повертається найбільше додатне число"), new Answer("D. Нічого, програма продовжує працювати нормально")))),
+
+            new Quiz("Який із цих класів є частиною стандартної бібліотеки Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. String", true), new Answer("B. TextBox"), new Answer("C. Label"), new Answer("D. Button")))),
+
+            new Quiz("Який модифікатор доступу означає, що елемент доступний з будь-якого іншого класу?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. private"), new Answer("B. public", true), new Answer("C. protected"), new Answer("D. None of these")))),
+
+            new Quiz("Який із цих ключових слів використовується для вказівки на відсутність значення?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. null", true), new Answer("B. none"), new Answer("C. NaN"), new Answer("D. void")))),
+
+            new Quiz("Який із цих операторів є тернарним оператором?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. +"), new Answer("B. -"), new Answer("C. %"), new Answer("D. ?", true)))),
+
+            new Quiz("Як оголошується масив цілих чисел в Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. int array[];", true), new Answer("B. array int[];"), new Answer("C. int array();"), new Answer("D. array<int> a;")))),
+
+            new Quiz("Який із цих модифікаторів дозволяє обмежити доступ до членів класу тільки для класу, в якому вони оголошені?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. public"), new Answer("B. private", true), new Answer("C. protected"), new Answer("D. default"))))
+
             ));
     private Image backgroundImage;
     //private ImageIcon backgroundImage;
@@ -130,7 +183,9 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",5, 5, 60, 60);
                 key = new Item("key.png",0, 7, 70, 30);
                 finish = new Item("finish.png",0, 0, 100, 85);
-                quiz1 = new Item("quiz.png",4, 0, 40, 60);
+                quiz1 = new Item("quiz.png",2, 2, 40, 60);
+                quiz2 = null;
+                quiz3 = null;
             }
             case 2 -> {
                 loadBackgroundImage("bg2-blur.gif");
@@ -151,7 +206,10 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",1, 3, 60, 60);
                 key = new Item("key.png",4, 3, 70, 30);
-                finish = new Item("finish.png",5, 1, 120, 100);
+                finish = new Item("finish.png",5, 1, 100, 85);
+                quiz1 = new Item("quiz.png",3, 1, 40, 60);
+                quiz2 = new Item("quiz.png",5, 5, 40, 60);
+                quiz3 = null;
             }
             case 3 -> {
                 loadBackgroundImage("bg3-blur.gif");
@@ -172,7 +230,10 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",3, 2, 60, 60);
                 key = new Item("key.png",5, 7, 70, 30);
-                finish = new Item("finish.png",4, 7, 120, 100);
+                finish = new Item("finish.png",4, 7, 100, 85);
+                quiz1 = new Item("quiz.png",5, 4, 40, 60);
+                quiz2 = new Item("quiz.png",2, 1, 40, 60);
+                quiz3 = new Item("quiz.png",1, 2, 40, 60);
             }
         }
         repaint();
@@ -264,6 +325,9 @@ public class MazeGame extends JPanel {
         if (key!=null) key.draw(g);
         if (finish!=null) finish.draw(g);
         if (quiz1!=null) quiz1.draw(g);
+        if (quiz2!=null) quiz2.draw(g);
+        if (quiz3!=null) quiz3.draw(g);
+
 
     }
     private void drawMovableItems(Graphics g) {
