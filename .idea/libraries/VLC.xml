@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="VLC">
+    <CLASSES />
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/../../../../../Program Files/VideoLAN/VLC" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>
