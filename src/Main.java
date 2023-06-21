@@ -14,6 +14,7 @@ public class Main {
     static ChatUI chatUI;
     static ChooseMazeUI chooseMazeUI;
     static InstructionUI instructionUI;
+    static SettingsUI settingsUI;
     static MediaPlayer backgroundMediaPlayer;
 
 
@@ -34,6 +35,7 @@ public class Main {
         chatUI = new ChatUI();
         chooseMazeUI = new ChooseMazeUI();
         instructionUI = new InstructionUI();
+        settingsUI = new SettingsUI();
         //mazeUI = new MazeUI();
         //startMazeGame();
         mainMenuUI.setVisible(true);

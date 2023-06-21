@@ -7,10 +7,12 @@ public class ChooseMazeUI  extends UI  {
     private JPanel buttonsPanel;
     ProgressData progressData;
     MessageWindow messageWindow;
+    JLabel title;
     @Override
     public void updateProgressData(){
         Main.fetchProgress();
         progressData = Main.getProgress();
+        title.setText(Main.getLanguage().equals("uk") ? "Інструкція до гри" : "Game instruction");
         buttonsPanel.removeAll();
         setButtons();
         levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ")+progressData.getLv());
@@ -22,7 +24,7 @@ public class ChooseMazeUI  extends UI  {
         setUpperPanel(this);
 
         // create and customize the label
-        JLabel title = new JLabel(Main.getLanguage().equals("en") ? "Choose maze to play" :"Оберіть лабіринт для гри", SwingConstants.CENTER);
+        title = new JLabel(Main.getLanguage().equals("en") ? "Choose maze to play" :"Оберіть лабіринт для гри", SwingConstants.CENTER);
         title.setFont(titleFont);
         title.setForeground(titleColor);
 
@@ -42,8 +44,6 @@ public class ChooseMazeUI  extends UI  {
 
         add(super.upperPanel, BorderLayout.NORTH);
         //add(super.backgroundPanel, BorderLayout.CENTER);
-
-
     }
     private void setButtons(){
         String[] buttonImages = {(progressData.getLv()>=1 ? "lv1.png" : "lv1no.png"), (progressData.getLv()>=2 ? "lv2.png" : "lv2no.png"), (progressData.getLv()>=3 ? "lv3.png" : "lv3no.png")};

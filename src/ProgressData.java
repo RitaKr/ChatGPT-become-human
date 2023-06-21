@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Objects;
 
 class ProgressData {
     private static String username;
@@ -151,14 +150,14 @@ class ProgressData {
             String[] parts = chapter1dialogs[i].split("-");
             int key = Integer.parseInt(parts[0].trim());
             int value = Integer.parseInt(parts[1].trim());
-            if (Objects.equals(language, "en")) {
+
                 data.yourChapter1.getDialogs().add(data.chapter1.getDialogs().get(key));
-            } else if (Objects.equals(language, "uk")) {
-                data.yourChapter1.getDialogs().add(data.chapter1Ukr.getDialogs().get(key));
-            }
+                data.yourChapter1Ukr.getDialogs().add(data.chapter1Ukr.getDialogs().get(key));
             if (value!=2) {
                 data.yourChapter1.getDialogs().get(i).getUser()[value].setChosen(true);
                 data.yourChapter1.getDialogs().get(i).setCompleted(true);
+                data.yourChapter1Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
+                data.yourChapter1Ukr.getDialogs().get(i).setCompleted(true);
             }
             //data.chapter1.getDialogs().get(key).setCompleted(value);
         }
@@ -170,14 +169,14 @@ class ProgressData {
                 String[] parts = chapter2dialogs[i].split("-");
                 int key = Integer.parseInt(parts[0].trim());
                 int value = Integer.parseInt(parts[1].trim());
-                if (Objects.equals(language, "en")) {
+
                     data.yourChapter2.getDialogs().add(data.chapter2.getDialogs().get(key));
-                } else if (Objects.equals(language, "uk")) {
-                    data.yourChapter2.getDialogs().add(data.chapter2Ukr.getDialogs().get(key));
-                }
+                    data.yourChapter2Ukr.getDialogs().add(data.chapter2Ukr.getDialogs().get(key));
                 if (value != 2) {
                     data.yourChapter2.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter2.getDialogs().get(i).setCompleted(true);
+                    data.yourChapter2Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter2Ukr.getDialogs().get(i).setCompleted(true);
                 }
                 //data.chapter1.getDialogs().get(key).setCompleted(value);
             }
@@ -192,14 +191,14 @@ class ProgressData {
                 String[] parts = chapter3dialogs[i].split("-");
                 int key = Integer.parseInt(parts[0].trim());
                 int value = Integer.parseInt(parts[1].trim());
-                if (Objects.equals(language, "en")) {
+
                     data.yourChapter3.getDialogs().add(data.chapter3.getDialogs().get(key));
-                } else if (Objects.equals(language, "uk")) {
-                    data.yourChapter3.getDialogs().add(data.chapter3Ukr.getDialogs().get(key));
-                }
+                    data.yourChapter3Ukr.getDialogs().add(data.chapter3Ukr.getDialogs().get(key));
                 if (value != 2) {
                     data.yourChapter3.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter3.getDialogs().get(i).setCompleted(true);
+                    data.yourChapter3Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter3Ukr.getDialogs().get(i).setCompleted(true);
                 }
                 //data.chapter1.getDialogs().get(key).setCompleted(value);
             }

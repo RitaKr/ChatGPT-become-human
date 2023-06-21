@@ -11,6 +11,7 @@ public class UI extends JFrame {
     JPanel backgroundPanel;
     Image backgroundImage;
     Font font16 = new Font("Arial", Font.PLAIN, 16);
+    Font font18 = new Font("Arial", Font.BOLD, 20);
     Font font22 = new Font("Arial", Font.BOLD, 22);
     Font font24 = new Font("Arial", Font.BOLD, 24);
     Font titleFont = new Font("Arial", Font.BOLD, 35);
@@ -98,6 +99,7 @@ public class UI extends JFrame {
             // Set the font size and style as desired
             titleFont = customFont.deriveFont(35f).deriveFont(Font.BOLD);
             font16 = customFont.deriveFont(16f).deriveFont(Font.PLAIN);
+            font18 = customFont.deriveFont(18f).deriveFont(Font.BOLD);
             font22 = customFont.deriveFont(22f).deriveFont(Font.BOLD);
             font24 = customFont.deriveFont(24f).deriveFont(Font.BOLD);
             // Use the custom font in your Swing components
@@ -190,7 +192,7 @@ public class UI extends JFrame {
         buttonText.setHorizontalAlignment(SwingConstants.CENTER);
         buttonText.setVerticalAlignment(SwingConstants.CENTER);
         buttonText.setForeground(textColor);
-        buttonText.setFont(font22);
+        buttonText.setFont(font16);
         button.add(buttonText, BorderLayout.CENTER); // Add the label to the button's center
 
         button.setContentAreaFilled(false);
@@ -227,6 +229,70 @@ public class UI extends JFrame {
 
         return button;
     }
+
+    JButton createButton(String text, Color textColor, Image backgroundImage, Image hoverImage, int width, int height) {
+        JButton button = new JButton(new ImageIcon(backgroundImage.getScaledInstance(width, height, Image.SCALE_SMOOTH))) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // Make the background transparent
+                g.setColor(new Color(0, 0, 0, 0));
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+
+            @Override
+            public boolean isOpaque() {
+                // Ensure the button is not opaque
+                return false;
+            }
+        };
+        //button.setBackground(i<buttonNames.length-1 ? bgColor : Color.red);
+        //button.setForeground(Color.WHITE);
+
+        button.setLayout(new BorderLayout());
+
+        JLabel buttonText = new JLabel(text, SwingConstants.CENTER);
+        buttonText.setPreferredSize(new Dimension(btnWidth, btnHeight));
+        buttonText.setHorizontalAlignment(SwingConstants.CENTER);
+        buttonText.setVerticalAlignment(SwingConstants.CENTER);
+        buttonText.setForeground(textColor);
+        buttonText.setFont(font18);
+        button.add(buttonText, BorderLayout.CENTER); // Add the label to the button's center
+
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(false);
+
+
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setMargin(null);
+        button.setSize(new Dimension(width, height));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                Main.playEffect("hover.wav", 0.2);
+                buttonText.setForeground(buttonColorHover);
+                button.setIcon(new ImageIcon(hoverImage.getScaledInstance(width, height, Image.SCALE_SMOOTH)));  // Set the hover image
+                //startFadeIn(btn);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                buttonText.setForeground(textColor);
+                button.setIcon(new ImageIcon(backgroundImage.getScaledInstance(width, height, Image.SCALE_SMOOTH)));  // Restore the default image
+                //startFadeOut(btn);
+            }
+        });
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.playEffect("click.wav", 0.2);
+            }
+        });
+
+        return button;
+    }
     public void updateProgressData(){
         Main.fetchProgress();
         levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ") +Main.getProgress().getLv());
@@ -246,7 +312,10 @@ public class UI extends JFrame {
             backgroundImage = new ImageIcon(imagePath).getImage();
         }
     }
-
+    public void updateUpperPanel() {
+        levelLabel.setText((Main.getLanguage().equals("en") ? "Current level " : "Поточний рівень ") + Main.getProgress().getLv());
+        levelLabel.updateUI();
+    }
     public void setUpperPanel(JFrame currentFrame){
 
         upperPanel.setBorder(new EmptyBorder(5, 20, 5, 20));

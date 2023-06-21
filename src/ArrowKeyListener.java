@@ -42,23 +42,23 @@ public class ArrowKeyListener implements KeyListener{
                 }
                 if (game.quiz1Item !=null && game.isCollisionWithMob(game.quiz1Item)) {
                     game.quizWindow = new QuizWindow(Main.mazeUI, game.quiz1);
-                    if (!game.quiz3.isCompleted()) game.quiz3 = game.getRandomQuiz();
-                    if (!game.quiz2.isCompleted()) game.quiz2 = game.getRandomQuiz();
+                    if (game.quiz3!=null && !game.quiz3.isCompleted()) game.quiz3 = game.getRandomQuiz();
+                    if (game.quiz2!=null && !game.quiz2.isCompleted()) game.quiz2 = game.getRandomQuiz();
                     System.out.println("is completed: "+ game.quiz1.isCompleted() +", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
                     System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
                 }
                 if (game.quiz2Item !=null && game.isCollisionWithMob(game.quiz2Item)) {
                     game.quizWindow = new QuizWindow(Main.mazeUI, game.quiz2);
-                    if (!game.quiz3.isCompleted()) game.quiz3 = game.getRandomQuiz();
-                    if (!game.quiz1.isCompleted()) game.quiz1 = game.getRandomQuiz();
+                    if (game.quiz3!=null && !game.quiz3.isCompleted()) game.quiz3 = game.getRandomQuiz();
+                    if (game.quiz1!=null && !game.quiz1.isCompleted()) game.quiz1 = game.getRandomQuiz();
 
                     System.out.println("is completed: "+ game.quiz2.isCompleted() +", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
                     System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
                 }
                 if (game.quiz3Item !=null && game.isCollisionWithMob(game.quiz3Item)) {
                     game.quizWindow = new QuizWindow(Main.mazeUI, game.quiz3);
-                    if (!game.quiz1.isCompleted()) game.quiz1 = game.getRandomQuiz();
-                    if (!game.quiz2.isCompleted()) game.quiz2 = game.getRandomQuiz();
+                    if (game.quiz1!=null && !game.quiz1.isCompleted()) game.quiz1 = game.getRandomQuiz();
+                    if (game.quiz2!=null && !game.quiz2.isCompleted()) game.quiz2 = game.getRandomQuiz();
                     System.out.println("quiz3 is completed: "+ game.quiz3.isCompleted()+", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
                     System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
                 }

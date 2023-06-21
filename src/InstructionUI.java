@@ -78,7 +78,22 @@ public class InstructionUI extends UI {
 
 
     }
+    @Override
+    public void updateProgressData(){
+        super.updateProgressData();
+        titleLabel.setText(Main.getLanguage().equals("uk") ? "Інструкція до гри" : "Game instruction");
+        contentPanel.removeAll();
+        GPTInstruction();
+        keyboardInstruction();
+        finishInstruction();
+        mobInstruction();
+        teleportInstruction();
+        slidingDoorInstruction();
+        doorButtonInstruction();
+        rotatingDoorInstruction();
+        keyInstruction();
 
+    }
 
     public void GPTInstruction(){
         GPTPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
