@@ -524,7 +524,7 @@ public class ChatUI extends UI {
         // Запускаємо JavaFX Thread
         Platform.runLater(() -> {
             // Створюємо відео-плеєр JavaFX
-            String videoUrl = "file:///path-to-your-video/video.mpg"; // Вкажіть шлях до вашого відео-файлу
+            String videoUrl = getClass().getResource("/end-of-the-game.mpg").toExternalForm();
             Media media = new Media(videoUrl);
             MediaPlayer mediaPlayer = new MediaPlayer(media);
             mediaPlayer.setAutoPlay(true);
