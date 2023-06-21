@@ -182,7 +182,7 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",5, 5, 60, 60);
                 key = new Item("key.png",0, 7, 70, 30);
-                finish = new Item("finish.png",0, 0, 100, 85);
+                finish = new Item("finish.png",0, 0, 90, 80);
                 quiz1 = new Item("quiz.png",2, 2, 40, 60);
                 quiz2 = null;
                 quiz3 = null;
@@ -206,7 +206,7 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",1, 3, 60, 60);
                 key = new Item("key.png",4, 3, 70, 30);
-                finish = new Item("finish.png",5, 1, 100, 85);
+                finish = new Item("finish.png",5, 1, 90, 80);
                 quiz1 = new Item("quiz.png",3, 1, 40, 60);
                 quiz2 = new Item("quiz.png",5, 5, 40, 60);
                 quiz3 = null;
@@ -230,8 +230,8 @@ public class MazeGame extends JPanel {
 
                 slideDoorButton = new Item("doorButton.png",3, 2, 60, 60);
                 key = new Item("key.png",5, 7, 70, 30);
-                finish = new Item("finish.png",4, 7, 100, 85);
-                quiz1 = new Item("quiz.png",5, 4, 40, 60);
+                finish = new Item("finish.png",4, 7, 90, 80);
+                quiz1 = new Item("quiz.png",4, 4, 40, 60);
                 quiz2 = new Item("quiz.png",2, 1, 40, 60);
                 quiz3 = new Item("quiz.png",1, 2, 40, 60);
             }
@@ -266,7 +266,8 @@ public class MazeGame extends JPanel {
 
         drawBackground(g);
         // Draw the maze layout
-        g.setColor(Color.white);
+        g.setColor(settings.wallsColor);
+
         drawMaze(g);
 
         drawStaticItems(g);
@@ -361,19 +362,19 @@ public class MazeGame extends JPanel {
             }
             // Checking if character is in teleport
             if (teleport1!=null && isInside(teleport1, 0)) {
-                playEffect("teleport.wav", 0.6);
+                playEffect("teleport.wav", 0.3);
                 teleport1.teleportCharacter();
 
             } else if (teleport2!=null && isInside(teleport2, 0)) {
                 teleport2.teleportCharacter();
-                playEffect("teleport.wav", 0.6);
+                playEffect("teleport.wav", 0.3);
             }
             if (teleport3!=null && isInside(teleport3, 0)) {
                 teleport3.teleportCharacter();
-                playEffect("teleport.wav", 0.6);
+                playEffect("teleport.wav", 0.3);
             } else if (teleport4!=null && isInside(teleport4, 0)) {
                 teleport4.teleportCharacter();
-                playEffect("teleport.wav", 0.6);
+                playEffect("teleport.wav", 0.3);
             }
 
 
@@ -422,7 +423,7 @@ public class MazeGame extends JPanel {
         if (!chatGPT.isAlive() ) {
             stopMusic();
             gameOver =true;
-            playEffect("gameover.wav", 0.3);
+            playEffect("gameover.wav", 0.1);
             if (fromChooseMaze) {
                 MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                         new MessageWindow(this, "You died. Coming back to Maze selection...", "Game over", "Ok...")
@@ -459,7 +460,7 @@ public class MazeGame extends JPanel {
 
         } else if (isInside(finish, 0)) {
             stopMusic();
-            playEffect("level-complete.wav", 0.3);
+            playEffect("level-complete.wav", 0.1);
             gameOver =true;
             mazeCompleted=true;
             MazeUI.mazeCompleted = true;
@@ -609,7 +610,7 @@ public class MazeGame extends JPanel {
 
     public void moveSlidingDoor(){
         if (slidingDoor!=null) {
-            playEffect("sliding-door-open.wav", 0.8);
+            playEffect("sliding-door-open.wav", 0.6);
             slidingDoor.move();
             settings = slidingDoor.getSettings();
             repaint();
@@ -617,7 +618,7 @@ public class MazeGame extends JPanel {
     }
     public void moveRotatingDoor(){
         if (rotatingDoor!=null) {
-            playEffect("rotating-door-open.wav", 0.1);
+            playEffect("rotating-door-open.wav", 0.05);
             rotatingDoor.move();
             settings = rotatingDoor.getSettings();
             repaint();

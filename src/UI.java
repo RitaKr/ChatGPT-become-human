@@ -26,7 +26,7 @@ public class UI extends JFrame {
     ImageIcon crossIcon = new ImageIcon("images/cross.png");
     Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
     Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-    Color upperPanelBg = new Color(45, 36, 58);
+    Color upperPanelBg = new Color(15, 0, 35);
     Color backgroundColor = new Color(85, 82, 93);
 
     int btnWidth = 280;

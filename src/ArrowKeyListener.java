@@ -31,12 +31,12 @@ public class ArrowKeyListener implements KeyListener{
                 break;
             case KeyEvent.VK_SPACE:
                 if (game.slideDoorButton!=null && game.isCollisionWithMob(game.slideDoorButton)){
-                    game.playEffect("button.wav", 0.6);
+                    game.playEffect("button.wav", 0.5);
                     game.moveSlidingDoor();
 
                 }
                 if (game.key!=null && game.isCollisionWithMob(game.key)){
-                    game.playEffect("pickup.wav", 0.5);
+                    game.playEffect("pickup.wav", 0.15);
                     game.moveRotatingDoor();
                     game.key=null;
                 }

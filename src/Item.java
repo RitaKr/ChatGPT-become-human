@@ -58,7 +58,7 @@ public class Item {
     public Image getCharacterImage() {
         return characterImage;
     }
-    private void loadCharacterImage(String image) {
+    public void loadCharacterImage(String image) {
         ImageIcon icon = new ImageIcon("images/"+image); // Replace with the path to your character image file
         characterImage = icon.getImage();
         width = icon.getIconWidth();
@@ -71,6 +71,9 @@ public class Item {
 //        this.y = y;
 //        loadCharacterImage(itemImage);
 //    }
+    public Item(String itemImage) {
+        loadCharacterImage(itemImage);
+    }
     public Item(String itemImage, int row, int col) {
         this.row = row;
         this.col = col;

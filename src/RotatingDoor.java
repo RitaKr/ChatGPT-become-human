@@ -25,6 +25,7 @@ public class RotatingDoor extends Item{
 
     public RotatingDoor(Maze settings, int row, int col, Side originSide, boolean clockwise) {
         super();
+
         this.row = row;
         this.col = col;
         this.originSide = originSide;
@@ -35,34 +36,37 @@ public class RotatingDoor extends Item{
         calculateCoordinates();
         super.setX(originX);
         super.setY(originY);
+
         currentAngle = 0;
     }
     private void calculateCoordinates(){
         switch (originSide){
             case LEFT: {
-                originX = col*(Maze.cellSize + Maze.wallSize);
-                originY = (destinationSide==Side.BOTTOM ? Maze.wallSize : 0)+ row*(Maze.cellSize + Maze.wallSize);
+                originX = col*(Maze.cellSize + Maze.wallSize)-10;
+                originY = (destinationSide==Side.BOTTOM ? Maze.wallSize : 0)+ row*(Maze.cellSize + Maze.wallSize)-5;
                 break;
             }
             case TOP: {
-                originX = (destinationSide==Side.LEFT ? Maze.wallSize : 0) +  col*(Maze.cellSize + Maze.wallSize);
-                originY = row*(Maze.cellSize + Maze.wallSize);
+                originX = (destinationSide==Side.LEFT ? Maze.wallSize : 0) +  col*(Maze.cellSize + Maze.wallSize)-5;
+                originY = row*(Maze.cellSize + Maze.wallSize)-10;
                 break;
             }
             case RIGHT: {
-                originX  = (col+1)*(Maze.cellSize + Maze.wallSize);
-                originY = (destinationSide==Side.TOP ? Maze.wallSize : 0) + row*(Maze.cellSize + Maze.wallSize);
+                originX  = (col+1)*(Maze.cellSize + Maze.wallSize)-10;
+                originY = (destinationSide==Side.TOP ? Maze.wallSize : 0) + row*(Maze.cellSize + Maze.wallSize)-5;
                 break;
             }
             case BOTTOM: {
-                originX  =  col*(Maze.cellSize + Maze.wallSize);
-                originY = (row+1)*(Maze.cellSize + Maze.wallSize);
+                originX  =  col*(Maze.cellSize + Maze.wallSize)-10;
+                originY = (row+1)*(Maze.cellSize + Maze.wallSize)-10;
                 break;
             }
         }
 
-        super.setWidth((originSide==Side.RIGHT || originSide==Side.LEFT) ? Maze.wallSize : Maze.cellSize + Maze.wallSize);
-        super.setHeight((originSide==Side.RIGHT || originSide==Side.LEFT) ? Maze.cellSize + Maze.wallSize : Maze.wallSize);
+        super.setWidth((originSide==Side.RIGHT || originSide==Side.LEFT) ? (Maze.wallSize+10) : (Maze.cellSize + Maze.wallSize + 15));
+        super.setHeight((originSide==Side.RIGHT || originSide==Side.LEFT) ? (Maze.cellSize + Maze.wallSize + 15) : (Maze.wallSize+10));
+        if (originSide==Side.LEFT || originSide==Side.RIGHT) super.loadCharacterImage("rotating-door-vertical.png");
+        else super.loadCharacterImage("rotating-door.png");
 
     }
     private void setRotationSettings(){
@@ -79,7 +83,7 @@ public class RotatingDoor extends Item{
     }
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.gray);
+        g.setColor(new Color(0, 212, 255));
 
         // Save the original transform
         Graphics2D g2d = (Graphics2D) g;
@@ -88,9 +92,9 @@ public class RotatingDoor extends Item{
         // Set the rotation transform based on the current angle and bottom-left origin
         AffineTransform transform = new AffineTransform();
         switch (rotationCorner) {
-            case topLeft -> transform.rotate(Math.toRadians(currentAngle), super.getX(), super.getY());
+            case topLeft -> transform.rotate(Math.toRadians(currentAngle), super.getX()+15, super.getY()+15);
             case topRight -> transform.rotate(Math.toRadians(currentAngle), super.getX()+super.getWidth(), super.getY());
-            case bottomRight -> transform.rotate(Math.toRadians(currentAngle), super.getX()+super.getWidth(), super.getY() + super.getHeight());
+            case bottomRight -> transform.rotate(Math.toRadians(currentAngle), super.getX()+super.getWidth()-15, super.getY() + super.getHeight()-15);
             case bottomLeft -> transform.rotate(Math.toRadians(currentAngle), super.getX(), super.getY() + super.getHeight());
 
 
@@ -99,7 +103,8 @@ public class RotatingDoor extends Item{
         g2d.transform(transform);
 
         // Draw the rotated door
-        g.fillRect(super.getX(), super.getY(), super.getWidth(), super.getHeight());
+        super.draw(g);
+        //g.fillRect(super.getX(), super.getY(), super.getWidth(), super.getHeight());
 
         // Restore the original transform
         g2d.setTransform(originalTransform);

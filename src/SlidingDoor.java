@@ -19,7 +19,7 @@ public class SlidingDoor extends Item{
         return settings;
     }
     public SlidingDoor(Maze settings, int originCol , int originRow, int destinationCol, int destinationRow, boolean horizontal) {
-        super();
+        super("sliding-door.png");
         this.originCol = originCol;
         this.originRow = originRow;
         this.destinationCol= destinationCol;
@@ -28,8 +28,8 @@ public class SlidingDoor extends Item{
         settings.maze[originRow][originCol].setT(1);
         settings.maze[destinationRow][destinationCol].setT(0);
         this.horizontal = horizontal;
-        super.setWidth((horizontal? Maze.cellSize : Maze.wallSize));
-        super.setHeight((horizontal? Maze.wallSize : Maze.cellSize));
+        super.setWidth((horizontal? Maze.cellSize : Maze.wallSize)+10);
+        super.setHeight((horizontal? Maze.wallSize : Maze.cellSize)+10);
         calculateCoordinates();
         super.setX(originX);
         super.setY(originY);
@@ -37,17 +37,17 @@ public class SlidingDoor extends Item{
 
     }
     private void calculateCoordinates(){
-        originX = (horizontal? Maze.wallSize : 0) + originCol*(Maze.cellSize + Maze.wallSize);
-        originY = (horizontal? 0: Maze.wallSize) + originRow*(Maze.cellSize + Maze.wallSize);
-        destinationX = (horizontal? Maze.wallSize : 0) + destinationCol*(Maze.cellSize + Maze.wallSize);
-        destinationY =(horizontal? 0: Maze.wallSize) + destinationCol*(Maze.cellSize + Maze.wallSize);
+        originX = (horizontal? Maze.wallSize : 0) + originCol*(Maze.cellSize + Maze.wallSize)-5;
+        originY = (horizontal? 0: Maze.wallSize) + originRow*(Maze.cellSize + Maze.wallSize)-5;
+        destinationX = (horizontal? Maze.wallSize : 0) + destinationCol*(Maze.cellSize + Maze.wallSize)-5;
+        destinationY =(horizontal? 0: Maze.wallSize) + destinationCol*(Maze.cellSize + Maze.wallSize)-5;
 
     }
     @Override
     public void draw(Graphics g){
-        g.setColor(Color.magenta);
-        g.fillRect(super.getX(), super.getY(), super.getWidth(), super.getHeight());
-
+//        g.setColor(new Color(84, 0, 255));
+//        g.fillRect(super.getX(), super.getY(), super.getWidth(), super.getHeight());
+        super.draw(g);
     }
     public void move() {
         int delay = 400; // Delay in milliseconds

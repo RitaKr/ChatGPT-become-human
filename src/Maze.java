@@ -161,7 +161,7 @@ public class Maze {
                     new Cell(1, 0, 1, 0, 4, 1),
                     new Cell(1, 1, 1, 0, 4, 2),
                     new Cell(0, 0, 1, 1, 4, 3),
-                    new Cell(0, 1, 1, 0, 4, 4),
+                    new Cell(1, 1, 1, 0, 4, 4),
                     new Cell(0, 0, 0, 1, 4, 5),
                     new Cell(0, 1, 0, 0, 4, 6),
                     new Cell(0, 1, 1, 1, 4, 7),
@@ -176,16 +176,24 @@ public class Maze {
                     new Cell(1, 1, 1, 0, 5, 7),
             }
     };
+    Color maze1col = new Color(194, 129, 189);
+    Color maze2col = new Color(121, 145, 201);
+    Color maze3col = new Color(161, 110, 243);
+    Color wallsColor;
+
     public Maze(int level) {
         switch (level) {
             case 1:
                 maze = mazeLv1;
+                wallsColor = maze1col;
                 break;
             case 2:
                 maze = mazeLv2;
+                wallsColor = maze2col;
                 break;
             case 3:
                 maze = mazeLv3;
+                wallsColor = maze3col;
                 break;
         }
     }
