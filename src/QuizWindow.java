@@ -9,7 +9,7 @@ public class QuizWindow extends JDialog {
     private final int width = 500;
     private final int height = 600;
     private int btnHeight = 100;
-    private int btnWidth = 380;
+    private int btnWidth = 400;
     private JPanel contentPane;
     Component parent;
     private String message;
@@ -61,7 +61,7 @@ public class QuizWindow extends JDialog {
         contentPane.setLayout(new GridBagLayout());
         setContentPane(contentPane);
 
-        JLabel lblMessage = new JLabel("<html><div style=\"text-align: center;\">"+message+"</div></html>");
+        JLabel lblMessage = new JLabel("<html><div style=\"text-align: center; padding: 0 10px\">"+message+"</div></html>");
         lblMessage.setHorizontalAlignment(SwingConstants.CENTER);
         lblMessage.setVerticalAlignment(SwingConstants.CENTER);
         lblMessage.setFont(font);
