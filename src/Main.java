@@ -16,21 +16,24 @@ public class Main {
     static InstructionUI instructionUI;
     static SettingsUI settingsUI;
     static MediaPlayer backgroundMediaPlayer;
+    static double volumeCoef, volumeCoef1;
 
 
     public static void startMazeGame(){
         pauseMusic();
-        mazeUI = new MazeUI();
+        mazeUI = new MazeUI(volumeCoef, volumeCoef1);
         mazeUI.setVisible(true);
     }
     public static void startMazeGame(int level){
         pauseMusic();
-        mazeUI = new MazeUI(level);
+        mazeUI = new MazeUI(level, volumeCoef, volumeCoef1);
         mazeUI.setVisible(true);
     }
 
     public static void main(String[] args) {
         fetchProgress();
+        volumeCoef=1.0;
+        volumeCoef1=1.0;
         //System.out.println("current progress: \n"+progress);
         chatUI = new ChatUI();
         chooseMazeUI = new ChooseMazeUI();
@@ -86,13 +89,13 @@ public class Main {
 
     public static void updateProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "lang:"+progress.getLanguage()+"; username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; deathReason:"+progress.getDeathReason()+"; msgCount:"+progress.getDialogCount()+"; chapter1:"+progress.getChapter1String()+"; chapter2:"+progress.getChapter2String()+"; chapter3:"+progress.getChapter3String();
+        String progressString = "lang:"+progress.getLanguage()+"; username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; deathReason:"+progress.getDeathReason()+"; msgCount:"+progress.getDialogCount()+"; chapter1:"+progress.getChapter1String()+"; chapter2:"+progress.getChapter2String()+"; chapter3:"+progress.getChapter3String()+"; finaleUnlocked:"+progress.isFinaleUnlocked();
         writeFile("progress.txt", progressString);
 
     }
     public static void resetProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "lang:en; username:player; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null; chapter3:null";
+        String progressString = "lang:en; username:player; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null; chapter3:null; finaleUnlocked:false";
         writeFile("progress.txt", progressString);
 
     }
@@ -100,7 +103,7 @@ public class Main {
         String filePath = "progress.txt"; // Replace with your file path
 
         String fileContent = readFile(filePath);
-        if (fileContent.isEmpty()) fileContent = "lang:en; username:player; lv:0; msgCount:0; alive:true; deathReason:none; chapter1:0-2; chapter2:null; chapter3:null";
+        if (fileContent.isEmpty()) fileContent = "lang:en; username:player; lv:0; msgCount:0; alive:true; deathReason:none; chapter1:0-2; chapter2:null; chapter3:null; finaleUnlocked:false";
         ////System.out.println(fileContent);
         progress = new ProgressData(fileContent);
 
@@ -132,7 +135,7 @@ public class Main {
         Media media = new Media(musicFile.toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(1);
-        mediaPlayer.setVolume(volume);
+        mediaPlayer.setVolume(volume* volumeCoef1);
         mediaPlayer.play();
     }
     public static void setMusic(String path, double volume) {
@@ -153,9 +156,15 @@ public class Main {
         backgroundMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         // Start playing the music
-        backgroundMediaPlayer.setVolume(volume);
+        backgroundMediaPlayer.setVolume(volume * volumeCoef);
 
 
+    }
+    public static void updateVolume(double volume) {
+        if (backgroundMediaPlayer!=null) {
+            backgroundMediaPlayer.setVolume(volume);
+            System.out.println(backgroundMediaPlayer.getVolume());
+        }
     }
     public static void playMusic() {
         if (backgroundMediaPlayer!=null)backgroundMediaPlayer.play();
@@ -177,5 +186,7 @@ public class Main {
         progress.setLanguage(language);
         updateProgress();
     }
+
+
 }
 

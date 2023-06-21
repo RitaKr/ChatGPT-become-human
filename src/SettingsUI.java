@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +13,9 @@ public class SettingsUI extends UI{
     JLabel titleLabel;
     JLabel title;
     JComboBox languageComboBox;
-    JPanel languagePanel;
-    JLabel languageLabel;
+    JPanel languagePanel, volumePanel, volumePanel1;
+    JLabel languageLabel, volumeLabel, volumeLabel1;
+    JSlider volumeSlider, volumeSlider1;
     GridBagConstraints c = new GridBagConstraints();
 
     public SettingsUI() {
@@ -34,6 +37,8 @@ public class SettingsUI extends UI{
         languageComboBox = new JComboBox<>(new String[]{"English", "Українська"});
         languageComboBox.setSelectedItem(Main.getLanguage().equals("en") ? "English" : "Українська"); // Set "English" as the default selection
         languageComboBox.setPreferredSize(new Dimension(100, 40));
+        languageComboBox.setForeground(textColor); // Set the color of the slider track and thumb
+        languageComboBox.setBackground(BG_COLOR);
         languageComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,7 +53,7 @@ public class SettingsUI extends UI{
         languagePanel = new JPanel(new BorderLayout());
         languagePanel.setBackground(transparent);
 
-        languageLabel =  new JLabel(Main.getLanguage().equals("en") ? "Language:" : "Мова:");
+        languageLabel =  new JLabel(Main.getLanguage().equals("en") ? "Language:" : "Мова:", SwingConstants.CENTER);
         languageLabel.setFont(font22);
         languageLabel.setForeground(textColor);
 
@@ -56,24 +61,73 @@ public class SettingsUI extends UI{
         languagePanel.add(languageComboBox, BorderLayout.CENTER);
         super.backgroundPanel.add(languagePanel, c);
 
+        c.gridy = 2;
+        volumeSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+        volumeSlider.setMajorTickSpacing(20);
+        volumeSlider.setMinorTickSpacing(5);
+        volumeSlider.setPaintTicks(false);
+        volumeSlider.setPaintLabels(true);
+        volumeSlider.setForeground(textColor); // Set the color of the slider track and thumb
+        volumeSlider.setBackground(BG_COLOR);
+        volumeSlider.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        // Add a change listener to respond to volume changes
+        volumeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                double volume = volumeSlider.getValue() / 100.0;
+                Main.updateVolume(volume*0.2);
+                System.out.println("Volume: " + volume);
+                // Add your logic here to handle the volume change
+            }
+        });
+
+        volumePanel = new JPanel(new BorderLayout());
+        volumePanel.setBackground(transparent);
+
+        volumeLabel =  new JLabel(Main.getLanguage().equals("en") ? "Music volume:" : "Гучність музики:", SwingConstants.CENTER);
+        volumeLabel.setFont(font22);
+        volumeLabel.setForeground(textColor);
+
+        volumePanel.add(volumeLabel, BorderLayout.NORTH);
+        volumePanel.add(volumeSlider, BorderLayout.CENTER);
+        super.backgroundPanel.add(volumePanel, c);
 
 
+        c.gridy = 3;
+        volumeSlider1 = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+        volumeSlider1.setMajorTickSpacing(20);
+        volumeSlider1.setMinorTickSpacing(5);
+        volumeSlider1.setPaintTicks(false);
+        volumeSlider1.setPaintLabels(true);
+        volumeSlider1.setForeground(textColor); // Set the color of the slider track and thumb
+        volumeSlider1.setBackground(BG_COLOR);
+        volumeSlider1.setBorder(new EmptyBorder(10, 10, 10, 10));
 
+        // Add a change listener to respond to volume changes
+        volumeSlider1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                double volume = volumeSlider1.getValue() / 100.0;
+                Main.volumeCoef1 =  volume;
+                System.out.println("Volume: " + volume);
+                // Add your logic here to handle the volume change
+            }
+        });
 
+        volumePanel1 = new JPanel(new BorderLayout());
+        volumePanel1.setBackground(transparent);
+
+        volumeLabel1 =  new JLabel(Main.getLanguage().equals("en") ? "Sounds volume:" : "Гучність звуків:", SwingConstants.CENTER);
+        volumeLabel1.setFont(font22);
+        volumeLabel1.setForeground(textColor);
+
+        volumePanel1.add(volumeLabel1, BorderLayout.NORTH);
+        volumePanel1.add(volumeSlider1, BorderLayout.CENTER);
+        super.backgroundPanel.add(volumePanel1, c);
 
 
         add(super.upperPanel, BorderLayout.NORTH);
-    }
-    private void drawTitle() {
-        titleLabel = new JLabel(Main.getLanguage().equals("uk") ? "Налаштування гри" : "Game settings", SwingConstants.CENTER);
-        titleLabel.setFont(titleFont);
-        titleLabel.setForeground(TITLE_COLOR);
-        //titleLabel.setBorder(new LineBorder(TITLE_COLOR));
-        titlePanel = new JPanel();
-        titlePanel.add(titleLabel);
-        titlePanel.setBorder(new EmptyBorder(8,0,8, 0));
-        titlePanel.setBackground(BG_COLOR);
-        super.backgroundPanel.add(titlePanel, BorderLayout.NORTH);
     }
     private void changeLanguage(String selectedLanguage) {
         System.out.println("changeLanguage: " + selectedLanguage);
@@ -91,7 +145,8 @@ public class SettingsUI extends UI{
         levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ") +Main.getProgress().getLv());
         title.setText(Main.getLanguage().equals("en") ? "Settings" : "Налаштування");
         languageLabel.setText(Main.getLanguage().equals("en") ? "Language:" : "Мова:");
-
+        volumeLabel.setText(Main.getLanguage().equals("en") ? "Music volume:" : "Гучність музики:");
+        volumeLabel1.setText(Main.getLanguage().equals("en") ? "Sounds volume:" : "Гучність звуків:");
     }
     public static void main(String[] args) {
         new SettingsUI().setVisible(true);

@@ -63,6 +63,8 @@ public class MazeGame extends JPanel {
     Item key;
     Item finish;
     Item quiz1Item, quiz2Item, quiz3Item;
+    double volumeCoef=1.0;
+    double volumeCoef1=1.0;
 
     static ArrayList<Quiz> quizes =  new ArrayList<Quiz>(Arrays.asList(
             new Quiz("Which of these methods is used to output text to the console in Java?",
@@ -187,14 +189,18 @@ public class MazeGame extends JPanel {
     }
 
     public MazeGame(int level) {
+
         this.level = level;
         setScene(level);
     }
     public MazeGame() {
+
         this.level = Main.getProgress().getLv();
         setScene();
     }
-    public MazeGame(boolean fromChooseMaze, int level) {
+    public MazeGame(boolean fromChooseMaze, int level, double volumeCoef, double volumeCoef1) {
+        this.volumeCoef= volumeCoef;
+        this.volumeCoef1= volumeCoef1;
         this.fromChooseMaze = fromChooseMaze;
         if (fromChooseMaze) {
             this.level = level;
@@ -620,6 +626,9 @@ public class MazeGame extends JPanel {
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
+                            Main.getProgress().setFinaleUnlocked(true);
+                            Main.getProgress().getChatData().yourChapter3.setCompleted(true);
+                            Main.chatUI.addFinal();
                             Main.chatUI.setVisible(true);
                             stopMusic();
                             SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
@@ -800,9 +809,15 @@ public class MazeGame extends JPanel {
         Media media = new Media(musicFile.toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(1);
-        mediaPlayer.setVolume(volume);
+        mediaPlayer.setVolume(volume * volumeCoef1);
         mediaPlayer.play();
     }
+//    public static void updateVolume(double volume) {
+//        if (mediaPlayer!=null) {
+//            mediaPlayer.setVolume(volume);
+//            System.out.println(mediaPlayer.getVolume());
+//        }
+//    }
     public void setMusic(String path, double volume) {
         // Initialize JavaFX environment
         new JFXPanel();
@@ -821,8 +836,9 @@ public class MazeGame extends JPanel {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         // Start playing the music
-        mediaPlayer.setVolume(volume);
 
+        mediaPlayer.setVolume(volume * volumeCoef);
+        //System.out.println("Main.volumeCoef "+Main.volumeCoef+"volumeCoef "+volumeCoef+", maze volume "+mediaPlayer.getVolume());
 
     }
     public void playMusic() {

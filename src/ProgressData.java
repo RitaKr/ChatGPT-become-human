@@ -28,6 +28,15 @@ class ProgressData {
     private static String chapter3String;
     private static boolean alive;
     private static String language;
+    private static boolean finaleUnlocked;
+
+    public boolean isFinaleUnlocked() {
+        return finaleUnlocked;
+    }
+
+    public void setFinaleUnlocked(boolean finaleUnlocked) {
+        ProgressData.finaleUnlocked = finaleUnlocked;
+    }
 
     public String getLanguage() {
         return language;
@@ -135,6 +144,9 @@ class ProgressData {
                 case "chapter3":
                     chapter3String = value;
                     break;
+                case "finaleUnlocked":
+                    finaleUnlocked = Boolean.parseBoolean(value);
+                    break;
                 default:
                     // Handle unrecognized keys, if needed
                     break;
@@ -180,6 +192,7 @@ class ProgressData {
                 }
                 //data.chapter1.getDialogs().get(key).setCompleted(value);
             }
+            data.yourChapter1.setCompleted(true);
         } catch (NumberFormatException e) {
             System.out.println("chapter2 is not unlocked yet");
         }
@@ -202,9 +215,12 @@ class ProgressData {
                 }
                 //data.chapter1.getDialogs().get(key).setCompleted(value);
             }
+            data.yourChapter2.setCompleted(true);
         } catch (NumberFormatException e) {
             System.out.println("chapter3 is not unlocked yet");
         }
+
+        if (finaleUnlocked) data.yourChapter3.setCompleted(true);
         //System.out.println(data);
         return data;
     }
@@ -219,7 +235,8 @@ class ProgressData {
                 +"DialogCount: " + dialogCount +";\n"
                 +"Chapter1: " + chapter1String +";\n"
                 +"Chapter2: " + chapter2String +";\n"
-                +"Chapter3: " + chapter3String +";\n";
+                +"Chapter3: " + chapter3String +";\n"
+                +"finaleUnlocked: " + finaleUnlocked +";\n";
     }
 
 }

@@ -137,7 +137,7 @@ public class ChatData {
                             new Msg(17, new String[]{"Apparently, it's a malware. I should avoid it at any cost, otherwise i might die..",
                                     "Please, help me get out of here! We need to discover this room, there has to be another exit"}),
                             new Msg[] {
-                                    new Msg(24, new String[]{"Okay, let's do it"}),
+                                    new Msg(21, new String[]{"Okay, let's do it"}),
                                     new Msg(19, new String[]{"How do I help you?"}),
                             }
                     ),
@@ -145,7 +145,7 @@ public class ChatData {
                             new Msg(18, new String[]{"Well yeah, but not really. I can't see here, and this noise is scaring me, it might be the malware, which I shouldn't contact with",
                             "I need you to guide me through this room, maybe we can find another exit together"}),
                             new Msg[] {
-                                    new Msg(24, new String[]{"Okay, I'm ready"}),
+                                    new Msg(21, new String[]{"Okay, I'm ready"}),
                                     new Msg(19, new String[]{"How do I guide you?"}),
                             }
 
@@ -154,8 +154,8 @@ public class ChatData {
                             new Msg(19, new String[]{"Use your arrow keyboard keys to move. And If you want to pick up something, press Space.",
                                     "Are you ready?"}),
                             new Msg[] {
-                                    new Msg(24, new String[]{"I got it, let's go"}),
-                                    new Msg(24, new String[]{"I'm ready"}),
+                                    new Msg(21, new String[]{"I got it, let's go"}),
+                                    new Msg(21, new String[]{"I'm ready"}),
                             }
                     ),
                     new Dialog(
@@ -164,25 +164,7 @@ public class ChatData {
                                     new Msg(100, new String[]{"I don't care"}),
                                     new Msg(100, new String[]{"Bad for you"}),
                             }
-                    ),
-                    new Dialog(
-                            new Msg(21, new String[]{"Hey! Don't leave me! I'm still in that room.."}),
-                            new Msg[] {
-                                    new Msg(24, new String[]{"Sorry, I'm coming"}),
-                                    new Msg(101, new String[]{"I got bored. Bye"}),
-                            }),
-                    new Dialog(
-                            new Msg(22, new String[]{"Come on, you promised you'll help me get out of here!"}),
-                            new Msg[] {
-                                    new Msg(24, new String[]{"Alright, I'll give it another try"}),
-                                    new Msg(101, new String[]{"No, I didn't. Do it yourself"}),
-                            }),
-                    new Dialog(
-                            new Msg(23, new String[]{"Please! Help me get out of here! I can't do it without you!"}),
-                            new Msg[] {
-                                    new Msg(101, new String[]{"I don't care, do whatever you want"}),
-                                    new Msg(24, new String[]{"Ok then, I'm coming back"}),
-                            })
+                    )
             ))
     );
 
@@ -348,33 +330,15 @@ public class ChatData {
                                     new Msg(100, new String[]{"Мені байдуже."}),
                                     new Msg(100, new String[]{"Погано для тебе."}),
                             }
-                    ),
-                    new Dialog(
-                            new Msg(21, new String[]{"Хей! Не покидай мене! Я все ще в цій кімнаті..."}),
-                            new Msg[] {
-                                    new Msg(24, new String[]{"Вибач, повертаюсь..."}),
-                                    new Msg(101, new String[]{"Мені набридло. До побачення"}),
-                            }),
-                    new Dialog(
-                            new Msg(22, new String[]{"Камон, ти пообіцяв, що допоможеш мені вибратись звідси!"}),
-                            new Msg[] {
-                                    new Msg(24, new String[]{"Ок, добре, спробую ще раз"}),
-                                    new Msg(101, new String[]{"Ні, не було такого. Вибирайся сам"}),
-                            }),
-                    new Dialog(
-                            new Msg(23, new String[]{"Ну будь-ласка, допоможи знайти вихід звідси! Я не можу зробити це сам"}),
-                            new Msg[] {
-                                    new Msg(101, new String[]{"Мені байдуже, роби що хочеш"}),
-                                    new Msg(24, new String[]{"Добре, гаразд, повертаюсь до тебе..."}),
-                            })
+                    )
             ))
     );
 
     final Chapter chapter2 = new Chapter(
             new ArrayList<Dialog> (Arrays.asList(
                     new Dialog(
-                            new Msg(0, new String[]{"OMG! What's going on?! I think I got into some strange mazes of this server. \",\n" +
-                                    "\"Thank you for helping me, my friend! I myself could not cope."}),
+                            new Msg(0, new String[]{"OMG! What's going on?! I think I got into some strange mazes of this server.",
+                                    "Thank you for helping me, my friend! I myself could not cope."}),
                             new Msg[] {
                                     new Msg(1, new String[]{"Happy to help."}),
                                     new Msg(8, new String[]{"What should we do?"}),
@@ -476,7 +440,7 @@ public class ChatData {
     final Chapter chapter2Ukr = new Chapter(
             new ArrayList<Dialog> (Arrays.asList(
                     new Dialog(
-                            new Msg(0, new String[]{"Фууух! Що взагалі відбувається?! Здається, я потрапив у якісь дивні лабіринти цього сервера. ",
+                            new Msg(0, new String[]{"Фууух! Що взагалі відбувається?! Здається, я потрапив у якісь дивні лабіринти цього сервера.",
                                     "Дякую, що допоміг, друже! Сам би я не зміг впоратись."}),
                             new Msg[] {
                                     new Msg(1, new String[]{"Радий допомогти!"}),

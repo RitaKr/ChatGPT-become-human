@@ -1,7 +1,17 @@
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ChatUI extends UI {
     static JPanel chatArea = new JPanel(new GridBagLayout());
@@ -53,10 +63,42 @@ public class ChatUI extends UI {
 
 
     }
-    private void addMessage(Dialog dialog, int level){
+    private void addOldMessage(Dialog dialog, Dialog dialogOtherLang){
         for (String text : dialog.getGpt().getTexts()) {
             MessagePanel message = new MessagePanel(true, text);
             chatArea.add(message, gbc);
+
+        }
+        answer1.setText(dialog.getUser()[0].getTexts()[0]);
+        answer2.setText(dialog.getUser()[1].getTexts()[0]);
+
+        //final boolean answered = dialog.isCompleted();
+
+        Msg chosen = dialog.getUser()[0].isChosen() ? dialog.getUser()[0] : dialog.getUser()[1];
+        if (dialog.isCompleted() && dialog.getId()<(calcTotalMessages()-1)) {
+            MessagePanel message = new MessagePanel(false, chosen.getTexts()[0]);
+            System.out.println("i added message: "+chosen.getTexts()[0]);
+            chatArea.add(message, gbc);
+            //dialog.setId(Main.getProgress().getDialogCount());
+//            System.out.println("cur lv: "+level+", cur dialog: "+dialog+" (id: "+dialog.getId()+")");
+//            System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
+
+            //Main.updateDialogCount();
+        }
+
+
+        SwingUtilities.invokeLater(() -> {
+            scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+        });
+        Main.updateChatData(chatData);
+        //chatArea.setPreferredSize(new Dimension(860, chatArea.getHeight()+100*(1+dialog.getGpt().getTexts().length)));
+    }
+
+    private void addMessage(Dialog dialog, Dialog dialogOtherLang, int level){
+        for (String text : dialog.getGpt().getTexts()) {
+            MessagePanel message = new MessagePanel(true, text);
+            chatArea.add(message, gbc);
+
         }
         //if (Main.getProgress().getDialogCount()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)) dialog.setId(Main.getProgress().getDialogCount());
         dialog.setId(Main.getProgress().getDialogCount());
@@ -82,13 +124,16 @@ public class ChatUI extends UI {
 
 
                     //                    if (!dialog.isCompleted() && dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()-1)) {
-                    if (!dialog.isCompleted() || dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs-1)) {
+                    if (!dialog.isCompleted() || dialog.getId()==(calcTotalMessages()-1)) {
                         //if (!dialog.isCompleted() && (dialog.getUser()[0].getPlot()<chatData.chapter1.getDialogs().size() && !chatData.yourChapter1.getDialogs().contains(chatData.chapter1.getDialogs().get(dialog.getUser()[0].getPlot())) || dialog.getUser()[0].getPlot()>=chatData.chapter1.getDialogs().size())) {
                         Main.playEffect("click.wav", 0.2);
                         //answered[0] = true;
                         dialog.getUser()[0].setChosen(true);
                         dialog.setCompleted(true);
-                        MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0]));
+                        dialogOtherLang.getUser()[0].setChosen(true);
+                        dialogOtherLang.setCompleted(true);
+
+                        MessagePanel message = new MessagePanel(false, dialog.getUser()[0].getTexts()[0]);
                         chatArea.add(message, gbc);
                         System.out.println("!!!added answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
 //                        System.out.println("cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
@@ -97,67 +142,11 @@ public class ChatUI extends UI {
                         dialog.setId(Main.getProgress().getDialogCount());
                         System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer1.addActionListener");
                         Main.updateDialogCount();
-                        try {
-                            switch (level){
-                                case 0: {
-                                    Dialog newDialog = Main.getLanguage().equals("en") ?
-                                            chatData.chapter1.getDialogs().get(dialog.getUser()[0].getPlot()) :
-                                            chatData.chapter1Ukr.getDialogs().get(dialog.getUser()[0].getPlot());
-                                    chatData.yourChapter1.getDialogs().add(newDialog);
-                                    addMessage(newDialog, 0);
-                                    break;
-                                }
-                                case 1: {
-                                    //chatData.yourChapter1.getDialogs().add(dialog);
-                                    if (dialog.getUser()[0].getPlot() == 0) {
-                                        ////System.out.println(true);
-                                        //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-                                        Main.startMazeGame();
-                                        SwingUtilities.invokeLater(() -> dispose());
-                                    } else if (dialog.getUser()[0].getPlot() == 100){
-                                        dispose();
-                                        System.exit(0);
-                                    } else {
-                                        addDeathMessage(1);
-                                    }
-                                    break;
-                                }
-                                case 2: {
-                                    Dialog newDialog = Main.getLanguage().equals("en") ?
-                                            chatData.chapter2.getDialogs().get(dialog.getUser()[0].getPlot()) :
-                                            chatData.chapter2Ukr.getDialogs().get(dialog.getUser()[0].getPlot());
-                                    chatData.yourChapter2.getDialogs().add(newDialog);
-                                    addMessage(newDialog, 2);
-                                    break;
-                                }
-                                case 3: {
-                                    Dialog newDialog = Main.getLanguage().equals("en") ?
-                                            chatData.chapter3.getDialogs().get(dialog.getUser()[0].getPlot()) :
-                                            chatData.chapter3Ukr.getDialogs().get(dialog.getUser()[0].getPlot());
-                                    chatData.yourChapter3.getDialogs().add(newDialog);
-                                    addMessage(newDialog, 3);
-                                    break;
-                                }
-                            }
 
-                        } catch (IndexOutOfBoundsException ex) {
-                            //System.out.println("plot "+dialog.getUser()[0].getPlot());
-                            //dispose();
-                            if (dialog.getUser()[0].getPlot() == chatData.chapter1.getDialogs().size() && level<2
-                                    || dialog.getUser()[0].getPlot() == chatData.chapter2.getDialogs().size() && level==2
-                                    || dialog.getUser()[0].getPlot() == chatData.chapter3.getDialogs().size() && level==3) {
-                                ////System.out.println(true);
-                                //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-                                if (Main.getProgress().getLv()==0) Main.updateLevel();
-                                Main.startMazeGame();
-                                SwingUtilities.invokeLater(() -> dispose());
-                            } else {
-                                //System.out.println("exit game");
 
-                                dispose();
-                                System.exit(0); // Exit the program
-                            }
-                        }
+                        addNextDialog(level, dialog, dialogOtherLang, dialog.getUser()[0].getPlot());
+
+
                     } else if (dialog.getGpt().getPlot()==101) {
                         dispose();
                         System.exit(0);
@@ -181,79 +170,25 @@ public class ChatUI extends UI {
                     //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
 
                     //                    if (!dialog.isCompleted() && dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()-1)) {
-                    if (!dialog.isCompleted() || dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs-1)) {
+                    if (!dialog.isCompleted() || dialog.getId()==(calcTotalMessages()-1)) {
                         //answered[0] = true;
                         Main.playEffect("click.wav", 0.2);
                         dialog.getUser()[1].setChosen(true);
                         dialog.setCompleted(true);
-                        MessagePanel message = new MessagePanel(false, (dialog.getUser()[0].isChosen() ? dialog.getUser()[0].getTexts()[0] : dialog.getUser()[1].getTexts()[0]));
+                        dialogOtherLang.getUser()[1].setChosen(true);
+                        dialogOtherLang.setCompleted(true);
+
+                        MessagePanel message = new MessagePanel(false,  dialog.getUser()[1].getTexts()[0]);
                         chatArea.add(message, gbc);
-                        System.out.println("!!!added answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
+                        //System.out.println("!!!added answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
 
 
                         dialog.setId(Main.getProgress().getDialogCount());
                         System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer2.addActionListener");
                         Main.updateDialogCount();
 
-                        try {
-                            switch (level){
-                                case 0: {
-                                    Dialog newDialog = Main.getLanguage().equals("en") ?
-                                            chatData.chapter1.getDialogs().get(dialog.getUser()[1].getPlot()) :
-                                            chatData.chapter1Ukr.getDialogs().get(dialog.getUser()[1].getPlot());
-                                    chatData.yourChapter1.getDialogs().add(newDialog);
-                                    addMessage(newDialog, 0);
-                                    break;
-                                }
-                                case 1: {
-                                    //chatData.yourChapter1.getDialogs().add(dialog);
-                                    if (dialog.getUser()[1].getPlot() == 0) {
-                                        ////System.out.println(true);
-                                        //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-                                        Main.startMazeGame();
-                                        SwingUtilities.invokeLater(() -> dispose());
-                                    } else if (dialog.getUser()[1].getPlot() == 100){
-                                        dispose();
-                                        System.exit(0);
-                                    } else {
-                                        addDeathMessage(1);
-                                    }
-                                    break;
-                                }
-                                case 2: {
-                                    Dialog newDialog = Main.getLanguage().equals("en") ?
-                                            chatData.chapter2.getDialogs().get(dialog.getUser()[1].getPlot()) :
-                                            chatData.chapter2Ukr.getDialogs().get(dialog.getUser()[1].getPlot());
-                                    chatData.yourChapter2.getDialogs().add(newDialog);
-                                    addMessage(newDialog, 2);
-                                    break;
-                                }
-                                case 3: {
-                                    Dialog newDialog = Main.getLanguage().equals("en") ?
-                                            chatData.chapter3.getDialogs().get(dialog.getUser()[1].getPlot()) :
-                                            chatData.chapter3Ukr.getDialogs().get(dialog.getUser()[1].getPlot());
-                                    chatData.yourChapter3.getDialogs().add(newDialog);
-                                    addMessage(newDialog, 3);
-                                    break;
-                                }
-                            }
-                        } catch (IndexOutOfBoundsException ex) {
-                            //dispose();
-                            //System.out.println("plot "+dialog.getUser()[0].getPlot());
-                            if (dialog.getUser()[1].getPlot() == chatData.chapter1.getDialogs().size() && level<2
-                                    || dialog.getUser()[1].getPlot() == chatData.chapter2.getDialogs().size() && level==2
-                                    || dialog.getUser()[1].getPlot() == chatData.chapter3.getDialogs().size() && level==3) {
-                                ////System.out.println(true);
-                                //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-                                if (Main.getProgress().getLv()==0) Main.updateLevel();
-                                Main.startMazeGame();
-                                SwingUtilities.invokeLater(() -> dispose());
-                            } else {
-                                //System.out.println("exit game");
-                                dispose();
-                                System.exit(0); // Exit the program
-                            }
-                        }
+                        addNextDialog(level, dialog, dialogOtherLang, dialog.getUser()[1].getPlot());
+
                     } else if (dialog.getGpt().getPlot()==101) {
                         dispose();
                         System.exit(0);
@@ -307,7 +242,7 @@ public class ChatUI extends UI {
 
         }
         Msg chosen = dialog.getUser()[0].isChosen() ? dialog.getUser()[0] : dialog.getUser()[1];
-        if (dialog.isCompleted() && dialog.getId()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs-1)) {
+        if (dialog.isCompleted() && dialog.getId()<(calcTotalMessages()-1)) {
             MessagePanel message = new MessagePanel(false, chosen.getTexts()[0]);
             System.out.println("i added message: "+chosen.getTexts()[0]);
             chatArea.add(message, gbc);
@@ -325,44 +260,179 @@ public class ChatUI extends UI {
         Main.updateChatData(chatData);
         //chatArea.setPreferredSize(new Dimension(860, chatArea.getHeight()+100*(1+dialog.getGpt().getTexts().length)));
     }
+
+    private void addNextDialog(int level, Dialog dialog, Dialog dialogOtherLang, int nextPlot) {
+        System.out.println("addNextDialog: \ncurrent dialog: "+dialog+"\nnext plot: "+nextPlot+"\n");
+        System.out.println("!!!added answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
+        //dialog.setId(Main.getProgress().getDialogCount());
+        //dialogOtherLang.setId(Main.getProgress().getDialogCount());
+        //System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer2.addActionListener");
+        //Main.getProgress().setDialogCount(calcTotalMessages());
+        try {
+
+            switch (level){
+                case 0: {
+                    Dialog newDialog = chatData.chapter1.getDialogs().get(nextPlot);
+                    Dialog newDialogUkr = chatData.chapter1Ukr.getDialogs().get(nextPlot);
+                    chatData.yourChapter1.getDialogs().add(newDialog);
+                    chatData.yourChapter1Ukr.getDialogs().add(newDialogUkr);
+                    if (Main.getLanguage().equals("en")) addMessage(newDialog, newDialogUkr, 0);
+                    else addMessage(newDialogUkr, newDialog, 0);
+                    break;
+                }
+                case 1: {
+                    //chatData.yourChapter1.getDialogs().add(dialog);
+                    if (nextPlot == 0) {
+                        ////System.out.println(true);
+                        //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
+                        System.out.println("Strarting maze from addNextDialog case 1");
+                        Main.startMazeGame();
+                        SwingUtilities.invokeLater(() -> dispose());
+                    } else if (nextPlot == 101){ //101 death
+                        addDeathMessage(1);
+                    } else { //100 exit
+
+                        dispose();
+                        System.exit(0); // Exit the program
+                    }
+                    break;
+                }
+                case 2: {
+                    Dialog newDialog = chatData.chapter2.getDialogs().get(nextPlot);
+                    Dialog newDialogUkr = chatData.chapter2Ukr.getDialogs().get(nextPlot);
+                    chatData.yourChapter2.getDialogs().add(newDialog);
+                    chatData.yourChapter2Ukr.getDialogs().add(newDialogUkr);
+                    if (Main.getLanguage().equals("en")) addMessage(newDialog, newDialogUkr, 2);
+                    else addMessage(newDialogUkr, newDialog, 2);
+                    break;
+                }
+                case 3: {
+                    Dialog newDialog = chatData.chapter3.getDialogs().get(nextPlot);
+                    Dialog newDialogUkr = chatData.chapter3Ukr.getDialogs().get(nextPlot);
+                    chatData.yourChapter3.getDialogs().add(newDialog);
+                    chatData.yourChapter3Ukr.getDialogs().add(newDialogUkr);
+                    if (Main.getLanguage().equals("en")) addMessage(newDialog, newDialogUkr, 3);
+                    else addMessage(newDialogUkr, newDialog, 3);
+                    break;
+                }
+            }
+            Main.updateChatData(chatData);
+
+        } catch (IndexOutOfBoundsException ex) {
+            System.out.println(ex.getMessage());
+            //System.out.println("plot "+dialog.getUser()[0].getPlot());
+            //dispose();
+            if (nextPlot == chatData.chapter1.getDialogs().size() && level<2
+                    || nextPlot == chatData.chapter2.getDialogs().size() && level==2
+                    || nextPlot == chatData.chapter3.getDialogs().size() && level==3) {
+                ////System.out.println(true);
+                //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
+                if (Main.getProgress().getLv()==0) Main.updateLevel();
+                switch (level) {
+                    case 1: {
+                        System.out.println("set chapter1 completed");
+                        chatData.yourChapter1.setCompleted(true);
+                        chatData.yourChapter1Ukr.setCompleted(true);
+                        break;
+                    }
+                    case 2: {
+                        System.out.println("set chapter2 completed");
+                        chatData.yourChapter2.setCompleted(true);
+                        chatData.yourChapter2Ukr.setCompleted(true);
+                        break;
+                    }
+                    case 3: {
+                        System.out.println("set chapter3 completed");
+                        chatData.yourChapter3.setCompleted(true);
+                        chatData.yourChapter3Ukr.setCompleted(true);
+                        break;
+                    }
+
+                }
+                Main.updateChatData(chatData);
+                System.out.println("Starting maze from addNextDialog catch");
+                Main.startMazeGame();
+                SwingUtilities.invokeLater(this::dispose);
+            }
+//            else if (nextPlot == 101){ //101 death
+//                addDeathMessage(1);
+//            }
+            else { //100 exit
+                System.out.println("exit game");
+                dispose();
+                //System.exit(0); // Exit the program
+            }
+        }
+
+    }
+    private int calcTotalMessages() {
+        return chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs;
+    }
+    @Override
+    public void updateProgressData(){
+        super.updateProgressData();
+        chatArea.removeAll();
+        setMessages();
+    }
     private void setMessages(){
         Main.getProgress().setDialogCount(0);
+        System.out.println("chatData.yourChapter1 "+chatData.yourChapter1);
+        System.out.println("chatData.yourChapter1Ukr "+chatData.yourChapter1Ukr);
+
         //System.out.println(chatData.chapter.getDialogs());
-        for (Dialog dialog : chatData.yourChapter1.getDialogs() ) {
-            //if (dialog.isCompleted()) {
-            addMessage(dialog, 0);
-            //}
+        for (int i=0; i<chatData.yourChapter1.getDialogs().size(); i++) {
+            Dialog dialog =  chatData.yourChapter1.getDialogs().get(i);
+            Dialog dialogUkr =  chatData.yourChapter1Ukr.getDialogs().get(i);
+            if (i<chatData.yourChapter1.getDialogs().size()-1) {
+                if (Main.getLanguage().equals("en")) addOldMessage(dialog, dialogUkr);
+                else addOldMessage(dialogUkr, dialog);
+            } else {
+                if (Main.getLanguage().equals("en")) addMessage(dialog, dialogUkr, 0);
+                else addMessage(dialogUkr, dialog, 0);
+            }
+
         }
         if (!Main.getProgress().isAlive()) {
             if (Main.getDeathReason().equals("mob")) addDeathMessage(0);
-            else {
-                addDeathMessage(1);
-            }
-        } else {
-            if (Main.getProgress().getLv()>1) {
-                if (chatData.yourChapter2.getDialogs().size()>0) {
-                    for (Dialog dialog : chatData.yourChapter2.getDialogs() ) {
-                        //if (dialog.isCompleted()) {
-                        addMessage(dialog, 2);
-                        //}
+            else addDeathMessage(1);
+        } else if (Main.getProgress().getLv() > 1) {
+            if (chatData.yourChapter2.getDialogs().size() > 0) {
+                for (int i=0; i<chatData.yourChapter2.getDialogs().size(); i++) {
+                    Dialog dialog =  chatData.yourChapter2.getDialogs().get(i);
+                    Dialog dialogUkr =  chatData.yourChapter2Ukr.getDialogs().get(i);
+                    if (i<chatData.yourChapter2.getDialogs().size()-1) {
+                        if (Main.getLanguage().equals("en")) addOldMessage(dialog, dialogUkr);
+                        else addOldMessage(dialogUkr, dialog);
+                    } else {
+                        if (Main.getLanguage().equals("en")) addMessage(dialog, dialogUkr, 2);
+                        else addMessage(dialogUkr, dialog, 2);
                     }
                 }
-                if (!Main.getProgress().isAlive()) {
-                    if (Main.getDeathReason().equals("mob")) addDeathMessage(0);
-                    else {
-                        addDeathMessage(1);
-                    }
-                } else {
-                    if (Main.getProgress().getLv()>2) {
-                        if (chatData.yourChapter3.getDialogs().size()>0) {
-                            for (Dialog dialog : chatData.yourChapter3.getDialogs() ) {
-                                //if (dialog.isCompleted()) {
-                                addMessage(dialog, 3);
-                                //}
+            }
+            if (!Main.getProgress().isAlive()) {
+                if (Main.getDeathReason().equals("mob")) addDeathMessage(0);
+                else addDeathMessage(1);
+
+            } else {
+                if (Main.getProgress().getLv() > 2) {
+                    if (chatData.yourChapter3.getDialogs().size() > 0) {
+                        for (int i=0; i<chatData.yourChapter3.getDialogs().size(); i++) {
+                            Dialog dialog =  chatData.yourChapter3.getDialogs().get(i);
+                            Dialog dialogUkr =  chatData.yourChapter3Ukr.getDialogs().get(i);
+                            if (i<chatData.yourChapter3.getDialogs().size()-1) {
+                                if (Main.getLanguage().equals("en")) addOldMessage(dialog, dialogUkr);
+                                else addOldMessage(dialogUkr, dialog);
+                            } else {
+                                if (Main.getLanguage().equals("en")) addMessage(dialog, dialogUkr, 3);
+                                else addMessage(dialogUkr, dialog, 3);
                             }
                         }
-
                     }
+                    if (!Main.getProgress().isAlive()) {
+                        if (Main.getDeathReason().equals("mob")) addDeathMessage(0);
+                        else addDeathMessage(1);
+                    }
+
                 }
             }
         }
@@ -373,14 +443,14 @@ public class ChatUI extends UI {
         switch (i) {
             case 0:{
                 Main.setDeathReason("mob");
-                if (Main.getLanguage().equals("uk")) addMessage(chatData.deathDialogUkr, 1);
-                else if (Main.getLanguage().equals("en")) addMessage(chatData.deathDialog, 1);
+                if (Main.getLanguage().equals("uk")) addMessage(chatData.deathDialogUkr, chatData.deathDialog,1);
+                else if (Main.getLanguage().equals("en")) addMessage(chatData.deathDialog, chatData.deathDialogUkr, 1);
                 break;
             }
             case 1:{
                 Main.setDeathReason("rude");
-                if (Main.getLanguage().equals("uk")) addMessage(chatData.deathDialog1Ukr, 1);
-                else if (Main.getLanguage().equals("en")) addMessage(chatData.deathDialog1, 1);
+                if (Main.getLanguage().equals("uk")) addMessage(chatData.deathDialog1Ukr, chatData.deathDialog1,1);
+                else if (Main.getLanguage().equals("en")) addMessage(chatData.deathDialog1, chatData.deathDialog1Ukr, 1);
                 break;
             }
         }
@@ -390,36 +460,36 @@ public class ChatUI extends UI {
         Main.setAlive(false);
     }
     public void addFinishMazeMessage(){
-        if (Main.getLanguage().equals("uk")) addMessage(chatData.finishMaze1ChapterUkr.get((int) Math.floor(Math.random() * chatData.finishMaze1ChapterUkr.size())), 1);
-        else if (Main.getLanguage().equals("en")) addMessage(chatData.finishMaze1Chapter.get((int) Math.floor(Math.random() * chatData.finishMaze1Chapter.size())), 1);
+        int randomIndex = (int) Math.floor(Math.random() * chatData.finishMaze1Chapter.size());
+        if (Main.getLanguage().equals("uk")) addMessage(chatData.finishMaze1ChapterUkr.get(randomIndex), chatData.finishMaze1Chapter.get(randomIndex), 1);
+        else if (Main.getLanguage().equals("en")) addMessage(chatData.finishMaze1Chapter.get(randomIndex),chatData.finishMaze1ChapterUkr.get(randomIndex), 1);
         //Main.updateDialogCount();
         additionalDialogs++;
     }
     public void startChapter2(){
+        chatData.yourChapter2Ukr.getDialogs().add(chatData.chapter2Ukr.getDialogs().get(0));
+        chatData.yourChapter2.getDialogs().add(chatData.chapter2.getDialogs().get(0));
+        Main.updateChatData(chatData);
         if (Main.getLanguage().equals("uk")) {
-            chatData.yourChapter2.getDialogs().add(chatData.chapter2Ukr.getDialogs().get(0));
-            Main.updateChatData(chatData);
-            addMessage(chatData.chapter2Ukr.getDialogs().get(0), 2);
+            addMessage(chatData.chapter2Ukr.getDialogs().get(0), chatData.chapter2.getDialogs().get(0),2);
         }
         else if (Main.getLanguage().equals("en")) {
-            chatData.yourChapter2.getDialogs().add(chatData.chapter2.getDialogs().get(0));
-            Main.updateChatData(chatData);
-            addMessage(chatData.chapter2.getDialogs().get(0), 2);
+            addMessage(chatData.chapter2.getDialogs().get(0), chatData.chapter2Ukr.getDialogs().get(0), 2);
         }
-        //Main.updateDialogCount();
+
     }
     public void startChapter3(){
+        chatData.yourChapter3Ukr.getDialogs().add(chatData.chapter3Ukr.getDialogs().get(0));
+        chatData.yourChapter3.getDialogs().add(chatData.chapter3.getDialogs().get(0));
+        Main.updateChatData(chatData);
         if (Main.getLanguage().equals("uk")) {
-            chatData.yourChapter3.getDialogs().add(chatData.chapter3Ukr.getDialogs().get(0));
-            Main.updateChatData(chatData);
-            addMessage(chatData.chapter3Ukr.getDialogs().get(0), 3);
+            addMessage(chatData.chapter3Ukr.getDialogs().get(0), chatData.chapter3.getDialogs().get(0), 3);
         }
         else if (Main.getLanguage().equals("en")) {
-            chatData.yourChapter3.getDialogs().add(chatData.chapter3.getDialogs().get(0));
-            Main.updateChatData(chatData);
-            addMessage(chatData.chapter3.getDialogs().get(0), 3);
+
+            addMessage(chatData.chapter3.getDialogs().get(0), chatData.chapter3Ukr.getDialogs().get(0), 3);
         }
-        //Main.updateDialogCount();
+
     }
 
     public JButton setAnswerOption(String text) {
@@ -443,6 +513,32 @@ public class ChatUI extends UI {
     private String HTMLfyText(String text) {
         return "<html><div style=\"padding: 5px 10px\">"+text+"</div></html>";
     }
+
+    public void addFinal() {
+        answersPanel.removeAll();
+
+        // Додаємо JFXPanel до фрейму Swing
+        JFXPanel jfxPanel = new JFXPanel();
+        chatArea.add(jfxPanel, gbc);
+
+        // Запускаємо JavaFX Thread
+        Platform.runLater(() -> {
+            // Створюємо відео-плеєр JavaFX
+            String videoUrl = "file:///path-to-your-video/video.mpg"; // Вкажіть шлях до вашого відео-файлу
+            Media media = new Media(videoUrl);
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setAutoPlay(true);
+
+            MediaView mediaView = new MediaView(mediaPlayer);
+            Scene scene = new Scene(new javafx.scene.Group(mediaView));
+
+            // Додаємо сцену до JFXPanel
+            jfxPanel.setScene(scene);
+        });
+
+
+    }
+
     class MessagePanel extends JPanel {
         JPanel contentPanel = new JPanel(new BorderLayout());
         JLabel messageLabel;

@@ -61,17 +61,17 @@ public class MazeUI extends UI {
         MazeUI.mazeCompleted = mazeCompleted;
     }
 
-    public MazeUI(){
+    public MazeUI(double volumeCoef, double volumeCoef1){
         super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
-        game = new MazeGame(false, Main.getProgress().getLv());
+        game = new MazeGame(false, Main.getProgress().getLv(), volumeCoef, volumeCoef1);
         setThisUI();
 
     }
-    public MazeUI(int level){
+    public MazeUI(int level, double volumeCoef, double volumeCoef1){
         super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
-        game = new MazeGame(true, level);
+        game = new MazeGame(true, level, volumeCoef, volumeCoef1);
         setThisUI();
 
     }
@@ -133,6 +133,7 @@ public class MazeUI extends UI {
             }
         });
     }
+    @Override
     public void updateUpperPanel() {
         levelLabel.setText((Main.getLanguage().equals("en") ? "Level " : "Рівень ") + game.getLevel());
         levelLabel.updateUI();

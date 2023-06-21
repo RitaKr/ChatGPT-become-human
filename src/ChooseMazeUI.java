@@ -46,7 +46,7 @@ public class ChooseMazeUI  extends UI  {
         //add(super.backgroundPanel, BorderLayout.CENTER);
     }
     private void setButtons(){
-        String[] buttonImages = {(progressData.getLv()>=1 ? "lv1.png" : "lv1no.png"), (progressData.getLv()>=2 ? "lv2.png" : "lv2no.png"), (progressData.getLv()>=3 ? "lv3.png" : "lv3no.png")};
+        String[] buttonImages = {((progressData.getLv()>=1 && progressData.getChatData().yourChapter1.isCompleted()) ? "lv1.png" : "lv1no.png"), ((progressData.getLv()>=2 && progressData.getChatData().yourChapter2.isCompleted())? "lv2.png" : "lv2no.png"), ((progressData.getLv()>=3 && progressData.getChatData().yourChapter3.isCompleted()) ? "lv3.png" : "lv3no.png")};
         for (int i = 0; i < buttonImages.length; i++) {
             JPanel buttonContainer = new JPanel(new BorderLayout());
 
@@ -62,7 +62,11 @@ public class ChooseMazeUI  extends UI  {
             button.setBorder(null);
             button.setMargin(new Insets(0,0,0,0));
 
-            button.setCursor(progressData.getLv()>i ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            if ((progressData.getLv()>=1 && progressData.getChatData().yourChapter1.isCompleted() && i==0) ||
+                    (progressData.getLv()>=2 && progressData.getChatData().yourChapter2.isCompleted() && i==1)||
+                    (progressData.getLv()>=3 && progressData.getChatData().yourChapter3.isCompleted() && i==2))
+            button.setCursor( Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            else button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
             c.gridx = i + 1;
             c.fill = GridBagConstraints.VERTICAL;
@@ -80,7 +84,7 @@ public class ChooseMazeUI  extends UI  {
                     Main.playEffect("click.wav", 0.2);
                     switch (finalI){
                         case 0: {
-                            if (progressData.getLv()>=1) {
+                            if (progressData.getLv()>=1 && progressData.getChatData().yourChapter1.isCompleted()) {
                                 Main.startMazeGame(1);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
@@ -91,7 +95,7 @@ public class ChooseMazeUI  extends UI  {
                             break;
                         }
                         case 1: {
-                            if (progressData.getLv()>=2) {
+                            if (progressData.getLv()>=2 && progressData.getChatData().yourChapter2.isCompleted()) {
                                 Main.startMazeGame(2);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
@@ -103,7 +107,7 @@ public class ChooseMazeUI  extends UI  {
                             break;
                         }
                         case 2: {
-                            if (progressData.getLv()>=3) {
+                            if (progressData.getLv()>=3 && progressData.getChatData().yourChapter3.isCompleted()) {
                                 Main.startMazeGame(3);
                                 SwingUtilities.invokeLater(() -> dispose());
                             } else {
