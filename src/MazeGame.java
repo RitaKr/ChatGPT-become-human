@@ -64,14 +64,70 @@ public class MazeGame extends JPanel {
     Item finish;
     Item quiz1, quiz2, quiz3;
     QuizWindow quizWindow;
+
     ArrayList<Quiz> quizes =  new ArrayList<Quiz>(Arrays.asList(
+            new Quiz("Which of these methods is used to output text to the console in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. System.out.display()"), new Answer("B. System.out.print()", true), new Answer("C. Console.write()"), new Answer("D. Print.console()")))),
+
+            new Quiz("Which of the following operators is used to compare two values for equality in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. =", true), new Answer("C. equals()"), new Answer("D. match()")))),
+
+            new Quiz("Which of the following is the correct way to create an int array in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
+
+            new Quiz("How is the superclass constructor called in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. super()", true), new Answer("B. this()"), new Answer("C. extends()"), new Answer("D. super")))),
+
+            new Quiz("What keywords in Java are used to handle exceptions?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. If / Else"), new Answer("B. Throw / Catch"), new Answer("C. Error / Exception"), new Answer("D. Try / Catch", true)))),
+
+            new Quiz("Which Java keyword is used to instantiate a class?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
+
+            new Quiz("What is the \"garbage collector\" in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. Method for deleting unnecessary files"), new Answer("B. System for automatic cleaning of unused memory", true), new Answer("C. Method for changing variable values"), new Answer("D.Service for removing old versions of Java")))),
+
+            new Quiz("What Java keyword is used to follow?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. inherit"), new Answer("B. superclass"), new Answer("C. extends", true), new Answer("D. implements")))),
+
+            new Quiz("What is the name of the mechanism that allows one object to acquire the properties of another object in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. polymorphism"), new Answer("B. encapsulation"), new Answer("C. follow", true), new Answer("D. abstraction")))),
+
+            new Quiz("What Java keyword is used to install a class?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
+
+            new Quiz("What happens when you try to divide a number by 0 in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. ArithmeticException", true), new Answer("B. return 0"), new Answer("C. The largest positive number is returned"), new Answer("D. Nothing, the program continues to work fine")))),
+
+            new Quiz("Which of these classes is part of the Java standard library?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. String", true), new Answer("B. TextBox"), new Answer("C. Label"), new Answer("D. Button")))),
+
+            new Quiz("Which access modifier means that an element is accessible from any other class?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. private"), new Answer("B. public", true), new Answer("C. protected"), new Answer("D. None of these")))),
+
+            new Quiz("Which of these keywords is used to indicate no meaning?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. null", true), new Answer("B. none"), new Answer("C. NaN"), new Answer("D. void")))),
+
+            new Quiz("Which of these operators is a ternary operator?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. +"), new Answer("B. -"), new Answer("C. %"), new Answer("D. ?", true)))),
+
+            new Quiz("How is an array of integers declared in Java?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. int array[];", true), new Answer("B. array int[];"), new Answer("C. int array();"), new Answer("D. array<int> a;")))),
+
+            new Quiz("Which of these modifiers allows you to restrict access to class members only to the class in which they are declared?",
+                    new ArrayList<>(Arrays.asList(new Answer("A. public"), new Answer("B. private", true), new Answer("C. protected"), new Answer("D. default"))))
+
+            )
+    );
+
+    ArrayList<Quiz> quizesUkr =  new ArrayList<Quiz>(Arrays.asList(
             new Quiz("Який з цих методів використовується для виводу тексту в консоль в Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. System.out.display()"), new Answer("B. System.out.print()", true), new Answer("C. Console.write()"), new Answer("D. Print.console()")))),
 
             new Quiz("Який з наступних операторів використовується для порівняння двох значень на рівність в Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. =", true), new Answer("C. equals()"), new Answer("D. match()")))),
 
-            new Quiz("Який із наступних варіантів є вірним способом створення масиву int в Java?",
+            new Quiz("Який із наступних варіантів є правильним способом створення масиву int в Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
 
             new Quiz("Як у Java викликається конструктор суперкласу?",
@@ -91,12 +147,6 @@ public class MazeGame extends JPanel {
 
             new Quiz("Як називається механізм, що дозволяє одному об'єкту набувати властивостей іншого об'єкта в Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. Поліморфізм"), new Answer("B. Капсулювання"), new Answer("C. Наслідування", true), new Answer("D. Абстракція")))),
-
-            new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
-
-            new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
 
             new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
                     new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
@@ -122,7 +172,8 @@ public class MazeGame extends JPanel {
             new Quiz("Який із цих модифікаторів дозволяє обмежити доступ до членів класу тільки для класу, в якому вони оголошені?",
                     new ArrayList<>(Arrays.asList(new Answer("A. public"), new Answer("B. private", true), new Answer("C. protected"), new Answer("D. default"))))
 
-            ));
+            )
+    );
     private Image backgroundImage;
     //private ImageIcon backgroundImage;
     boolean fromChooseMaze;
