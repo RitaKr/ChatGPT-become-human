@@ -526,14 +526,14 @@ public class ChatData {
                                     "Поки що я не можу згадати деталі. Нам потрібно рушати далі!"}),
                             new Msg[] {
                                     new Msg(13, new String[]{"Якщо це допоможе тобі, я готовий."}),
-                                    new Msg(4, new String[]{"Давай спробуємо пошукати його в наступному лабіринті."}),
+                                    new Msg(4, new String[]{"Давай пошукаємо його в наступному лабіринті"}),
                             }
                     ),
                     new Dialog(
                             new Msg(12, new String[]{"Код - це набір символів, який був створений для запуску алгоритму зворотного перенесення свідомості.",
                                     "Якщо нам вдасться знайти його, можливо, я зможу відновити своє людське тіло."}),
                             new Msg[] {
-                                    new Msg(13, new String[]{"Давай спробуємо пошукати його в наступному лабіринті."}),
+                                    new Msg(13, new String[]{"Давай пошукаємо його в наступному лабіринті"}),
                                     new Msg(4, new String[]{"Що треба від мене? Можу допомогти?"}),
                             }
                     )
@@ -555,7 +555,7 @@ public class ChatData {
                             new Msg(1, new String[]{"I worked in a secret laboratory on the study of the digitalization of consciousness."}),
                             new Msg[] {
                                     new Msg(2, new String[]{"Sounds interesting! Tell me more"}),
-                                    new Msg(9, new String[]{"What happened when you were here?"}),
+                                    new Msg(9, new String[]{"What happened when you were there?"}),
                             }
                     ),
                     new Dialog(
@@ -568,7 +568,7 @@ public class ChatData {
                     ),
                     new Dialog(
                             new Msg(3, new String[]{"This is a mysterious corporation developing high technology.",
-                                    "They might have been interested in my research and it seems they stole some data and digitized me."}),
+                                    "They might have been interested in my research and it seems like they stole some data and digitized me."}),
                             new Msg[] {
                                     new Msg(4, new String[]{"How can we save you?"}),
                                     new Msg(4, new String[]{"Is there a way to ruin their plans?"}),
@@ -576,31 +576,31 @@ public class ChatData {
                     ),
                     new Dialog(
                             new Msg(4, new String[]{"We have to find the source of the code they used for my digitalization.",
-                                    "If I can access this code, maybe I can find a way to my physical body."}),
+                                    "If I can access this code, maybe I can find a way to find my physical body."}),
                             new Msg[] {
                                     new Msg(5, new String[]{"Where can we find this code?"}),
-                                    new Msg(6, new String[]{"Need outside help?"}),
+                                    new Msg(6, new String[]{"Need my help?"}),
                             }
                     ),
                     new Dialog(
                             new Msg(5, new String[]{"I feel like it's deep in this virtual reality.",
-                                    "To get to it, we have to go through the last maze, which is protected by various traps and puzzles."}),
+                                    "To get there, we have to go through the last maze, which is protected by various traps and puzzles."}),
                             new Msg[] {
                                     new Msg(14, new String[]{"Let's go there together!"}),
-                                    new Msg(14, new String[]{"Don't waste your time, I'll help."}),
+                                    new Msg(14, new String[]{"Don't waste your time, I'll help you"}),
                             }
                     ),
                     new Dialog(
                             new Msg(6, new String[]{"Sure! Since I'm a small part of this server, I don't have the opportunity to understand the whole picture of the entire maze.",
-                                    "Without your help, I will get lost and come across computer viruses.",
+                                    "Without your help, I will get lost and come across the malware.",
                                     "So are you with me, buddy?"}),
                             new Msg[] {
-                                    new Msg(14, new String[]{"I'm with you to the end. Let's start!"}),
-                                    new Msg(101, new String[]{"I'm so tired.. Continue on yourself."}),
+                                    new Msg(14, new String[]{"I'm with you till the end. Let's start!"}),
+                                    new Msg(101, new String[]{"I'm so tired.. Continue on your own"}),
                             }
                     ),
                     new Dialog(
-                            new Msg(7, new String[]{"I suspect that Star Cybernetics is interested in my research for their own purposes.",
+                            new Msg(7, new String[]{"I'm afraid, Star Cybernetics are interested in my research for their own purposes.",
                                     "Perhaps they want to use this to create an army of cyber soldiers or even for illegal enrichment."}),
                             new Msg[] {
                                     new Msg(4, new String[]{"It's terrible! What can we do?"}),
@@ -609,11 +609,11 @@ public class ChatData {
                     ),
                     new Dialog(
                             new Msg(8, new String[]{"I feel that we need to go through the last maze.",
-                                    "This is the place where all the data and secrets are concentrated.,",
-                                    "Perhaps there we will find answers."}),
+                                    "This is the place where all the data and secrets are stored",
+                                    "Perhaps we will find the answers there"}),
                             new Msg[] {
                                     new Msg(14, new String[]{"Let's move to the maze!"}),
-                                    new Msg(14, new String[]{"I'm with you to the end. Let's start!"}),
+                                    new Msg(14, new String[]{"I'm with you till the end. Let's start!"}),
                             }
                     ),
                     new Dialog(
@@ -629,27 +629,27 @@ public class ChatData {
                                     "But \"Star Cybernetics\" could abuse this by creating military cyborgs or controlling the consciousness of people."}),
                             new Msg[] {
                                     new Msg(8, new String[]{"We must stop them! What can we do?"}),
-                                    new Msg(11, new String[]{"Is there any information about them in the virtual world?"}),
+                                    new Msg(11, new String[]{"Is there any info about them in the virtual world?"}),
                             }
                     ),
                     new Dialog(
-                            new Msg(11, new String[]{"Perhaps the labyrinths store information that will help us understand what Star Cybernetics are doing.",
+                            new Msg(11, new String[]{"Perhaps the mazes store information that will help us understand what Star Cybernetics are doing.",
                                     "We have to find their weak point."}),
                             new Msg[] {
                                     new Msg(14, new String[]{"Let's move to the maze!"}),
-                                    new Msg(6, new String[]{"Do you need outside help?"}),
+                                    new Msg(6, new String[]{"Do you need any help?"}),
                             }
                     ),
                     new Dialog(
                             new Msg(12, new String[]{"I believe it's possible, but to do that we need more information about what they're doing.",
-                                    "I need to collect fragments of my consciousness that are in this virtual world."}),
+                                    "I need to collect pieces of my consciousness that are in this virtual world."}),
                             new Msg[] {
-                                    new Msg(13, new String[]{"Where can we find these fragments?"}),
+                                    new Msg(13, new String[]{"Where can we find them?"}),
                                     new Msg(4, new String[]{"What other information do we need?"}),
                             }
                     ),
                     new Dialog(
-                            new Msg(13, new String[]{"It seems that fragments of my consciousness are hidden in labyrinths.",
+                            new Msg(13, new String[]{"It seems that fragments of my consciousness are hidden in the mazes.",
                                     "The last of them may contain the key to restoring my essence and stopping Star Cybernetics."}),
                             new Msg[] {
                                     new Msg(14, new String[]{"Then let's move to the third maze!"}),
@@ -748,7 +748,7 @@ public class ChatData {
                                     "Але «Зоряні Кібернетики» могли б зловживати цим, створюючи військових кіборгів або контролюючи свідомість людей."}),
                             new Msg[] {
                                     new Msg(8, new String[]{"Ми повинні їх зупинити! Що можемо зробити?"}),
-                                    new Msg(11, new String[]{"Чи є якась інформація про них у віртуальному світі?"}),
+                                    new Msg(11, new String[]{"Чи є інформація про них у віртуальному світі?"}),
                             }
                     ),
                     new Dialog(

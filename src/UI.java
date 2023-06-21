@@ -18,15 +18,12 @@ public class UI extends JFrame {
     Color buttonColorHover = new Color(225, 225, 255);
     Color titleColor = Color.white;
     Color textColor = Color.white;
-    Image buttonImage = new ImageIcon("images/button-pattern.png").getImage();
-    Image buttonHoverImage = new ImageIcon("images/button-pattern-white.png").getImage();
     JPanel upperPanel = new JPanel(new BorderLayout());
     JLabel levelLabel = new JLabel();
     JButton quitButton;
-    ImageIcon crossIcon = new ImageIcon("images/cross.png");
     Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
     Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-    Color upperPanelBg = new Color(15, 0, 35);
+    Color upperPanelBg = new Color(35, 35, 47);
     Color backgroundColor = new Color(85, 82, 93);
 
     int btnWidth = 280;
