@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 public class QuizWindow extends JDialog {
     private final int width = 500;
-    private final int height = 500;
-    private int btnHeight = 80;
-    private int btnWidth = 360;
+    private final int height = 600;
+    private int btnHeight = 100;
+    private int btnWidth = 380;
     private JPanel contentPane;
     Component parent;
     private String message;
@@ -28,12 +28,6 @@ public class QuizWindow extends JDialog {
     private Color textColor = Color.WHITE;
     private Color buttonColor = Color.WHITE;
 
-    private boolean answeredCorrectly;
-
-    public boolean isAnsweredCorrectly() {
-        return answeredCorrectly;
-    }
-
     private Quiz quiz;
 
     public Quiz getQuiz() {
@@ -42,12 +36,16 @@ public class QuizWindow extends JDialog {
     private Timer timer;
     private float alpha;
     private static int chosenAnswer;
+
+    public boolean isAnsweredCorrectly() {
+        return quiz.isAnsweredCorrectly();
+    }
     public QuizWindow(Component parent, Quiz quiz) {
         super((Window) SwingUtilities.getWindowAncestor(parent), "Quiz", ModalityType.APPLICATION_MODAL);
         this.parent = parent;
         this.quiz = quiz;
         this.message = quiz.getQuestion();
-        if (chosenAnswer == quiz.getCorrectAnswerIndex()) answeredCorrectly = true;
+        if (chosenAnswer == quiz.getCorrectAnswerIndex()) quiz.setAnsweredCorrectly(true);
 
         initializeUI();
     }
@@ -92,10 +90,10 @@ public class QuizWindow extends JDialog {
                             Main.playEffect("click.wav", 0.2);
                             chosenAnswer = finalI;
                             if (finalI == quiz.getCorrectAnswerIndex()) {
-                                answeredCorrectly = true;
+                                quiz.setAnsweredCorrectly(true);
                                 answerBtn.setIcon(new ImageIcon(correctAnswerImage));
                             } else {
-                                answeredCorrectly = false;
+                                quiz.setAnsweredCorrectly(true);
                                 answerBtn.setIcon(new ImageIcon(wrongAnswerImage));
                             }
                             Timer timer = new Timer(2000, new ActionListener() {
@@ -196,7 +194,7 @@ public class QuizWindow extends JDialog {
             @Override
             public void windowClosed(WindowEvent e) {
                 // Run the remaining code here
-                System.out.println("is answered correctly: " +quizWindow.isAnsweredCorrectly());
+                System.out.println("is answered correctly: " +quizWindow.quiz.isAnsweredCorrectly());
             }
         });
     }
@@ -206,6 +204,15 @@ class Quiz {
     private String question;
     private ArrayList<Answer> answers;
     private boolean completed = false;
+    private boolean answeredCorrectly;
+
+    public boolean isAnsweredCorrectly() {
+        return answeredCorrectly;
+    }
+
+    public void setAnsweredCorrectly(boolean answeredCorrectly) {
+        this.answeredCorrectly = answeredCorrectly;
+    }
 
     public String getQuestion() {
         return question;

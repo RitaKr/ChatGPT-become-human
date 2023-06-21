@@ -62,18 +62,17 @@ public class MazeGame extends JPanel {
     RotatingDoor rotatingDoor;
     Item key;
     Item finish;
-    Item quiz1, quiz2, quiz3;
-    QuizWindow quizWindow;
+    Item quiz1Item, quiz2Item, quiz3Item;
 
-    ArrayList<Quiz> quizes =  new ArrayList<Quiz>(Arrays.asList(
+    static ArrayList<Quiz> quizes =  new ArrayList<Quiz>(Arrays.asList(
             new Quiz("Which of these methods is used to output text to the console in Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. System.out.display()"), new Answer("B. System.out.print()", true), new Answer("C. Console.write()"), new Answer("D. Print.console()")))),
 
             new Quiz("Which of the following operators is used to compare two values for equality in Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. =", true), new Answer("C. equals()"), new Answer("D. match()")))),
+                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. ="), new Answer("C. equals()"), new Answer("D. There is more than 1 correct answer", true)))),
 
-            new Quiz("Which of the following is the correct way to create an int array in Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
+//            new Quiz("Which of the following is the correct way to create an int array in Java?",
+//                    new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
 
             new Quiz("How is the superclass constructor called in Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. super()", true), new Answer("B. this()"), new Answer("C. extends()"), new Answer("D. super")))),
@@ -84,8 +83,8 @@ public class MazeGame extends JPanel {
             new Quiz("Which Java keyword is used to instantiate a class?",
                     new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
 
-            new Quiz("What is the \"garbage collector\" in Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. Method for deleting unnecessary files"), new Answer("B. System for automatic cleaning of unused memory", true), new Answer("C. Method for changing variable values"), new Answer("D.Service for removing old versions of Java")))),
+//            new Quiz("What is the \"garbage collector\" in Java?",
+//                    new ArrayList<>(Arrays.asList(new Answer("A. Method for deleting unnecessary files"), new Answer("B. System for automatic cleaning of unused memory", true), new Answer("C. Method for changing variable values"), new Answer("D.Service for removing old versions of Java")))),
 
             new Quiz("What Java keyword is used to follow?",
                     new ArrayList<>(Arrays.asList(new Answer("A. inherit"), new Answer("B. superclass"), new Answer("C. extends", true), new Answer("D. implements")))),
@@ -97,7 +96,7 @@ public class MazeGame extends JPanel {
                     new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
 
             new Quiz("What happens when you try to divide a number by 0 in Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. ArithmeticException", true), new Answer("B. return 0"), new Answer("C. The largest positive number is returned"), new Answer("D. Nothing, the program continues to work fine")))),
+                    new ArrayList<>(Arrays.asList(new Answer("A. ArithmeticException", true), new Answer("B. return 0"), new Answer("C. The largest positive number is returned"), new Answer("D. Nothing")))),
 
             new Quiz("Which of these classes is part of the Java standard library?",
                     new ArrayList<>(Arrays.asList(new Answer("A. String", true), new Answer("B. TextBox"), new Answer("C. Label"), new Answer("D. Button")))),
@@ -120,15 +119,15 @@ public class MazeGame extends JPanel {
             )
     );
 
-    ArrayList<Quiz> quizesUkr =  new ArrayList<Quiz>(Arrays.asList(
+    static ArrayList<Quiz> quizesUkr =  new ArrayList<Quiz>(Arrays.asList(
             new Quiz("Який з цих методів використовується для виводу тексту в консоль в Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. System.out.display()"), new Answer("B. System.out.print()", true), new Answer("C. Console.write()"), new Answer("D. Print.console()")))),
 
             new Quiz("Який з наступних операторів використовується для порівняння двох значень на рівність в Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. =", true), new Answer("C. equals()"), new Answer("D. match()")))),
+                    new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. ="), new Answer("C. equals()"), new Answer("D. Декілька правильних відповідей", true)))),
 
-            new Quiz("Який із наступних варіантів є правильним способом створення масиву int в Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
+            //new Quiz("Який із наступних варіантів є правильним способом створення масиву int в Java?",
+                    //new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
 
             new Quiz("Як у Java викликається конструктор суперкласу?",
                  new ArrayList<>(Arrays.asList(new Answer("A. super()", true), new Answer("B. this()"), new Answer("C. extends()"), new Answer("D. super")))),
@@ -139,8 +138,8 @@ public class MazeGame extends JPanel {
             new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
                              new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
 
-            new Quiz("Що таке в Java \"garbage collector\"?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. Метод для видалення непотрібних файлів"), new Answer("B. Система для автоматичного очищення не використовуваної пам'яті", true), new Answer("C. Метод для зміни значень змінних"), new Answer("D. Сервіс для видалення старих версій Java")))),
+//            new Quiz("Що таке в Java \"garbage collector\"?",
+//                    new ArrayList<>(Arrays.asList(new Answer("A. Метод для видалення непотрібних файлів"), new Answer("B. Система для автоматичного очищення не використовуваної пам'яті", true), new Answer("C. Метод для зміни значень змінних"), new Answer("D. Сервіс для видалення старих версій Java")))),
 
             new Quiz("Яке ключове слово в Java використовується для наслідування?",
                     new ArrayList<>(Arrays.asList(new Answer("A. inherit"), new Answer("B. superclass"), new Answer("C. extends", true), new Answer("D. implements")))),
@@ -152,7 +151,7 @@ public class MazeGame extends JPanel {
                     new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
 
             new Quiz("Що відбувається при спробі поділити число на 0 в Java?",
-                    new ArrayList<>(Arrays.asList(new Answer("A. Виникає помилка виконання ArithmeticException", true), new Answer("B. Повертається 0"), new Answer("C. Повертається найбільше додатне число"), new Answer("D. Нічого, програма продовжує працювати нормально")))),
+                    new ArrayList<>(Arrays.asList(new Answer("A. Виникає помилка ArithmeticException", true), new Answer("B. Повертається 0"), new Answer("C. Повертається найбільше додатне число"), new Answer("D. Нічого")))),
 
             new Quiz("Який із цих класів є частиною стандартної бібліотеки Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. String", true), new Answer("B. TextBox"), new Answer("C. Label"), new Answer("D. Button")))),
@@ -174,6 +173,11 @@ public class MazeGame extends JPanel {
 
             )
     );
+    QuizWindow quizWindow;
+    Quiz quiz3;
+    Quiz quiz1;
+    Quiz quiz2;
+
     private Image backgroundImage;
     //private ImageIcon backgroundImage;
     boolean fromChooseMaze;
@@ -209,6 +213,7 @@ public class MazeGame extends JPanel {
         setMaze(level);
 
     }
+
     private void setMaze(int level) {
         gameOver = false;
         settings = new Maze(level);
@@ -234,9 +239,11 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",5, 5, 60, 60);
                 key = new Item("key.png",0, 7, 70, 30);
                 finish = new Item("finish.png",0, 0, 90, 80);
-                quiz1 = new Item("quiz.png",2, 2, 40, 60);
-                quiz2 = null;
-                quiz3 = null;
+                quiz1Item = new Item("quiz.png",2, 2, 40, 60);
+                quiz2Item = null;
+                quiz3Item = null;
+
+                quiz1 = getRandomQuiz();
             }
             case 2 -> {
                 loadBackgroundImage("bg2-blur.gif");
@@ -258,10 +265,13 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",1, 3, 60, 60);
                 key = new Item("key.png",4, 3, 70, 30);
                 finish = new Item("finish.png",5, 1, 90, 80);
-                quiz1 = new Item("quiz.png",3, 1, 40, 60);
-                quiz2 = new Item("quiz.png",5, 5, 40, 60);
-                quiz3 = null;
-            }
+                quiz1Item = new Item("quiz.png",3, 1, 40, 60);
+                quiz2Item = new Item("quiz.png",5, 5, 40, 60);
+                quiz3Item = null;
+
+                quiz1 = getRandomQuiz();
+                quiz2 = getRandomQuiz();
+                }
             case 3 -> {
                 loadBackgroundImage("bg3-blur.gif");
                 setMusic("music/marjim-go-big.mp3", 0.05);
@@ -282,15 +292,24 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",3, 2, 60, 60);
                 key = new Item("key.png",5, 7, 70, 30);
                 finish = new Item("finish.png",4, 7, 90, 80);
-                quiz1 = new Item("quiz.png",4, 4, 40, 60);
-                quiz2 = new Item("quiz.png",2, 1, 40, 60);
-                quiz3 = new Item("quiz.png",1, 2, 40, 60);
+                quiz1Item = new Item("quiz.png",4, 4, 40, 60);
+                quiz2Item = new Item("quiz.png",2, 1, 40, 60);
+                quiz3Item = new Item("quiz.png",1, 2, 40, 60);
+
+                quiz1 = getRandomQuiz();
+                quiz2 = getRandomQuiz();
+                quiz3 = getRandomQuiz();
             }
         }
         repaint();
         playMusic();
     }
-
+    public Quiz getRandomQuiz(){
+        java.util.List<Quiz> uncompletedQuizes = Main.getLanguage().equals("en") ?
+                quizes.stream().filter(quiz -> !quiz.isCompleted()).toList()
+                : quizesUkr.stream().filter(quiz -> !quiz.isCompleted()).toList();
+        return uncompletedQuizes.get((int)Math.floor(Math.random() * uncompletedQuizes.size()));
+    }
     private void drawBackground(Graphics g){
 
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
@@ -376,9 +395,9 @@ public class MazeGame extends JPanel {
         if (slideDoorButton!=null) slideDoorButton.draw(g);
         if (key!=null) key.draw(g);
         if (finish!=null) finish.draw(g);
-        if (quiz1!=null) quiz1.draw(g);
-        if (quiz2!=null) quiz2.draw(g);
-        if (quiz3!=null) quiz3.draw(g);
+        if (quiz1Item !=null) quiz1Item.draw(g);
+        if (quiz2Item !=null) quiz2Item.draw(g);
+        if (quiz3Item !=null) quiz3Item.draw(g);
 
 
     }
@@ -541,7 +560,7 @@ public class MazeGame extends JPanel {
                     } else {
                         MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                                 new MessageWindow(this, "You completed level " + level + "! It was the last level", "Maze completed", "Go to maze selection")
-                                : new MessageWindow(this, "Ви пройшли рівень "+level+"! Це був останній рівень", "Лабіринт пройдено", "Повернутись до лабіринтів");
+                                : new MessageWindow(this, "Ви пройшли рівень "+level+"! Це був останній рівень", "Лабіринт пройдено", "Назад до лабіринтів");
 
                         messageWindow.addWindowListener(new WindowAdapter() {
                             @Override
@@ -558,7 +577,7 @@ public class MazeGame extends JPanel {
                 } else {
                     MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                             new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", "Go to maze selection")
-                            : new MessageWindow(this, "Ви пройшли рівень "+level+"! Але наступний рівень ще не розблокований", "Лабіринт пройдено", "Повернутись до лабіринтів");
+                            : new MessageWindow(this, "Ви пройшли рівень "+level+"! Але наступний рівень ще не розблокований", "Лабіринт пройдено", "Назад до лабіринтів");
 
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
@@ -576,7 +595,7 @@ public class MazeGame extends JPanel {
                 if (level<3) {
                     MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                             new MessageWindow(this, "You completed level "+level+"!", "Maze completed", "Go to chat")
-                            : new MessageWindow(this, "Ви пройшли рівень "+level+"!", "Лабіринт пройдено", "Повернутись до чату");
+                            : new MessageWindow(this, "Ви пройшли рівень "+level+"!", "Лабіринт пройдено", "Назад до чату");
 
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
@@ -596,7 +615,7 @@ public class MazeGame extends JPanel {
                 } else {
                     MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                             new MessageWindow(this, "You completed level "+level+"! It was the last level", "Maze completed", "Go to chat")
-                            : new MessageWindow(this, "Ви пройшли рівень "+level+"! Це був останній рівень", "Лабіринт пройдено", "Повернутись до чату");
+                            : new MessageWindow(this, "Ви пройшли рівень "+level+"! Це був останній рівень", "Лабіринт пройдено", "Назад до чату");
 
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
