@@ -81,9 +81,9 @@ public class MainMenuUI extends UI {
         });
 
         // create and customize the buttons
-        String[] buttonNames = Main.getLanguage().equals("en") ? new String[]{"Instruction", "Mazes", "Reset progress"} : new String[]{"Інструкція", "Лабіринти", "Скинути прогрес"};
+        String[] buttonNames = Main.getLanguage().equals("en") ? new String[]{"Instruction", "Mazes", "Settings", "Reset progress"} : new String[]{"Інструкція", "Лабіринти", "Налаштування", "Скинути прогрес"};
         for (int i = 1; i <= buttonNames.length; i++) {
-            JButton button = createButton(buttonNames[i-1],(i<buttonNames.length ? buttonColor : buttonColor1), (i<buttonNames.length ? buttonImage : redButtonImage), buttonHoverImage);
+            JButton button = createButton(buttonNames[i-1],(i < buttonNames.length - 1 ? buttonColor : buttonColor1), (i < buttonNames.length - 1 ? buttonImage : redButtonImage), buttonHoverImage);
 
             c.gridy = i + 1;
             c.fill = GridBagConstraints.HORIZONTAL;
@@ -111,9 +111,13 @@ public class MainMenuUI extends UI {
                             break;
                         }
                         case 3: {
+                            // код для відкриття вікна налаштувань
+                            break;
+                        }
+                        case 4: {
                             MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                                     new MessageWindow(MainMenuUI.this, "Are you sure you want to reset the progress? You will need to open the program again", "Reset progress", "Yes", "No")
-                                    : new MessageWindow(MainMenuUI.this, "Ви впевнені, що хочете скинути прогрес? Вам доведеться відкрити програму знову", "Скинути прогрес", "Так", "Ні");;
+                                    : new MessageWindow(MainMenuUI.this, "Ви впевнені, що хочете скинути прогрес? Вам доведеться відкрити програму знову", "Скинути прогрес", "Так", "Ні");
                             messageWindow.addWindowListener(new WindowAdapter() {
                                 @Override
                                 public void windowClosed(WindowEvent e) {
