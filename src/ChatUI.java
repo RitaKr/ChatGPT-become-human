@@ -79,11 +79,11 @@ public class ChatUI extends UI {
         Msg chosen = dialog.getUser()[0].isChosen() ? dialog.getUser()[0] : dialog.getUser()[1];
         if (dialog.isCompleted() && dialog.getId()<(calcTotalMessages()-1)) {
             MessagePanel message = new MessagePanel(false, chosen.getTexts()[0]);
-            System.out.println("i added message: "+chosen.getTexts()[0]);
+            //System.out.println("i added message: "+chosen.getTexts()[0]);
             chatArea.add(message, gbc);
             //dialog.setId(Main.getProgress().getDialogCount());
-//            System.out.println("cur lv: "+level+", cur dialog: "+dialog+" (id: "+dialog.getId()+")");
-//            System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
+//           //System.out.println("cur lv: "+level+", cur dialog: "+dialog+" (id: "+dialog.getId()+")");
+//           //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
 
             //Main.updateDialogCount();
         }
@@ -104,9 +104,9 @@ public class ChatUI extends UI {
         }
         //if (Main.getProgress().getDialogCount()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)) dialog.setId(Main.getProgress().getDialogCount());
         dialog.setId(Main.getProgress().getDialogCount());
-        System.out.println("set id "+Main.getProgress().getDialogCount()+" in addMessage");
-        System.out.println("adding message. cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
-        System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
+       //System.out.println("set id "+Main.getProgress().getDialogCount()+" in addMessage");
+       //System.out.println("adding message. cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
+       //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
 
 //        answer1.setText(HTMLfyText(dialog.getUser()[0].getTexts()[0]));
 //        answer2.setText(HTMLfyText(dialog.getUser()[1].getTexts()[0]));
@@ -120,7 +120,7 @@ public class ChatUI extends UI {
             answer1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("pressed answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
+                   //System.out.println("pressed answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
 
                     //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
 
@@ -137,12 +137,12 @@ public class ChatUI extends UI {
 
                         MessagePanel message = new MessagePanel(false, dialog.getUser()[0].getTexts()[0]);
                         chatArea.add(message, gbc);
-                        System.out.println("!!!added answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
-//                        System.out.println("cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
-//                        System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
+                       //System.out.println("!!!added answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
+//                       //System.out.println("cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
+//                       //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
 
                         dialog.setId(Main.getProgress().getDialogCount());
-                        System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer1.addActionListener");
+                       //System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer1.addActionListener");
                         Main.updateDialogCount();
 
 
@@ -157,7 +157,7 @@ public class ChatUI extends UI {
 //
 //                        ////System.out.println(true);
 //                        //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-//                        System.out.println("stating game in this stupid else");
+//                       //System.out.println("stating game in this stupid else");
 //                        Main.startMazeGame();
 //                        SwingUtilities.invokeLater(() -> dispose());
 //
@@ -168,7 +168,7 @@ public class ChatUI extends UI {
             answer2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("pressed answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
+                   //System.out.println("pressed answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
                     //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
 
                     //                    if (!dialog.isCompleted() && dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()-1)) {
@@ -186,7 +186,7 @@ public class ChatUI extends UI {
 
 
                         dialog.setId(Main.getProgress().getDialogCount());
-                        System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer2.addActionListener");
+                       //System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer2.addActionListener");
                         Main.updateDialogCount();
 
                         addNextDialog(level, dialog, dialogOtherLang, dialog.getUser()[1].getPlot());
@@ -199,7 +199,7 @@ public class ChatUI extends UI {
 //
 //                            ////System.out.println(true);
 //                            //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-//                        System.out.println("stating game in this stupid else");
+//                       //System.out.println("stating game in this stupid else");
 //                            Main.startMazeGame();
 //                            SwingUtilities.invokeLater(() -> dispose());
 //
@@ -246,11 +246,11 @@ public class ChatUI extends UI {
         Msg chosen = dialog.getUser()[0].isChosen() ? dialog.getUser()[0] : dialog.getUser()[1];
         if (dialog.isCompleted() && dialog.getId()<(calcTotalMessages()-1)) {
             MessagePanel message = new MessagePanel(false, chosen.getTexts()[0]);
-            System.out.println("i added message: "+chosen.getTexts()[0]);
+           //System.out.println("i added message: "+chosen.getTexts()[0]);
             chatArea.add(message, gbc);
             dialog.setId(Main.getProgress().getDialogCount());
-//            System.out.println("cur lv: "+level+", cur dialog: "+dialog+" (id: "+dialog.getId()+")");
-//            System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
+//           //System.out.println("cur lv: "+level+", cur dialog: "+dialog+" (id: "+dialog.getId()+")");
+//           //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
 
             Main.updateDialogCount();
         }
@@ -264,8 +264,8 @@ public class ChatUI extends UI {
     }
 
     private void addNextDialog(int level, Dialog dialog, Dialog dialogOtherLang, int nextPlot) {
-        System.out.println("addNextDialog: \ncurrent dialog: "+dialog+"\nnext plot: "+nextPlot+"\n");
-        System.out.println("!!!added answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
+       //System.out.println("addNextDialog: \ncurrent dialog: "+dialog+"\nnext plot: "+nextPlot+"\n");
+       //System.out.println("!!!added answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
         //dialog.setId(Main.getProgress().getDialogCount());
         //dialogOtherLang.setId(Main.getProgress().getDialogCount());
         //System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer2.addActionListener");
@@ -287,7 +287,7 @@ public class ChatUI extends UI {
                     if (nextPlot == 0) {
                         ////System.out.println(true);
                         //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-                        System.out.println("Strarting maze from addNextDialog case 1");
+                       //System.out.println("Strarting maze from addNextDialog case 1");
                         Main.startMazeGame();
                         SwingUtilities.invokeLater(() -> dispose());
                     } else if (nextPlot == 101){ //101 death
@@ -321,7 +321,7 @@ public class ChatUI extends UI {
             Main.updateChatData(chatData);
 
         } catch (IndexOutOfBoundsException ex) {
-            System.out.println(ex.getMessage());
+           //System.out.println(ex.getMessage());
             //System.out.println("plot "+dialog.getUser()[0].getPlot());
             //dispose();
             if (nextPlot == chatData.chapter1.getDialogs().size() && level<2
@@ -332,19 +332,19 @@ public class ChatUI extends UI {
                 if (Main.getProgress().getLv()==0) Main.updateLevel();
                 switch (level) {
                     case 1: {
-                        System.out.println("set chapter1 completed");
+                       //System.out.println("set chapter1 completed");
                         chatData.yourChapter1.setCompleted(true);
                         chatData.yourChapter1Ukr.setCompleted(true);
                         break;
                     }
                     case 2: {
-                        System.out.println("set chapter2 completed");
+                       //System.out.println("set chapter2 completed");
                         chatData.yourChapter2.setCompleted(true);
                         chatData.yourChapter2Ukr.setCompleted(true);
                         break;
                     }
                     case 3: {
-                        System.out.println("set chapter3 completed");
+                       //System.out.println("set chapter3 completed");
                         chatData.yourChapter3.setCompleted(true);
                         chatData.yourChapter3Ukr.setCompleted(true);
                         break;
@@ -352,7 +352,7 @@ public class ChatUI extends UI {
 
                 }
                 Main.updateChatData(chatData);
-                System.out.println("Starting maze from addNextDialog catch");
+               //System.out.println("Starting maze from addNextDialog catch");
                 Main.startMazeGame();
                 SwingUtilities.invokeLater(this::dispose);
             }
@@ -360,7 +360,7 @@ public class ChatUI extends UI {
 //                addDeathMessage(1);
 //            }
             else { //100 exit
-                System.out.println("exit game");
+               //System.out.println("exit game");
                 dispose();
                 //System.exit(0); // Exit the program
             }
@@ -376,12 +376,12 @@ public class ChatUI extends UI {
         chatArea.removeAll();
         setMessages();
 
-        System.out.println(Main.getProgress());
+       //System.out.println(Main.getProgress());
     }
     private void setMessages(){
         Main.getProgress().setDialogCount(0);
-        System.out.println("chatData.yourChapter1 "+chatData.yourChapter1);
-        System.out.println("chatData.yourChapter1Ukr "+chatData.yourChapter1Ukr);
+       //System.out.println("chatData.yourChapter1 "+chatData.yourChapter1);
+       //System.out.println("chatData.yourChapter1Ukr "+chatData.yourChapter1Ukr);
 
         //System.out.println(chatData.chapter.getDialogs());
         for (int i=0; i<chatData.yourChapter1.getDialogs().size(); i++) {
@@ -511,11 +511,6 @@ public class ChatUI extends UI {
         return answer;
     }
 
-    public static void main(String[] args) {
-
-        Main.fetchProgress();
-        new ChatUI();
-    }
     private String HTMLfyText(String text) {
         return "<html><div style=\"padding: 5px 10px\">"+text+"</div></html>";
     }
@@ -525,33 +520,27 @@ public class ChatUI extends UI {
 
         // Додаємо JFXPanel до фрейму Swing
         JFXPanel jfxPanel = new JFXPanel();
-        //jfxPanel.setPreferredSize(new Dimension(600, 400));
         jfxPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         chatArea.add(jfxPanel, gbc);
 
         // Запускаємо JavaFX Thread
         Platform.runLater(() -> {
-            // Створюємо відео-плеєр JavaFX
             String videoUrl = Objects.requireNonNull(getClass().getResource("/end-of-the-game.mp4")).toExternalForm();
             Media media = new Media(videoUrl);
             videoPlayer = new MediaPlayer(media);
             MediaView mediaView = new MediaView(videoPlayer);
 
-            // Create the scene and set the size
             StackPane stackPane = new StackPane(mediaView);
             stackPane.setStyle("-fx-background-color: black;"); // Set the desired background color
 
             Scene scene = new Scene(stackPane, 600, 400);
-            System.out.println("scene created");
 
             // Set the size of the MediaView
             mediaView.setFitWidth(600);
             mediaView.setFitHeight(400);
 
-            // Start playing the video
             if(pauseTime==null) pauseTime = Duration.seconds(0);
             if (super.isVisible()) videoPlayer.play();
-
 
             jfxPanel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -570,7 +559,6 @@ public class ChatUI extends UI {
             });
             videoPlayer.setOnPaused(() -> {
                 pauseTime = videoPlayer.getCurrentTime();
-                // Do something with the pauseTime, such as storing it for later use
             });
 
             // Add the scene to the JFXPanel after it's added to the chatArea
@@ -585,7 +573,7 @@ public class ChatUI extends UI {
     @Override
     void quit(JFrame destinationFrame){
         destinationFrame.setVisible(true);
-        if (videoPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+        if (videoPlayer!=null && videoPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             videoPlayer.pause();
             pauseTime = videoPlayer.getCurrentTime();
 

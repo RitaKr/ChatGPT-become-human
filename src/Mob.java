@@ -1,4 +1,4 @@
-public class Mob extends Character{
+public class Mob extends Character {
     private int direction; //0 vertical, 1 horizontal
     private boolean collapsed = false;
     private boolean reverse = false;

@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public class UI extends JFrame {
     GridBagConstraints c = new GridBagConstraints();
-    final static Color bgColor = new Color(138, 19, 178);
     final static Color transparent = new Color(0,0,0, 0.00f);
     JPanel backgroundPanel;
     Image backgroundImage;
@@ -27,6 +26,7 @@ public class UI extends JFrame {
     Color upperPanelBg = new Color(35, 35, 47);
     Color backgroundColor = new Color(85, 82, 93);
 
+
     int btnWidth = 280;
     int btnHeight = 90;
     private String title;
@@ -38,28 +38,10 @@ public class UI extends JFrame {
 
     boolean enableDefaultQuit = true;
 
-    public UI(String title, String backgroundImagePath, Color buttonColor, Color buttonColorHover, int btnWidth, int btnHeight, JFrame quitFrame)  {
-        super(title);
-        this.title = title;
-        this.backgroundImagePath = backgroundImagePath;
-        this.buttonColor = buttonColor;
-        this.buttonColorHover = buttonColorHover;
-        this.btnWidth = btnWidth;
-        this.btnHeight = btnHeight;
-        this.quitFrame = quitFrame;
-        setUI();
-    }
     public UI(String title, String backgroundImagePath, JFrame quitFrame)  {
         super(title);
         this.title = title;
         this.backgroundImagePath = backgroundImagePath;
-        this.quitFrame = quitFrame;
-        setUI();
-    }
-    public UI(String title, Color backgroundColor, JFrame quitFrame)  {
-        super(title);
-        this.title = title;
-        this.backgroundColor = backgroundColor;
         this.quitFrame = quitFrame;
         setUI();
     }
@@ -111,8 +93,6 @@ public class UI extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //this.progressData = progressData;
-
         setSize(frameWidth, frameHeight);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -153,17 +133,14 @@ public class UI extends JFrame {
 
                 switch (keyCode) {
                     case KeyEvent.VK_ESCAPE: {
-                        //System.out.println("quit");
                         quit(quitFrame);
                         break;
                     }
                     case KeyEvent.VK_SHIFT:
                         if (Main.isMusicPlaying()) {
-                            // The MediaPlayer is currently playing
                             System.out.println("The track is playing");
                             Main.pauseMusic();
                         } else {
-                            // The MediaPlayer is currently paused
                             System.out.println("The track is paused");
                             Main.playMusic();
                         }
@@ -177,69 +154,6 @@ public class UI extends JFrame {
 
             }
         });
-    }
-    JButton createButton(String text, Color textColor, Image backgroundImage, Image hoverImage) {
-        JButton button = new JButton(new ImageIcon(backgroundImage.getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH))) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                // Make the background transparent
-                g.setColor(new Color(0, 0, 0, 0));
-                g.fillRect(0, 0, getWidth(), getHeight());
-                super.paintComponent(g);
-            }
-
-            @Override
-            public boolean isOpaque() {
-                // Ensure the button is not opaque
-                return false;
-            }
-        };
-        //button.setBackground(i<buttonNames.length-1 ? bgColor : Color.red);
-        //button.setForeground(Color.WHITE);
-
-        button.setLayout(new BorderLayout());
-
-        JLabel buttonText = new JLabel(text, SwingConstants.CENTER);
-        buttonText.setPreferredSize(new Dimension(btnWidth, btnHeight));
-        buttonText.setHorizontalAlignment(SwingConstants.CENTER);
-        buttonText.setVerticalAlignment(SwingConstants.CENTER);
-        buttonText.setForeground(textColor);
-        buttonText.setFont(font16);
-        button.add(buttonText, BorderLayout.CENTER); // Add the label to the button's center
-
-        button.setContentAreaFilled(false);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setOpaque(false);
-
-
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setMargin(null);
-        button.setSize(new Dimension(btnWidth, btnHeight));
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                Main.playEffect("hover.wav", 0.2);
-                buttonText.setForeground(buttonColorHover);
-                button.setIcon(new ImageIcon(hoverImage.getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH)));  // Set the hover image
-                //startFadeIn(btn);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                buttonText.setForeground(textColor);
-                button.setIcon(new ImageIcon(backgroundImage.getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH)));  // Restore the default image
-                //startFadeOut(btn);
-            }
-        });
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Main.playEffect("click.wav", 0.2);
-            }
-        });
-
-        return button;
     }
 
     JButton createButton(String text, Color textColor, Image backgroundImage, Image hoverImage, int width, int height) {
@@ -309,10 +223,6 @@ public class UI extends JFrame {
         Main.fetchProgress();
         levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ") +Main.getProgress().getLv());
         levelLabel.updateUI();
-    }
-    private void drawBackground(Graphics g) {
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
 
     private void loadBackgroundImage(String imageName) {

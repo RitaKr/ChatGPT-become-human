@@ -20,16 +20,15 @@ public class InstructionUI extends UI {
     private static final String TELEPORT_IMAGE_PATH = "images/teleport.png";
     private static final String TELEPORT2_IMAGE_PATH = "images/teleport2.png";
     private static final String QUIZ_IMAGE_PATH = "images/quiz.png";
-    ImageIcon bgIcon = new ImageIcon(BACKGROUND_IMAGE_PATH);
-    JPanel backgroundPanel;
-    Image backgroundImage = bgIcon.getImage(); //.getScaledInstance(890, 670, Image.SCALE_DEFAULT);
-    JPanel contentPanel;
-    JPanel titlePanel;
-    JLabel titleLabel;
-    JScrollPane scrollPane;
-    JPanel keyboardPanel, mobPanel, GPTPanel, slidingDoorPanel, doorButtonPanel, rotatingDoorPanel, keyPanel, teleportPanel, finishPanel, quizPanel;
-    JLabel keyboardInstructionLabel, mobInstructionLabel, GPTInstructionLabel, slidingDoorInstructionLabel, doorButtonInstructionLabel, rotatingDoorInstructionLabel, keyInstructionLabel, teleportInstructionLabel, finishInstructionLabel, quizInstructionLabel;
-    JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel, teleportLabel, finishLabel, quizLabel;
+    private ImageIcon bgIcon = new ImageIcon(BACKGROUND_IMAGE_PATH);
+    private Image backgroundImage = bgIcon.getImage(); //.getScaledInstance(890, 670, Image.SCALE_DEFAULT);
+    private JPanel contentPanel;
+    private JPanel titlePanel;
+    private JLabel titleLabel;
+    private JScrollPane scrollPane;
+    private JPanel keyboardPanel, mobPanel, GPTPanel, slidingDoorPanel, doorButtonPanel, rotatingDoorPanel, keyPanel, teleportPanel, finishPanel, quizPanel;
+    private JLabel keyboardInstructionLabel, mobInstructionLabel, GPTInstructionLabel, slidingDoorInstructionLabel, doorButtonInstructionLabel, rotatingDoorInstructionLabel, keyInstructionLabel, teleportInstructionLabel, finishInstructionLabel, quizInstructionLabel;
+    private JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel, teleportLabel, finishLabel, quizLabel;
 
     public InstructionUI() {
         super("ChatGPT: become human", "bg-instruction.jpg", Main.mainMenuUI);

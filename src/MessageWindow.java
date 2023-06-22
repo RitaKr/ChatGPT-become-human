@@ -17,7 +17,7 @@ public class MessageWindow extends JDialog {
     private String message;
     private String title;
 
-    private Image backgroundImage = new ImageIcon("images/message-bg.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    private Image backgroundImage = new ImageIcon("images/bg2.jpg").getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
     private Image buttonImage = new ImageIcon("images/button-lightblue-tansparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
     private Image buttonHoverImage = new ImageIcon("images/button-white-transparent.png").getImage().getScaledInstance(btnWidth, btnHeight, Image.SCALE_SMOOTH);
     private Font font = loadCustomFont(18, Font.BOLD);

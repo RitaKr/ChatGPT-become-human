@@ -1,11 +1,11 @@
 import java.awt.*;
 
 public class Maze {
-    static final int wallSize = 10;
-    static final int cellSize = 100;
-    static final int rows = 6;  // Number of rows in the maze
-    static final int cols = 8; // Number of columns in the maze
-    Cell[][] maze;
+    public static final int wallSize = 10;
+    public static final int cellSize = 100;
+    public static final int rows = 6;  // Number of rows in the maze
+    public static final int cols = 8; // Number of columns in the maze
+    public Cell[][] maze;
 
 
     Cell[][] mazeLv1 = {
@@ -179,7 +179,7 @@ public class Maze {
     Color maze1col = new Color(194, 129, 189);
     Color maze2col = new Color(121, 145, 201);
     Color maze3col = new Color(161, 110, 243);
-    Color wallsColor;
+    public Color wallsColor;
 
     public Maze(int level) {
         switch (level) {
@@ -198,7 +198,7 @@ public class Maze {
         }
     }
 
-    class Cell {
+    public class Cell {
         private int T; //has top border?
         private int R; //has right border?
         private int B; //has bottom border?

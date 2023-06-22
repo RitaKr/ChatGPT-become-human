@@ -12,7 +12,7 @@ public class ChooseMazeUI  extends UI  {
     public void updateProgressData(){
         Main.fetchProgress();
         progressData = Main.getProgress();
-        title.setText(Main.getLanguage().equals("uk") ? "Інструкція до гри" : "Game instruction");
+        title.setText(Main.getLanguage().equals("uk") ? "Оберіть лабіринт для проходження" : "Chose maze to play");
         buttonsPanel.removeAll();
         setButtons();
         levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ")+progressData.getLv());
@@ -144,7 +144,7 @@ public class ChooseMazeUI  extends UI  {
         }
     }
     public ChooseMazeUI() {
-        super("ChatGPT: become human", "bg-menu.png", Main.mainMenuUI);
+        super("ChatGPT: become human", "bg-instruction.jpg", Main.mainMenuUI);
         progressData = Main.getProgress();
         setAll();
 

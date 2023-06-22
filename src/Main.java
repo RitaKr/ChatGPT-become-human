@@ -45,11 +45,6 @@ public class Main {
         mainMenuUI.setVisible(true);
         setMusic("background-music.mp3", 0.1);
         playMusic();
-
-    }
-    private static void updateUsername(String newName) {
-        progress.setUsername(newName);
-        updateProgress();
     }
     public static void updateLevel() {
         int level = progress.getLv()<3 ? (progress.getLv()+1) : progress.getLv();
@@ -59,11 +54,6 @@ public class Main {
     public static void updateDialogCount() {
         int dialogCount = progress.getDialogCount()+1;
         progress.setDialogCount(dialogCount);
-        updateProgress();
-    }
-    public static void updateTotalDialogCount() {
-        int dialogCount = progress.getTotalDialogCount()+1;
-        progress.setTotalDialogCount(dialogCount);
         updateProgress();
     }
     public static void setLevel(int level) {
@@ -91,13 +81,13 @@ public class Main {
 
     public static void updateProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "lang:"+progress.getLanguage()+"; username:"+progress.getUsername()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; deathReason:"+progress.getDeathReason()+"; msgCount:"+progress.getDialogCount()+"; chapter1:"+progress.getChapter1String()+"; chapter2:"+progress.getChapter2String()+"; chapter3:"+progress.getChapter3String()+"; finaleUnlocked:"+progress.isFinaleUnlocked();
+        String progressString = "lang:"+progress.getLanguage()+"; lv:"+progress.getLv()+"; alive:"+progress.isAlive()+"; deathReason:"+progress.getDeathReason()+"; msgCount:"+progress.getDialogCount()+"; chapter1:"+progress.getChapter1String()+"; chapter2:"+progress.getChapter2String()+"; chapter3:"+progress.getChapter3String()+"; finaleUnlocked:"+progress.isFinaleUnlocked();
         writeFile("progress.txt", progressString);
 
     }
     public static void resetProgress(){
         ////System.out.println("current progress (update): \n"+progress);
-        String progressString = "lang:en; username:player; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null; chapter3:null; finaleUnlocked:false";
+        String progressString = "lang:en; lv:0; alive:true; deathReason:none; msgCount:0; chapter1:0-2; chapter2:null; chapter3:null; finaleUnlocked:false";
         writeFile("progress.txt", progressString);
 
     }
@@ -105,7 +95,7 @@ public class Main {
         String filePath = "progress.txt"; // Replace with your file path
 
         String fileContent = readFile(filePath);
-        if (fileContent.isEmpty()) fileContent = "lang:en; username:player; lv:0; msgCount:0; alive:true; deathReason:none; chapter1:0-2; chapter2:null; chapter3:null; finaleUnlocked:false";
+        if (fileContent.isEmpty()) fileContent = "lang:en; lv:0; msgCount:0; alive:true; deathReason:none; chapter1:0-2; chapter2:null; chapter3:null; finaleUnlocked:false";
         ////System.out.println(fileContent);
         progress = new ProgressData(fileContent);
 
@@ -163,9 +153,6 @@ public class Main {
     public static void playMusic() {
         if (backgroundMediaPlayer != null) {
             backgroundMediaPlayer.play();
-            System.out.println("Background music is playing.");
-        } else {
-            System.out.println("Background music is null. Make sure to set the music first.");
         }
     }
 
@@ -189,15 +176,7 @@ public class Main {
     public static boolean isMusicPlaying() {
         MediaPlayer.Status status = backgroundMediaPlayer.getStatus();
 
-        if (status == MediaPlayer.Status.PLAYING) {
-            // The MediaPlayer is currently playing
-            //System.out.println("The track is playing");
-            return true;
-        } else {
-            // The MediaPlayer is in a different state (e.g., stopped)
-            //System.out.println("The track is in a different state");
-            return false;
-        }
+        return status == MediaPlayer.Status.PLAYING;
 
     }
     public static String getLanguage() {

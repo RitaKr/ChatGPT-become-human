@@ -50,7 +50,7 @@ public class MazeGame extends JPanel {
         return mazeHeight;
     }
 
-    static Character chatGPT;
+    public static Character chatGPT;
     Mob mob1;
     Mob mob2;
     Mob mob3;
@@ -246,7 +246,7 @@ public class MazeGame extends JPanel {
                 slideDoorButton = new Item("doorButton.png",5, 5, 60, 60);
                 key = new Item("key.png",0, 7, 70, 30);
                 finish = new Item("finish.png",0, 0, 90, 80);
-                quiz1Item = new Item("quiz.png",2, 2, 40, 60);
+                quiz1Item = new Item("quiz.png",4, 0, 40, 60);
                 quiz2Item = null;
                 quiz3Item = null;
 
@@ -273,7 +273,7 @@ public class MazeGame extends JPanel {
                 key = new Item("key.png",4, 3, 70, 30);
                 finish = new Item("finish.png",5, 1, 90, 80);
                 quiz1Item = new Item("quiz.png",3, 1, 40, 60);
-                quiz2Item = new Item("quiz.png",5, 5, 40, 60);
+                quiz2Item = new Item("quiz.png",2, 5, 40, 60);
                 quiz3Item = null;
 
                 quiz1 = getRandomQuiz();
@@ -369,16 +369,16 @@ public class MazeGame extends JPanel {
                 int x= settings.maze[row][col].getX();
                 int y= settings.maze[row][col].getY();
                 if (settings.maze[row][col].getT() ==1){
-                    g.fillRect(x, y, 2*Maze.wallSize + Maze.cellSize, Maze.wallSize);
+                    g.fillRect(x, y, 2* Maze.wallSize + Maze.cellSize, Maze.wallSize);
                 }
                 if (settings.maze[row][col].getR() ==1) {
-                    g.fillRect(x+ Maze.wallSize + Maze.cellSize, y, Maze.wallSize, 2*Maze.wallSize + Maze.cellSize);
+                    g.fillRect(x+ Maze.wallSize + Maze.cellSize, y, Maze.wallSize, 2* Maze.wallSize + Maze.cellSize);
                 }
                 if (settings.maze[row][col].getB() ==1){
-                    g.fillRect(x, y+ Maze.wallSize + Maze.cellSize, 2*Maze.wallSize + Maze.cellSize, Maze.wallSize);
+                    g.fillRect(x, y+ Maze.wallSize + Maze.cellSize, 2* Maze.wallSize + Maze.cellSize, Maze.wallSize);
                 }
                 if (settings.maze[row][col].getL() ==1) {
-                    g.fillRect(x, y, Maze.wallSize, 2*Maze.wallSize + Maze.cellSize);
+                    g.fillRect(x, y, Maze.wallSize, 2* Maze.wallSize + Maze.cellSize);
                 }
             }
         }
@@ -557,7 +557,7 @@ public class MazeGame extends JPanel {
                                     setScene(level);
                                 } else {
                                     Main.chooseMazeUI.setVisible(true);
-                                    SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                                    SwingUtilities.invokeLater(()-> Main.mazeUI.setVisible(false));
                                     stopMusic();
                                 }
                             }
@@ -611,7 +611,7 @@ public class MazeGame extends JPanel {
                             else Main.chatUI.startChapter3();
                             Main.chatUI.setVisible(true);
                             stopMusic();
-                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                            SwingUtilities.invokeLater(()-> Main.mazeUI.setVisible(false));
                             Main.playMusic();
                         }
                     });
@@ -630,7 +630,7 @@ public class MazeGame extends JPanel {
                             Main.chatUI.addFinal();
                             Main.chatUI.setVisible(true);
                             stopMusic();
-                            SwingUtilities.invokeLater(()->Main.mazeUI.setVisible(false));
+                            SwingUtilities.invokeLater(()-> Main.mazeUI.setVisible(false));
                             Main.playMusic();
                         }
                     });
@@ -722,7 +722,7 @@ public class MazeGame extends JPanel {
         int chH = character.getHeight();
         if (x < Maze.wallSize || x + chW  > mazeWidth - Maze.wallSize ||
                 y < Maze.wallSize || y + chH > mazeHeight - Maze.wallSize) {
-            // Character is outside the maze boundaries
+            // Maze.Character is outside the maze boundaries
             return false;
         }
         // Check if the character is colliding with any maze walls

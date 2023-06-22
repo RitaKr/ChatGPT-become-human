@@ -66,7 +66,7 @@ public class Item {
         //System.out.println("w: "+width+", h:"+ height);
     }
 
-//    public Item(String itemImage, int x, int y) {
+//    public Maze(String itemImage, int x, int y) {
 //        this.x = x;
 //        this.y = y;
 //        loadCharacterImage(itemImage);

@@ -1,7 +1,6 @@
 import java.util.Arrays;
 
 class ProgressData {
-    private static String username;
     private static int lv;
     private static int dialogCount;
     private static int totalDialogCount;
@@ -82,15 +81,6 @@ class ProgressData {
     public ProgressData(String dataString) {
         setProgressData(dataString);
     }
-    // Getters and setters for the fields
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public int getLv() {
         return lv;
@@ -119,9 +109,6 @@ class ProgressData {
             switch (key) {
                 case "lang":
                     language = value;
-                    break;
-                case "username":
-                    username = value;
                     break;
                 case "lv":
                     lv = Integer.parseInt(value);
@@ -158,6 +145,9 @@ class ProgressData {
         ChatData data = new ChatData();
         //setting chapter1
         String[] chapter1dialogs = chapter1String.split(",");
+        String[] chapter2dialogs = chapter2String.split(",");
+        String[] chapter3dialogs = chapter3String.split(",");
+
         for (int i=0; i< chapter1dialogs.length; i++) {
             String[] parts = chapter1dialogs[i].split("-");
             int key = Integer.parseInt(parts[0].trim());
@@ -165,17 +155,23 @@ class ProgressData {
 
                 data.yourChapter1.getDialogs().add(data.chapter1.getDialogs().get(key));
                 data.yourChapter1Ukr.getDialogs().add(data.chapter1Ukr.getDialogs().get(key));
-            if (value!=2) {
-                data.yourChapter1.getDialogs().get(i).getUser()[value].setChosen(true);
-                data.yourChapter1.getDialogs().get(i).setCompleted(true);
-                data.yourChapter1Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
-                data.yourChapter1Ukr.getDialogs().get(i).setCompleted(true);
-            }
+                if (value!=2 && i==chapter1dialogs.length-1 && chapter2String.equals("null")) {
+                    data.yourChapter1.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter1.getDialogs().get(i).setCompleted(false);
+                    data.yourChapter1Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter1Ukr.getDialogs().get(i).setCompleted(false);
+                } else if (value!=2) {
+                    data.yourChapter1.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter1.getDialogs().get(i).setCompleted(true);
+                    data.yourChapter1Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter1Ukr.getDialogs().get(i).setCompleted(true);
+                }
+
             //data.chapter1.getDialogs().get(key).setCompleted(value);
         }
 
         //setting chapter2
-        String[] chapter2dialogs = chapter2String.split(",");
+
         try  {
             for (int i = 0; i < chapter2dialogs.length; i++) {
                 String[] parts = chapter2dialogs[i].split("-");
@@ -184,7 +180,12 @@ class ProgressData {
 
                     data.yourChapter2.getDialogs().add(data.chapter2.getDialogs().get(key));
                     data.yourChapter2Ukr.getDialogs().add(data.chapter2Ukr.getDialogs().get(key));
-                if (value != 2) {
+                if (value!=2 && i==chapter2dialogs.length-1 && chapter3String.equals("null")) {
+                    data.yourChapter2.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter2.getDialogs().get(i).setCompleted(false);
+                    data.yourChapter2Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter2Ukr.getDialogs().get(i).setCompleted(false);
+                }else if (value != 2) {
                     data.yourChapter2.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter2.getDialogs().get(i).setCompleted(true);
                     data.yourChapter2Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
@@ -194,11 +195,10 @@ class ProgressData {
             }
             data.yourChapter1.setCompleted(true);
         } catch (NumberFormatException e) {
-            System.out.println("chapter2 is not unlocked yet");
+            //System.out.println("chapter2 is not unlocked yet");
         }
 
         //setting chapter3
-        String[] chapter3dialogs = chapter3String.split(",");
         try  {
             for (int i = 0; i < chapter3dialogs.length; i++) {
                 String[] parts = chapter3dialogs[i].split("-");
@@ -207,7 +207,12 @@ class ProgressData {
 
                     data.yourChapter3.getDialogs().add(data.chapter3.getDialogs().get(key));
                     data.yourChapter3Ukr.getDialogs().add(data.chapter3Ukr.getDialogs().get(key));
-                if (value != 2) {
+                if (value!=2 && i==chapter3dialogs.length-1 && !finaleUnlocked) {
+                    data.yourChapter3.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter3.getDialogs().get(i).setCompleted(false);
+                    data.yourChapter3Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
+                    data.yourChapter3Ukr.getDialogs().get(i).setCompleted(false);
+                } else if (value != 2) {
                     //if (value != 2 && i!=chapter3dialogs.length-1) {
                     data.yourChapter3.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter3.getDialogs().get(i).setCompleted(true);
@@ -218,7 +223,7 @@ class ProgressData {
             }
             data.yourChapter2.setCompleted(true);
         } catch (NumberFormatException e) {
-            System.out.println("chapter3 is not unlocked yet");
+            //System.out.println("chapter3 is not unlocked yet");
         }
 
         if (finaleUnlocked) data.yourChapter3.setCompleted(true);
@@ -229,7 +234,6 @@ class ProgressData {
     @Override
     public String toString(){
         return "Language: " + language+";\n"
-                +"Username: " + username+";\n"
                 +"Level: " + lv+";\n"
                 +"Alive: " + alive+";\n"
                 +"DeathReason: " + alive+";\n"

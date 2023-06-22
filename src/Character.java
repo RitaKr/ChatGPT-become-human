@@ -1,6 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
-
 public class Character extends Item {
 
     private int speed = 8;
