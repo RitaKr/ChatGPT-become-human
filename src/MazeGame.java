@@ -544,8 +544,8 @@ public class MazeGame extends JPanel {
 
 
             if (fromChooseMaze) {
-                if (Main.getProgress().getLv()>level) {
-                    if (level<3) {
+                if (Main.getProgress().getChatData().yourChapter2.isCompleted() && level==1 ||
+                        Main.getProgress().isFinaleUnlocked() && level==2) {
                         MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                                 new MessageWindow(this, "You completed level "+level+"! Next level is also unlocked. Want to continue?", "Maze completed", "Yes", "No")
                                 : new MessageWindow(this, "Ви пройшли рівень "+level+"! Наступний рівень також доступний. Хочете продовжити?", "Лабіринт пройдено", "Так", "Ні");
@@ -563,8 +563,7 @@ public class MazeGame extends JPanel {
                             }
                         });
 
-
-                    } else {
+                    } else if (level==3){
                         MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                                 new MessageWindow(this, "You completed level " + level + "! It was the last level", "Maze completed", "Go to maze selection")
                                 : new MessageWindow(this, "Ви пройшли рівень "+level+"! Це був останній рівень", "Лабіринт пройдено", "Назад до лабіринтів");
@@ -579,23 +578,21 @@ public class MazeGame extends JPanel {
                             }
                         });
 
+                    } else {
+                        MessageWindow messageWindow = Main.getLanguage().equals("en") ?
+                                new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", "Go to maze selection")
+                                : new MessageWindow(this, "Ви пройшли рівень "+level+"! Але наступний рівень ще не розблокований", "Лабіринт пройдено", "Назад до лабіринтів");
+
+                        messageWindow.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                // Run the remaining code here
+                                Main.chooseMazeUI.setVisible(true);
+                                SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
+                                stopMusic();
+                            }
+                        });
                     }
-
-                } else {
-                    MessageWindow messageWindow = Main.getLanguage().equals("en") ?
-                            new MessageWindow(this, "You completed level "+level+"! But the next level is not unlocked yet.", "Maze completed", "Go to maze selection")
-                            : new MessageWindow(this, "Ви пройшли рівень "+level+"! Але наступний рівень ще не розблокований", "Лабіринт пройдено", "Назад до лабіринтів");
-
-                    messageWindow.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosed(WindowEvent e) {
-                            // Run the remaining code here
-                            Main.chooseMazeUI.setVisible(true);
-                            SwingUtilities.invokeLater(() -> Main.mazeUI.setVisible(false));
-                            stopMusic();
-                        }
-                    });
-                }
             } else {//came here from chat
                 Main.mazeUI.setMazeCompleted(true);
 
@@ -699,7 +696,7 @@ public class MazeGame extends JPanel {
     }
     public void moveRotatingDoor(){
         if (rotatingDoor!=null) {
-            playEffect("rotating-door-open.wav", 0.05);
+            playEffect("rotating-door-open.wav", 0.1);
             rotatingDoor.move();
             settings = rotatingDoor.getSettings();
             repaint();
@@ -798,13 +795,13 @@ public class MazeGame extends JPanel {
                 System.out.println("+life");
             } else {
 
-                if (mob1==null) {
-                    shimmerCharacter(mob2);
-                    mob2 = null;
-                }
-                else {
+                if (mob2==null && mob1 !=null) {
                     shimmerCharacter(mob1);
                     mob1 = null;
+                }
+                else if (mob2 != null) {
+                    shimmerCharacter(mob2);
+                    mob2 = null;
                 }
                 System.out.println("-mob");
             }

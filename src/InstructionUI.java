@@ -19,7 +19,7 @@ public class InstructionUI extends UI {
     private static final String MOB_IMAGE_PATH = "images/virus.png";
     private static final String TELEPORT_IMAGE_PATH = "images/teleport.png";
     private static final String TELEPORT2_IMAGE_PATH = "images/teleport2.png";
-
+    private static final String QUIZ_IMAGE_PATH = "images/quiz.png";
     ImageIcon bgIcon = new ImageIcon(BACKGROUND_IMAGE_PATH);
     JPanel backgroundPanel;
     Image backgroundImage = bgIcon.getImage(); //.getScaledInstance(890, 670, Image.SCALE_DEFAULT);
@@ -27,9 +27,9 @@ public class InstructionUI extends UI {
     JPanel titlePanel;
     JLabel titleLabel;
     JScrollPane scrollPane;
-    JPanel keyboardPanel, mobPanel, GPTPanel, slidingDoorPanel, doorButtonPanel, rotatingDoorPanel, keyPanel, teleportPanel, finishPanel;
-    JLabel keyboardInstructionLabel, mobInstructionLabel, GPTInstructionLabel, slidingDoorInstructionLabel, doorButtonInstructionLabel, rotatingDoorInstructionLabel, keyInstructionLabel, teleportInstructionLabel, finishInstructionLabel;
-    JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel, teleportLabel, finishLabel;
+    JPanel keyboardPanel, mobPanel, GPTPanel, slidingDoorPanel, doorButtonPanel, rotatingDoorPanel, keyPanel, teleportPanel, finishPanel, quizPanel;
+    JLabel keyboardInstructionLabel, mobInstructionLabel, GPTInstructionLabel, slidingDoorInstructionLabel, doorButtonInstructionLabel, rotatingDoorInstructionLabel, keyInstructionLabel, teleportInstructionLabel, finishInstructionLabel, quizInstructionLabel;
+    JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel, teleportLabel, finishLabel, quizLabel;
 
     public InstructionUI() {
         super("ChatGPT: become human", "bg-instruction.jpg", Main.mainMenuUI);
@@ -65,6 +65,7 @@ public class InstructionUI extends UI {
             doorButtonInstruction();
             rotatingDoorInstruction();
             keyInstruction();
+            quizInstruction();
 
             // Скрол
             scrollPane = new JScrollPane(contentPanel);
@@ -78,6 +79,32 @@ public class InstructionUI extends UI {
 
 
     }
+
+    private void quizInstruction() {
+        quizPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        quizPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
+        quizPanel.setOpaque(false);
+        quizPanel.setBackground(null);
+
+        ImageIcon GPTIcon = new ImageIcon(new ImageIcon(QUIZ_IMAGE_PATH).getImage().getScaledInstance(60, 80, Image.SCALE_DEFAULT));
+        quizLabel = new JLabel(GPTIcon);
+        quizLabel.setBackground(null);
+        quizPanel.add(quizLabel);
+
+        String quizText = "<html><div WIDTH=650 style=\"padding: 0 10px;\"><i><b>Java вікторина</b></i>. " +
+                "Ви маєте наступити на нього та натиснути ПРОБІЛ, щоб відкрити вікторину. Ви можете відповісти на одну вікторину тільки один раз, змінювати відповідь також не можна." +
+                "Правильна відповідь додає вам здоров'я або вбиває моба, неправильна - забирає у Вас здоров'я</div></html>";
+        String quizTextEng = "<html><div WIDTH=650 style=\"padding: 0 10px;\"><i><b>Java quiz</b></i>. " +
+                "You have to step on it and press SPACE key to open a quiz. You can answer one quiz once and you can't change your answer. " +
+                "Correct answers heal you or kill a mob, while wrong answers damage you</div></html>";
+        quizInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? quizText : quizTextEng);
+        quizInstructionLabel.setFont(font16);
+        quizInstructionLabel.setForeground(TEXT_COLOR);
+        quizPanel.add(quizInstructionLabel);
+
+        contentPanel.add(quizPanel);
+    }
+
     @Override
     public void updateProgressData(){
         super.updateProgressData();
@@ -92,7 +119,7 @@ public class InstructionUI extends UI {
         doorButtonInstruction();
         rotatingDoorInstruction();
         keyInstruction();
-
+        quizInstruction();
     }
 
     public void GPTInstruction(){

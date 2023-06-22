@@ -3,7 +3,6 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import javax.swing.*;
 import java.io.*;
 
 public class Main {
@@ -45,9 +44,7 @@ public class Main {
         //startMazeGame();
         mainMenuUI.setVisible(true);
         setMusic("background-music.mp3", 0.1);
-        SwingUtilities.invokeLater(() -> {
-            playMusic();
-        });
+        playMusic();
 
     }
     private static void updateUsername(String newName) {
@@ -149,25 +146,18 @@ public class Main {
         // Initialize JavaFX environment if not already initialized
         new JFXPanel();
 
+        // Create a File object with the MP3 file
+        File musicFile = new File("music/" + path);
 
-            // Create a File object with the MP3 file
-            File musicFile = new File("music/" + path);
+        // Create a Media object with the File object
+        Media media = new Media(musicFile.toURI().toString());
 
-            // Create a Media object with the File object
-            Media media = new Media(musicFile.toURI().toString());
+        // Create a MediaPlayer object to play the media
+        backgroundMediaPlayer = new MediaPlayer(media);
 
-            // Create a MediaPlayer object to play the media
-            backgroundMediaPlayer = new MediaPlayer(media);
-
-            // Configure the MediaPlayer to loop the music
-            backgroundMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-
-            // Start playing the music
-            backgroundMediaPlayer.setVolume(volume * volumeCoef);
-
-            System.out.println("Background music is set.");
-            System.out.println("Background music volume: " + backgroundMediaPlayer.getVolume());
-
+        // Configure the MediaPlayer to loop the music
+        backgroundMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        backgroundMediaPlayer.setVolume(volume * volumeCoef);
     }
 
     public static void playMusic() {

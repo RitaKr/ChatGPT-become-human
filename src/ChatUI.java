@@ -5,11 +5,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class ChatUI extends UI {
     static JPanel chatArea = new JPanel(new GridBagLayout());
@@ -25,9 +27,12 @@ public class ChatUI extends UI {
     JButton answer2;
     JScrollPane scrollPane;
     int additionalDialogs;
+    MediaPlayer videoPlayer;
+    Duration pauseTime;
 
     public ChatUI() {
         super("ChatGPT: become human", Main.mainMenuUI);
+        Platform.setImplicitExit(false);
         setUpperPanel(this);
 
         chatData = Main.getProgress().getChatData();
@@ -58,7 +63,6 @@ public class ChatUI extends UI {
         getContentPane().add(scrollPane, BorderLayout.CENTER);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
         pack();
-
 
     }
     private void addOldMessage(Dialog dialog, Dialog dialogOtherLang){
@@ -371,10 +375,8 @@ public class ChatUI extends UI {
         super.updateProgressData();
         chatArea.removeAll();
         setMessages();
+
         System.out.println(Main.getProgress());
-        if (Main.getProgress().isFinaleUnlocked()) {
-            addFinal();
-        }
     }
     private void setMessages(){
         Main.getProgress().setDialogCount(0);
@@ -441,8 +443,6 @@ public class ChatUI extends UI {
         if (Main.getProgress().isFinaleUnlocked()) {
             addFinal();
         }
-
-
     }
     public void addDeathMessage(int i){
         switch (i) {
@@ -512,6 +512,7 @@ public class ChatUI extends UI {
     }
 
     public static void main(String[] args) {
+
         Main.fetchProgress();
         new ChatUI();
     }
@@ -531,14 +532,14 @@ public class ChatUI extends UI {
         // Запускаємо JavaFX Thread
         Platform.runLater(() -> {
             // Створюємо відео-плеєр JavaFX
-            String videoUrl = getClass().getResource("/end-of-the-game.mp4").toExternalForm();
+            String videoUrl = Objects.requireNonNull(getClass().getResource("/end-of-the-game.mp4")).toExternalForm();
             Media media = new Media(videoUrl);
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            MediaView mediaView = new MediaView(mediaPlayer);
+            videoPlayer = new MediaPlayer(media);
+            MediaView mediaView = new MediaView(videoPlayer);
 
             // Create the scene and set the size
             StackPane stackPane = new StackPane(mediaView);
-            stackPane.setStyle("-fx-background-color: rgb(85, 82, 93);"); // Set the desired background color
+            stackPane.setStyle("-fx-background-color: black;"); // Set the desired background color
 
             Scene scene = new Scene(stackPane, 600, 400);
             System.out.println("scene created");
@@ -548,18 +549,29 @@ public class ChatUI extends UI {
             mediaView.setFitHeight(400);
 
             // Start playing the video
-            if (isVisible()) mediaPlayer.play();
+            if(pauseTime==null) pauseTime = Duration.seconds(0);
+            if (super.isVisible()) videoPlayer.play();
 
-            jfxPanel.addKeyListener(new KeyAdapter() {
-                // ... your key listener code ...
-            });
 
             jfxPanel.addMouseListener(new MouseAdapter() {
-                // ... your mouse listener code ...
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        if (videoPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                            videoPlayer.pause();
+                            ChatUI.super.requestFocus();
+                        } else {
+                            if (videoPlayer.getStatus() == MediaPlayer.Status.STOPPED)  videoPlayer.seek(Duration.ZERO);
+                            else videoPlayer.seek(pauseTime);
+                            videoPlayer.play();
+                        }
+                    }
+                }
             });
-
-            jfxPanel.setFocusable(true);
-            jfxPanel.requestFocusInWindow();
+            videoPlayer.setOnPaused(() -> {
+                pauseTime = videoPlayer.getCurrentTime();
+                // Do something with the pauseTime, such as storing it for later use
+            });
 
             // Add the scene to the JFXPanel after it's added to the chatArea
             SwingUtilities.invokeLater(() -> {
@@ -567,8 +579,21 @@ public class ChatUI extends UI {
                 scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
             });
         });
-    }
 
+
+    }
+    @Override
+    void quit(JFrame destinationFrame){
+        destinationFrame.setVisible(true);
+        if (videoPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            videoPlayer.pause();
+            pauseTime = videoPlayer.getCurrentTime();
+
+            ChatUI.super.requestFocus();
+        }
+        SwingUtilities.invokeLater(this::dispose);
+
+    }
 
     class MessagePanel extends JPanel {
         JPanel contentPanel = new JPanel(new BorderLayout());

@@ -45,7 +45,7 @@ public class QuizWindow extends JDialog {
         this.parent = parent;
         this.quiz = quiz;
         this.message = quiz.getQuestion();
-        if (chosenAnswer == quiz.getCorrectAnswerIndex()) quiz.setAnsweredCorrectly(true);
+        if (quiz.isCompleted()) chosenAnswer = quiz.getChosenAnswer();
 
         initializeUI();
     }
@@ -89,6 +89,7 @@ public class QuizWindow extends JDialog {
                         if (!quiz.isCompleted()) {
                             Main.playEffect("click.wav", 0.2);
                             chosenAnswer = finalI;
+                            quiz.setChosenAnswer(finalI);
                             if (finalI == quiz.getCorrectAnswerIndex()) {
                                 quiz.setAnsweredCorrectly(true);
                                 answerBtn.setIcon(new ImageIcon(correctAnswerImage));
@@ -205,6 +206,15 @@ class Quiz {
     private ArrayList<Answer> answers;
     private boolean completed = false;
     private boolean answeredCorrectly;
+    private int chosenAnswer;
+
+    public int getChosenAnswer() {
+        return chosenAnswer;
+    }
+
+    public void setChosenAnswer(int chosenAnswer) {
+        this.chosenAnswer = chosenAnswer;
+    }
 
     public boolean isAnsweredCorrectly() {
         return answeredCorrectly;

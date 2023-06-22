@@ -68,8 +68,10 @@ public class MainMenuUI extends UI {
           public void actionPerformed(ActionEvent e){
               Main.fetchProgress();
               //Main.playEffect("click.wav", 0.2);
+              //System.out.println("!!!!!!!Main.chatUI.videoPlayer.getMedia()==null "+(Main.chatUI.videoPlayer.getMedia()==null));
               Main.chatUI.updateProgressData();
-              if (Main.getProgress().isFinaleUnlocked()) Main.chatUI.addFinal();
+
+              //if (Main.getProgress().isFinaleUnlocked()) Main.chatUI.addFinal();
               Main.chatUI.setVisible(true);
               Main.chatUI.requestFocus();
               SwingUtilities.invokeLater(()->dispose());
