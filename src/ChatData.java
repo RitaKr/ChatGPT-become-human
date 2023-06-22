@@ -871,19 +871,21 @@ public class ChatData {
     Chapter yourChapter1Ukr;
     Chapter yourChapter2Ukr;
     Chapter yourChapter3Ukr;
-    int totalMessages;
-    public ChatData(){
-        yourChapter1 =new Chapter(new ArrayList<>());
-        yourChapter2 =new Chapter(new ArrayList<>());
-        yourChapter3 =new Chapter(new ArrayList<>());
-        yourChapter1Ukr =new Chapter(new ArrayList<>());
-        yourChapter2Ukr =new Chapter(new ArrayList<>());
-        yourChapter3Ukr =new Chapter(new ArrayList<>());
+
+    /**
+     * Конструктор для створення об'єкта типу ChatData.
+     * Ініціалізує об'єкти типу Chapter для трьох роздылыв чату обома мовами з порожніми списками діалогів.
+     */
+    public ChatData() {
+        yourChapter1 = new Chapter(new ArrayList<>());
+        yourChapter2 = new Chapter(new ArrayList<>());
+        yourChapter3 = new Chapter(new ArrayList<>());
+        yourChapter1Ukr = new Chapter(new ArrayList<>());
+        yourChapter2Ukr = new Chapter(new ArrayList<>());
+        yourChapter3Ukr = new Chapter(new ArrayList<>());
     }
 
-    public static void main(String[] args) {
-        //System.out.println(new ChatData());
-    }
+
     @Override
     public String toString() {
         return "chapter1:"+chapter1;
@@ -920,11 +922,22 @@ class Dialog {
         this.completed = completed;
     }
 
+    /**
+     * Конструктор для створення об'єкта типу Dialog (діалогу: кілька повідомлень GPT та 2 варіанти відповіді користувача).
+     * @param gpt об'єкт типу Msg, що представляє повідомлення GPT
+     * @param user масив об'єктів типу Msg, що представляють повідомлення користувача
+     * @param completed прапорець, що позначає, чи завершений діалог
+     */
     public Dialog(Msg gpt, Msg[] user, boolean completed) {
         this.gpt = gpt;
         this.user = user;
         this.completed = completed;
     }
+    /**
+     * Конструктор для створення об'єкта типу Dialog (діалогу: кілька повідомлень GPT та 2 варіанти відповіді користувача).
+     * @param gpt об'єкт типу Msg, що представляє повідомлення GPT
+     * @param user масив об'єктів типу Msg, що представляють повідомлення користувача
+     */
     public Dialog(Msg gpt, Msg[] user) {
         this.gpt = gpt;
         this.user = user;
@@ -963,6 +976,11 @@ class Msg {
         return texts;
     }
 
+    /**
+     * Конструктор для створення об'єкта типу Msg (повідомлення).
+     * @param plot номер сюжету
+     * @param texts масив текстів повідомлень
+     */
     public Msg(int plot, String[] texts) {
         this.plot = plot;
         this.texts = texts;
@@ -993,11 +1011,10 @@ class Chapter {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
-
-    public Chapter(ArrayList<Dialog> dialogs, boolean completed) {
-        this.dialogs = dialogs;
-        this.completed = completed;
-    }
+    /**
+     * Конструктор для створення об'єкта типу Chapter (збірка діалогів між лабіринтами).
+     * @param dialogs список діалогів у главі
+     */
     public Chapter(ArrayList<Dialog> dialogs) {
         this.dialogs = dialogs;
     }

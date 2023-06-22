@@ -7,10 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SettingsUI extends UI{
-    private static final Color TITLE_COLOR = new Color(197, 198, 238);
     private static final Color BG_COLOR = new Color(1, 2, 26);
-    JPanel titlePanel;
-    JLabel titleLabel;
+
     JLabel title;
     JComboBox languageComboBox;
     JPanel languagePanel, volumePanel, volumePanel1;
@@ -18,6 +16,11 @@ public class SettingsUI extends UI{
     JSlider volumeSlider, volumeSlider1;
     GridBagConstraints c = new GridBagConstraints();
 
+    /**
+     * Створює об'єкт SettingsUI з інтерфейсом налаштувань.
+     * Інтерфейс дозволяє користувачу змінювати мову, гучність музики та гучність звуків.
+     * Мова за замовчуванням визначається значенням "en" (англійська) в класі Main.
+     */
     public SettingsUI() {
         super("ChatGPT: become human", "bg-instruction.jpg", Main.mainMenuUI);
         Main.fetchProgress();
@@ -77,8 +80,6 @@ public class SettingsUI extends UI{
             public void stateChanged(ChangeEvent e) {
                 double volume = volumeSlider.getValue() / 100.0;
                 Main.updateVolume(volume*0.2);
-                System.out.println("Volume: " + volume);
-                // Add your logic here to handle the volume change
             }
         });
 
@@ -108,10 +109,7 @@ public class SettingsUI extends UI{
         volumeSlider1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                double volume = volumeSlider1.getValue() / 100.0;
-                Main.volumeCoef1 =  volume;
-                System.out.println("Volume: " + volume);
-                // Add your logic here to handle the volume change
+                Main.volumeCoef1 = volumeSlider1.getValue() / 100.0;
             }
         });
 
@@ -129,8 +127,13 @@ public class SettingsUI extends UI{
 
         add(super.upperPanel, BorderLayout.NORTH);
     }
+
+    /**
+     * Змінює мову програми на вибрану користувачем.
+     *
+     * @param selectedLanguage Обраний користувачем варіант мови. Може бути "English" або "Українська".
+     */
     private void changeLanguage(String selectedLanguage) {
-        System.out.println("changeLanguage: " + selectedLanguage);
         Main.setLanguage(selectedLanguage.equals("English") ? "en" : "uk");
         Main.updateProgress();
 
@@ -139,6 +142,11 @@ public class SettingsUI extends UI{
         Main.mainMenuUI.updateButtons();
 
     }
+
+    /**
+     * Оновлює дані про прогрес гри.
+     * Викликається для оновлення відображення інформації про прогрес гри після зміни мови.
+     */
     @Override
     public void updateProgressData(){
         Main.fetchProgress();
@@ -148,9 +156,5 @@ public class SettingsUI extends UI{
         volumeLabel.setText(Main.getLanguage().equals("en") ? "Music volume:" : "Гучність музики:");
         volumeLabel1.setText(Main.getLanguage().equals("en") ? "Sounds volume:" : "Гучність звуків:");
     }
-    public static void main(String[] args) {
-        new SettingsUI().setVisible(true);
 
-
-    }
 }

@@ -18,6 +18,17 @@ public class SlidingDoor extends Item{
     public Maze getSettings(){
         return settings;
     }
+
+    /**
+     * Конструктор для ініціалізації об'єкта SlidingDoor (ковзких дверей).
+     *
+     * @param settings        об'єкт Maze, який представляє лабіринт
+     * @param originCol       стовпець початкової позиції дверей
+     * @param originRow       рядок початкової позиції дверей
+     * @param destinationCol  стовпець кінцевої позиції дверей
+     * @param destinationRow  рядок кінцевої позиції дверей
+     * @param horizontal      прапорець, що вказує, чи є двері горизонтальними (true) або вертикальними (false)
+     */
     public SlidingDoor(Maze settings, int originCol , int originRow, int destinationCol, int destinationRow, boolean horizontal) {
         super("sliding-door.png");
         this.originCol = originCol;
@@ -34,8 +45,11 @@ public class SlidingDoor extends Item{
         super.setX(originX);
         super.setY(originY);
 
-
     }
+
+    /**
+     * Обчислює координати початкової та кінцевої позицій дверей.
+     */
     private void calculateCoordinates(){
         originX = (horizontal? Maze.wallSize : 0) + originCol*(Maze.cellSize + Maze.wallSize)-5;
         originY = (horizontal? 0: Maze.wallSize) + originRow*(Maze.cellSize + Maze.wallSize)-5;
@@ -43,12 +57,20 @@ public class SlidingDoor extends Item{
         destinationY =(horizontal? 0: Maze.wallSize) + destinationCol*(Maze.cellSize + Maze.wallSize)-5;
 
     }
+
+    /**
+     * Малює двері на графічному контексті.
+     *
+     * @param g Графічний контекст
+     */
     @Override
     public void draw(Graphics g){
-//        g.setColor(new Color(84, 0, 255));
-//        g.fillRect(super.getX(), super.getY(), super.getWidth(), super.getHeight());
         super.draw(g);
     }
+
+    /**
+     * Здійснює рух дверей.
+     */
     public void move() {
         int delay = 400; // Delay in milliseconds
         int increment = 10; // Amount to move in each step
@@ -107,6 +129,5 @@ public class SlidingDoor extends Item{
 
         timer.start(); // Start the timer to initiate the animation
     }
-
 
 }

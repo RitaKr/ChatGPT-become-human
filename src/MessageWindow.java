@@ -33,12 +33,18 @@ public class MessageWindow extends JDialog {
 
     private String btnText1;
     private String btnText2;
+
+    /**
+     * Завантажує власний шрифт з файлу і повертає його екземпляр з заданим розміром і константою шрифту.
+     * @param fontSize розмір шрифту
+     * @param fontConstant константа шрифту (наприклад, Font.BOLD для жирного шрифту)
+     * @return екземпляр завантаженого шрифту з заданими параметрами або стандартний шрифт зазначеного типу у разі помилки
+     */
     public Font loadCustomFont(float fontSize, int fontConstant) {
         try {
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/font.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
-            System.out.println("font registered successfully");
             return customFont.deriveFont(fontSize).deriveFont(fontConstant);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -46,6 +52,14 @@ public class MessageWindow extends JDialog {
         }
     }
 
+    /**
+     * Створює вікно повідомлення з заданими параметрами.
+     * @param parent компонент-батько, на основі якого буде встановлено батьківське вікно
+     * @param message текст повідомлення
+     * @param title заголовок вікна
+     * @param btnText1 текст першої кнопки
+     * @param btnText2 текст другої кнопки
+     */
     public MessageWindow(Component parent, String message, String title, String btnText1, String btnText2) {
         super((Window) SwingUtilities.getWindowAncestor(parent), title, ModalityType.APPLICATION_MODAL);
         this.message = message;
@@ -57,6 +71,13 @@ public class MessageWindow extends JDialog {
         initializeUI();
     }
 
+    /**
+     * Створює вікно повідомлення з заданими параметрами, яке містить лише одну кнопку.
+     * @param parent компонент-батько, на основі якого буде встановлено батьківське вікно
+     * @param message текст повідомлення
+     * @param title заголовок вікна
+     * @param btnText2 текст єдине кнопки
+     */
     public MessageWindow(Component parent, String message, String title, String btnText2) {
         super((Window) SwingUtilities.getWindowAncestor(parent), title, ModalityType.APPLICATION_MODAL);
         this.message = message;
@@ -72,6 +93,11 @@ public class MessageWindow extends JDialog {
         initializeUI();
     }
 
+    /**
+     * Ініціалізує користувацький інтерфейс вікна повідомлення.
+     * Встановлює налаштування вікна.
+     * Створює і розташовує компоненти вмісту вікна.
+     */
     private void initializeUI() {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -126,7 +152,11 @@ public class MessageWindow extends JDialog {
         setVisible(true);
     }
 
-
+    /**
+     * Створює кнопку з заданим текстом.
+     * @param text текст кнопки
+     * @return створена кнопка
+     */
     private JButton createButton(String text) {
         JButton btn = new JButton(new ImageIcon(buttonImage)) {
             @Override
@@ -181,13 +211,4 @@ public class MessageWindow extends JDialog {
         return btn;
     }
 
-    public static void main(String[] args) {
-        JFrame parent = new JFrame("Parent Frame");
-        parent.setSize(500, 300);
-        parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        parent.setLocationRelativeTo(null);
-        parent.setVisible(true);
-
-        MessageWindow messageWindow = new MessageWindow(parent, "You completed level 1!", "Maze completed", "OK");
-    }
 }

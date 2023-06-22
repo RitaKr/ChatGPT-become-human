@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 class ProgressData {
     private static int lv;
     private static int dialogCount;
@@ -12,14 +10,6 @@ class ProgressData {
 
     public void setDeathReason(String deathReason) {
         ProgressData.deathReason = deathReason;
-    }
-
-    public int getTotalDialogCount() {
-        return totalDialogCount;
-    }
-
-    public void setTotalDialogCount(int totalDialogCount) {
-        ProgressData.totalDialogCount = totalDialogCount;
     }
 
     private static String chapter1String;
@@ -97,9 +87,25 @@ class ProgressData {
         this.dialogCount = dialogCount;
     }
 
+    /**
+     * Встановлює дані прогресу з рядка даних.
+     * Рядок даних повинен бути у форматі "ключ:значення;", де кожен ключ-значення пара розділяється символом ":".
+     * Підтримувані ключі та їх значення:
+     * - "lang": мова гри
+     * - "lv": рівень гри
+     * - "alive": прапорець, що вказує, чи персонаж живий
+     * - "deathReason": причина смерті персонажа
+     * - "dialogCount": кількість проведених діалогів
+     * - "chapter1": дані глави 1
+     * - "chapter2": дані глави 2
+     * - "chapter3": дані глави 3
+     * - "finaleUnlocked": прапорець, що вказує, чи розблоковано фінал
+     *
+     * @param dataString рядок даних для встановлення прогресу
+     */
     public void setProgressData(String dataString) {
         String[] lines = dataString.split(";");
-        System.out.println(Arrays.asList(lines));
+        //System.out.println(Arrays.asList(lines));
 
         for (String line : lines) {
             String[] parts = line.split(":");
@@ -141,6 +147,12 @@ class ProgressData {
         }
 
     }
+
+    /**
+     * Отримує дані чату зі стрічок глав.
+     * Повертає об'єкт ChatData, який містить інформацію про прогрес гравця у кожній главі.
+     * @return об'єкт ChatData з даними чату
+     */
     public ChatData getChatData(){
         ChatData data = new ChatData();
         //setting chapter1
@@ -166,8 +178,6 @@ class ProgressData {
                     data.yourChapter1Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter1Ukr.getDialogs().get(i).setCompleted(true);
                 }
-
-            //data.chapter1.getDialogs().get(key).setCompleted(value);
         }
 
         //setting chapter2
@@ -191,11 +201,9 @@ class ProgressData {
                     data.yourChapter2Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter2Ukr.getDialogs().get(i).setCompleted(true);
                 }
-                //data.chapter1.getDialogs().get(key).setCompleted(value);
             }
             data.yourChapter1.setCompleted(true);
         } catch (NumberFormatException e) {
-            //System.out.println("chapter2 is not unlocked yet");
         }
 
         //setting chapter3
@@ -219,15 +227,12 @@ class ProgressData {
                     data.yourChapter3Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter3Ukr.getDialogs().get(i).setCompleted(true);
                 }
-                //data.chapter1.getDialogs().get(key).setCompleted(value);
             }
             data.yourChapter2.setCompleted(true);
         } catch (NumberFormatException e) {
-            //System.out.println("chapter3 is not unlocked yet");
         }
 
         if (finaleUnlocked) data.yourChapter3.setCompleted(true);
-        //System.out.println(data);
         return data;
     }
 

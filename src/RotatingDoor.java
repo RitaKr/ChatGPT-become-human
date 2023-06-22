@@ -23,6 +23,15 @@ public class RotatingDoor extends Item{
         return settings;
     }
 
+    /**
+     * Створює об'єкт обертальної двері в лабіринті.
+     *
+     * @param settings    налаштування лабіринту
+     * @param row         рядок, де розташована двера
+     * @param col         стовпчик, де розташована двера
+     * @param originSide  початкова сторона, з якої починається обертання двері
+     * @param clockwise   чи здійснювати обертання за годинниковою стрілкою
+     */
     public RotatingDoor(Maze settings, int row, int col, Side originSide, boolean clockwise) {
         super();
 
@@ -39,6 +48,10 @@ public class RotatingDoor extends Item{
 
         currentAngle = 0;
     }
+
+    /**
+     * Обчислює координати обертальної двері в залежності від початкової сторони.
+     */
     private void calculateCoordinates(){
         switch (originSide){
             case LEFT: {
@@ -69,6 +82,10 @@ public class RotatingDoor extends Item{
         else super.loadCharacterImage("rotating-door.png");
 
     }
+
+    /**
+     * Встановлює налаштування обертання в залежності від напрямку та початкової сторони.
+     */
     private void setRotationSettings(){
         if (clockwise && originSide==Side.TOP || !clockwise && originSide==Side.BOTTOM) destinationSide=Side.LEFT;
         else if (clockwise && originSide==Side.BOTTOM || !clockwise && originSide==Side.TOP) destinationSide=Side.RIGHT;
@@ -81,6 +98,12 @@ public class RotatingDoor extends Item{
         else if (destinationSide==Side.LEFT && originSide==Side.BOTTOM) rotationCorner=Corner.topLeft;
         else if (destinationSide==Side.BOTTOM && originSide==Side.RIGHT || destinationSide==Side.RIGHT && originSide==Side.BOTTOM) rotationCorner=Corner.bottomLeft;
     }
+
+    /**
+     * Намалювати об'єкт обертальних дверей.
+     *
+     * @param g Графічний контекст, на якому буде показуватися зображення предмета.
+     */
     @Override
     public void draw(Graphics g) {
         g.setColor(new Color(0, 212, 255));
@@ -109,6 +132,10 @@ public class RotatingDoor extends Item{
         // Restore the original transform
         g2d.setTransform(originalTransform);
     }
+
+    /**
+     * Здійснити рух об'єкта обертальних дверей.
+     */
     public void move() {
         int delay = 100; // Delay in milliseconds
         int increment = 5; // Amount to move in each step
@@ -157,6 +184,11 @@ public class RotatingDoor extends Item{
         timer.start(); // Start the timer to initiate the animation
     }
 
+    /**
+     * Змінити стан стіни в лабіринті.
+     * @param wall Сторона стіни, яку потрібно змінити.
+     * @param value Нове значення стіни (0, якщо її немає, або 1, якщо є).
+     */
     private void changeWall(Side wall, int value) {
         switch (wall) {
             case LEFT:

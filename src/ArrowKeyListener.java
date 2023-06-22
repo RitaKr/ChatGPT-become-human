@@ -46,8 +46,8 @@ public class ArrowKeyListener implements KeyListener{
                     if (!previouslyCompleted) game.getBonus();
                     if (game.quiz3!=null && !game.quiz3.isCompleted()) game.quiz3 = game.getRandomQuiz();
                     if (game.quiz2!=null && !game.quiz2.isCompleted()) game.quiz2 = game.getRandomQuiz();
-                    System.out.println("is completed: "+ game.quiz1.isCompleted() +", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
-                    System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
+                    //System.out.println("is completed: "+ game.quiz1.isCompleted() +", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
+                    //System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
                 }
                 if (game.quiz2Item !=null && game.isCollisionWithMob(game.quiz2Item)) {
                     boolean previouslyCompleted = game.quiz2.isCompleted();
@@ -56,8 +56,8 @@ public class ArrowKeyListener implements KeyListener{
                     if (game.quiz3!=null && !game.quiz3.isCompleted()) game.quiz3 = game.getRandomQuiz();
                     if (game.quiz1!=null && !game.quiz1.isCompleted()) game.quiz1 = game.getRandomQuiz();
 
-                    System.out.println("is completed: "+ game.quiz2.isCompleted() +", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
-                    System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
+                    //System.out.println("is completed: "+ game.quiz2.isCompleted() +", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
+                    //System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
                 }
                 if (game.quiz3Item !=null && game.isCollisionWithMob(game.quiz3Item)) {
                     boolean previouslyCompleted = game.quiz3.isCompleted();
@@ -66,8 +66,8 @@ public class ArrowKeyListener implements KeyListener{
 
                     if (game.quiz1!=null && !game.quiz1.isCompleted()) game.quiz1 = game.getRandomQuiz();
                     if (game.quiz2!=null && !game.quiz2.isCompleted()) game.quiz2 = game.getRandomQuiz();
-                    System.out.println("quiz3 is completed: "+ game.quiz3.isCompleted()+", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
-                    System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
+                    //System.out.println("quiz3 is completed: "+ game.quiz3.isCompleted()+", is answered correctly: "+ game.quizWindow.isAnsweredCorrectly());
+                    //System.out.println(Main.getLanguage().equals("en") ? game.quizes : game.quizesUkr);
                 }
                 break;
             case KeyEvent.VK_ENTER:
@@ -76,12 +76,8 @@ public class ArrowKeyListener implements KeyListener{
                 break;
             case KeyEvent.VK_SHIFT:
                 if (game.isMusicPlaying()) {
-                    // The MediaPlayer is currently playing
-                    System.out.println("The track is playing");
                     game.pauseMusic();
                 } else {
-                    // The MediaPlayer is currently paused
-                    System.out.println("The track is paused");
                     game.playMusic();
                 }
 

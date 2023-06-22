@@ -181,6 +181,10 @@ public class Maze {
     Color maze3col = new Color(161, 110, 243);
     public Color wallsColor;
 
+    /**
+     * Створює новий об'єкт лабіринту згідно з вказаним рівнем.
+     * @param level рівень лабіринту
+     */
     public Maze(int level) {
         switch (level) {
             case 1:
@@ -212,32 +216,8 @@ public class Maze {
             return x;
         }
 
-        public void setX(int x) {
-            this.x = x;
-        }
-
         public int getY() {
             return y;
-        }
-
-        public void setY(int y) {
-            this.y = y;
-        }
-
-        public int getRow() {
-            return row;
-        }
-
-        public void setRow(int row) {
-            this.row = row;
-        }
-
-        public int getCol() {
-            return col;
-        }
-
-        public void setCol(int col) {
-            this.col = col;
         }
 
         public int getT() {
@@ -272,12 +252,16 @@ public class Maze {
             L = l;
         }
 
-        public void setCoordinates(int row, int col) {
-            this.row = row;
-            this.col = col;
-            x = col * (wallSize + cellSize);
-            y = row * (wallSize + cellSize);
-        }
+        /**
+         * Створює новий об'єкт клітинки лабіринту з вказаними параметрами.
+         *
+         * @param t    верхня стінка клітинки (1, якщо є, 0 якщо немає)
+         * @param r    права стінка клітинки (1, якщо є, 0 якщо немає)
+         * @param b    нижня стінка клітинки (1, якщо є, 0 якщо немає)
+         * @param l    ліва стінка клітинки (1, якщо є, 0 якщо немає)
+         * @param row  рядок клітинки
+         * @param col  стовпець клітинки
+         */
         public Cell(int t, int r, int b, int l, int row, int col) {
             T = t;
             R = r;
@@ -287,13 +271,6 @@ public class Maze {
             this.col = col;
             x = col * (wallSize + cellSize);
             y = row * (wallSize + cellSize);
-        }
-        public Cell(int t, int r, int b, int l) {
-            T = t;
-            R = r;
-            B = b;
-            L = l;
-
         }
     }
 

@@ -1,9 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class QuizWindow extends JDialog {
     private final int width = 500;
@@ -29,17 +30,18 @@ public class QuizWindow extends JDialog {
     private Color buttonColor = Color.WHITE;
 
     private Quiz quiz;
-
-    public Quiz getQuiz() {
-        return quiz;
-    }
-    private Timer timer;
-    private float alpha;
     private static int chosenAnswer;
 
     public boolean isAnsweredCorrectly() {
         return quiz.isAnsweredCorrectly();
     }
+
+    /**
+     * Конструктор для створення вікна вікторини.
+     *
+     * @param parent компонент-батько, на якому буде розміщене вікно
+     * @param quiz   об'єкт вікторини
+     */
     public QuizWindow(Component parent, Quiz quiz) {
         super((Window) SwingUtilities.getWindowAncestor(parent), "Quiz", ModalityType.APPLICATION_MODAL);
         this.parent = parent;
@@ -50,7 +52,9 @@ public class QuizWindow extends JDialog {
         initializeUI();
     }
 
-
+    /**
+     * Ініціалізує графічний інтерфейс вікна вікторини.
+     */
     private void initializeUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -116,7 +120,6 @@ public class QuizWindow extends JDialog {
         }
 
 
-
         gbc.gridy = 1;
         gbc.weighty = 5.0;
         contentPane.add(buttonPanel, gbc);
@@ -130,7 +133,11 @@ public class QuizWindow extends JDialog {
         setVisible(true);
     }
 
-
+    /**
+     * Створює кнопку з вказаним текстом.
+     * @param text текст кнопки
+     * @return створена кнопка
+     */
     private JButton createButton(String text) {
         JButton btn = new JButton(new ImageIcon(buttonImage)) {
             @Override
@@ -143,7 +150,6 @@ public class QuizWindow extends JDialog {
 
             @Override
             public boolean isOpaque() {
-                // Ensure the button is not opaque
                 return false;
             }
         };
@@ -174,14 +180,12 @@ public class QuizWindow extends JDialog {
                     if (!quiz.isCompleted()) {
                         Main.playEffect("hover.wav", 0.2);
                         btn.setIcon(new ImageIcon(buttonHoverImage));
-                    }  // Set the hover image
-                    //startFadeIn(btn);
+                    }
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     if (!quiz.isCompleted()) btn.setIcon(new ImageIcon(buttonImage));  // Restore the default image
-                    //startFadeOut(btn);
                 }
             });
 
@@ -189,16 +193,6 @@ public class QuizWindow extends JDialog {
     }
 
 
-    public static void main(String[] args) {
-        QuizWindow quizWindow = new QuizWindow(null, new Quiz("1. Який з цих методів використовується для виводу тексту в консоль в Java?", new ArrayList<>(Arrays.asList(new Answer("A. System.out.display()"), new Answer("B. System.out.print()", true), new Answer("C. Console.write()"), new Answer("D. Print.console()")))));
-        quizWindow.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                // Run the remaining code here
-                System.out.println("is answered correctly: " +quizWindow.quiz.isAnsweredCorrectly());
-            }
-        });
-    }
 }
 
 

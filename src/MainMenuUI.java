@@ -27,13 +27,21 @@ public class MainMenuUI extends UI {
     int btnHeight = 80;
 
 
+    /**
+     * Конструює новий об'єкт MainMenuUI (вікно головного меню).
+     * Ініціалізує MainMenuUI з вказаним заголовком та фоновим зображенням.
+     * Викликає метод setThisUI() для налаштування компонентів та розташування інтерфейсу.
+     */
     public MainMenuUI() {
         super("ChatGPT: become human", "bg-menu4.gif");
-
         setThisUI();
-        // Make JFrame visible
-        //setVisible(true);
     }
+
+    /**
+     * Налаштовує інтерфейс для MainMenuUI.
+     * Завантажує прогрес гри.
+     * Встановлює розташування компонентів та розміщує їх на панелі фону.
+     */
     private void setThisUI(){
         Main.fetchProgress();
         super.backgroundPanel.setLayout(new GridBagLayout());
@@ -60,18 +68,19 @@ public class MainMenuUI extends UI {
 
     }
 
-  public void setButtons(){
+    /**
+     * Налаштовує кнопки для MainMenuUI.
+     * Створює та додає кнопку "Start" з відповідним дією.
+     * Створює та додає інші кнопки залежно від обраної мови і встановлює їх дії.
+     */
+    public void setButtons(){
       JButton startButton = createButton("", buttonColor, startImage, startHoverImage, btnWidth, btnHeight);
       buttonsPanel.add(startButton, c);
       startButton.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e){
               Main.fetchProgress();
-              //Main.playEffect("click.wav", 0.2);
-              //System.out.println("!!!!!!!Main.chatUI.videoPlayer.getMedia()==null "+(Main.chatUI.videoPlayer.getMedia()==null));
               Main.chatUI.updateProgressData();
-
-              //if (Main.getProgress().isFinaleUnlocked()) Main.chatUI.addFinal();
               Main.chatUI.setVisible(true);
               Main.chatUI.requestFocus();
               SwingUtilities.invokeLater(()->dispose());
@@ -81,10 +90,7 @@ public class MainMenuUI extends UI {
       // create and customize the buttons
       String[] buttonNames = Main.getLanguage().equals("en") ? new String[]{"Instruction", "Mazes", "Settings", "Reset progress"} : new String[]{"Інструкція", "Лабіринти", "Налаштування", "Скинути прогрес"};
       for (int i = 1; i <= buttonNames.length; i++) {
-          System.out.println(buttonNames.length);
           JButton button = createButton(buttonNames[i - 1], (i < buttonNames.length ? buttonColor : buttonColor1), (i < buttonNames.length ? buttonImage : redButtonImage), buttonHoverImage, btnWidth, btnHeight);
-//         button.setBorderPainted(true);
-//         button.setBorder(BorderFactory.createLineBorder(Color.white, 2));
           buttonsPanel.add(button, c);
           int finalI = i;
           button.addActionListener(new ActionListener() {
@@ -140,6 +146,10 @@ public class MainMenuUI extends UI {
         }
       }
 
+    /**
+     * Оновлює кнопки в MainMenuUI, враховуючи оновлену інформацію про прогрес гри.
+     * Видаляє всі наявні кнопки та створює нові кнопки з оновленою інформацією.
+     */
     public void updateButtons(){
         Main.fetchProgress();
             buttonsPanel.removeAll();

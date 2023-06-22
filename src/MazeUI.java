@@ -7,60 +7,23 @@ import java.awt.event.WindowEvent;
 
 public class MazeUI extends UI {
     static MazeGame game;
-//    JPanel upperPanel = new JPanel(new BorderLayout());
-//    JLabel levelLabel = new JLabel();
     JPanel heartsPanel = new HeartsPanel();
-//    static JButton quitButton;
-//    static Image crossImage = new ImageIcon("images/x.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-//    static Image crossHoverImage = new ImageIcon("images/x-hover.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-
-    static Color bg = new Color(45, 36, 58);
-    static boolean lv1completed;
-    static boolean lv2completed;
-    static boolean lv3completed;
 
     public MazeGame getGame() {
         return game;
     }
 
-    public void setGame(MazeGame game) {
-        MazeUI.game = game;
-    }
-
-    public boolean isLv1completed() {
-        return lv1completed;
-    }
-
-    public void setLv1completed(boolean lv1completed) {
-        MazeUI.lv1completed = lv1completed;
-    }
-
-    public boolean isLv2completed() {
-        return lv2completed;
-    }
-
-    public void setLv2completed(boolean lv2completed) {
-        MazeUI.lv2completed = lv2completed;
-    }
-
-    public boolean isLv3completed() {
-        return lv3completed;
-    }
-
-    public void setLv3completed(boolean lv3completed) {
-        MazeUI.lv3completed = lv3completed;
-    }
-
     static boolean mazeCompleted = false;
-
-    public boolean isMazeCompleted() {
-        return mazeCompleted;
-    }
 
     public void setMazeCompleted(boolean mazeCompleted) {
         MazeUI.mazeCompleted = mazeCompleted;
     }
 
+    /**
+     * Створює об'єкт MazeUI (вікно лабіринту) з заданими коефіцієнтами гучності (створюється у ChatUI).
+     * @param volumeCoef коефіцієнт гучності фонової музики
+     * @param volumeCoef1 коефіцієнт гучності ефектів
+     */
     public MazeUI(double volumeCoef, double volumeCoef1){
         super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
@@ -68,6 +31,13 @@ public class MazeUI extends UI {
         setThisUI();
 
     }
+
+    /**
+     * Створює об'єкт MazeUI (вікно лабіринту) з заданим рівнем гри та заданими коефіцієнтами гучності (створюється у ChooseMazeUI).
+     * @param level рівень лабіринту
+     * @param volumeCoef коефіцієнт гучності фонової музики
+     * @param volumeCoef1 коефіцієнт гучності ефектів
+     */
     public MazeUI(int level, double volumeCoef, double volumeCoef1){
         super("ChatGPT: become human", false);
         //System.out.println("Maze Game");
@@ -76,6 +46,9 @@ public class MazeUI extends UI {
 
     }
 
+    /**
+     * Налаштовує інтерфейс вікна та панель гри в лабіринт
+     */
     private void setThisUI() {
         setResizable(false);
 
@@ -102,15 +75,15 @@ public class MazeUI extends UI {
         game.requestFocus();
     }
 
-    void confirmQuit() {
+    /**
+     * Підтверджує вихід з лабіринту.
+     * Виходить з нього, якщо гравець обрав "Так" у діалоговому вікні.
+     */
+    public void confirmQuit() {
         if (game.isMusicPlaying()) game.pauseMusic();
-        //System.out.println(game.isMusicPlaying());
-        //int answer = JOptionPane.showConfirmDialog(null, "Do you want to quit maze?","Quit maze", JOptionPane.YES_NO_OPTION);
-
         MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                 new MessageWindow(MazeUI.game, "Do you really want to quit maze?", "Quit maze", "Yes", "No")
                 : new MessageWindow(MazeUI.game, "Ви точно хочете покинути лабіринт?", "Покинути лабіринт", "Так", "Ні");
-        //setScene(level);
         messageWindow.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -133,6 +106,10 @@ public class MazeUI extends UI {
             }
         });
     }
+
+    /**
+     * Оновлює верхню панель головного вікна.
+     */
     @Override
     public void updateUpperPanel() {
         levelLabel.setText((Main.getLanguage().equals("en") ? "Level " : "Рівень ") + game.getLevel());
@@ -140,6 +117,9 @@ public class MazeUI extends UI {
         heartsPanel.repaint();
     }
 
+    /**
+     * Перемальовує панель з сердечками (життями) гравця
+     */
     public void repaintHeartsPanel() {
         if (upperPanel != null) {
             heartsPanel.repaint();
@@ -153,10 +133,20 @@ public class MazeUI extends UI {
 
         int y;
         int x;
+
+        /**
+         * Створює об'єкт HeartsPanel.
+         * Завантажує зображення серця.
+         */
         public HeartsPanel(){
             loadImage("heart.png");
 
         }
+
+        /**
+         * Малює компонент HeartsPanel.
+         * @param g об'єкт <code>Graphics</code> для малювання
+         */
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -167,10 +157,14 @@ public class MazeUI extends UI {
             if (MazeGame.chatGPT.getLives()>1) g.drawImage(heart, x+heartSize+distance,y, heartSize, heartSize, null);
             if (MazeGame.chatGPT.getLives()>2) g.drawImage(heart, x+(heartSize+distance)*2,y, heartSize, heartSize, null);
         }
+
+        /**
+         * Завантажує зображення з файлу.
+         * @param imageName ім'я файлу зображення
+         */
         private void loadImage(String imageName) {
             ImageIcon icon = new ImageIcon("images/"+imageName); // Replace with the path to your character image file
             heart = icon.getImage();
-            ////System.out.println("w: "+width+", h:"+ height);
         }
 
     }

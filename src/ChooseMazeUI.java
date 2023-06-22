@@ -8,6 +8,11 @@ public class ChooseMazeUI  extends UI  {
     ProgressData progressData;
     MessageWindow messageWindow;
     JLabel title;
+
+    /**
+     * Оновлює дані про прогрес.
+     * Отримує оновлені дані про прогрес від головного класу Main, оновлює відповідні елементи інтерфейсу користувача.
+     */
     @Override
     public void updateProgressData(){
         Main.fetchProgress();
@@ -19,6 +24,10 @@ public class ChooseMazeUI  extends UI  {
         levelLabel.updateUI();
     }
 
+    /**
+     * Встановлює всі елементи інтерфейсу користувача.
+     * Встановлює розташування і вигляд заголовка, створює та налаштовує кнопки для вибору лабіринту.
+     */
     public void setAll(){
         super.backgroundPanel.setLayout(new GridBagLayout());
         setUpperPanel(this);
@@ -45,6 +54,11 @@ public class ChooseMazeUI  extends UI  {
         add(super.upperPanel, BorderLayout.NORTH);
         //add(super.backgroundPanel, BorderLayout.CENTER);
     }
+
+    /**
+     * Встановлює кнопки для вибору рівнів гри.
+     * Задає зображення, назву та дії для кожної кнопки.
+     */
     private void setButtons(){
         String[] buttonImages = {((progressData.getLv()>=1 && progressData.getChatData().yourChapter1.isCompleted()) ? "lv1.png" : "lv1no.png"), ((progressData.getLv()>=2 && progressData.getChatData().yourChapter2.isCompleted())? "lv2.png" : "lv2no.png"), (progressData.isFinaleUnlocked()  ? "lv3.png" : "lv3no.png")};
         for (int i = 0; i < buttonImages.length; i++) {
@@ -143,13 +157,17 @@ public class ChooseMazeUI  extends UI  {
 
         }
     }
+
+    /**
+     * Конструктор класу ChooseMazeUI (вікно вибору лабіринтів).
+     * Ініціалізує заголовок вікна, фонове зображення та батьківський фрейм.
+     * Встановлює усі компоненти для графічного інтерфейсу вибору лабіринту.
+     */
     public ChooseMazeUI() {
         super("ChatGPT: become human", "bg-instruction.jpg", Main.mainMenuUI);
         progressData = Main.getProgress();
         setAll();
 
-        // Make JFrame visible
-        //setVisible(true);
     }
 
 

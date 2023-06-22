@@ -28,22 +28,8 @@ public class Quiz {
         return question;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
     public ArrayList<Answer> getAnswers() {
         return answers;
-    }
-    public Answer getCorrectAnswer() {
-        return answers.get(getCorrectAnswerIndex());
-    }
-    public int getCorrectAnswerIndex() {
-        Object[] bools =  answers.stream().map(Answer::isCorrect).toArray();
-        return Arrays.stream(bools).toList().indexOf(true);
-    }
-    public void setAnswers(ArrayList<Answer> answers) {
-        this.answers = answers;
     }
 
     public boolean isCompleted() {
@@ -54,15 +40,25 @@ public class Quiz {
         this.completed = completed;
     }
 
+    /**
+     * Отримує індекс правильної відповіді.
+     * @return індекс правильної відповіді або -1, якщо правильна відповідь не знайдена
+     */
+    public int getCorrectAnswerIndex() {
+        Object[] bools =  answers.stream().map(Answer::isCorrect).toArray();
+        return Arrays.stream(bools).toList().indexOf(true);
+    }
+
+
+    /**
+     * Конструктор для створення об'єкта вікторини.
+     *
+     * @param question питання тесту
+     * @param answers  список відповідей на питання
+     */
     public Quiz(String question, ArrayList<Answer> answers) {
         this.question = question;
         this.answers = answers;
-
-    }
-    public Quiz(String question, ArrayList<Answer> answers, boolean completed) {
-        this.question = question;
-        this.answers = answers;
-        this.completed = completed;
     }
 
     @Override
@@ -82,21 +78,26 @@ class Answer {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public boolean isCorrect() {
         return correct;
     }
 
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
-    }
-
+    /**
+     * Конструктор класу Answer (відповідь на вікторину).
+     * Створює об'єкт Answer з вказаним текстом.
+     * По замовчуванню вона неправильна
+     *
+     * @param text текст відповіді
+     */
     public Answer(String text) {
         this.text = text;
     }
+    /**
+     * Конструктор класу Answer (відповідь на вікторину).
+     * Створює об'єкт Answer з вказаним текстом та позначенням правильності.
+     * @param text текст відповіді
+     * @param correct позначення правильності відповіді
+     */
     public Answer(String text, boolean correct) {
         this.text = text;
         this.correct = correct;

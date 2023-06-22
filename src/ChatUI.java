@@ -10,7 +10,10 @@ import javafx.util.Duration;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class ChatUI extends UI {
@@ -30,6 +33,10 @@ public class ChatUI extends UI {
     MediaPlayer videoPlayer;
     Duration pauseTime;
 
+    /**
+     * Конструктор вікна з чатом ChatUI.
+     * Ініціалізує графічний інтерфейс чату.
+     */
     public ChatUI() {
         super("ChatGPT: become human", Main.mainMenuUI);
         Platform.setImplicitExit(false);
@@ -54,10 +61,8 @@ public class ChatUI extends UI {
         setMessages();
 
         answersPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        //sendButton = setIconButton(sendIcon, 70, 10);
 
         bottomPanel.add(answersPanel, BorderLayout.CENTER);
-        //bottomPanel.add(sendButton, BorderLayout.EAST);
 
         getContentPane().add(upperPanel, BorderLayout.NORTH);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -65,68 +70,56 @@ public class ChatUI extends UI {
         pack();
 
     }
-    private void addOldMessage(Dialog dialog, Dialog dialogOtherLang){
+
+    /**
+     * Додає старе повідомлення до чату при завантаженні вже пройденого чату.
+     * @param dialog           діалог для поточної мови
+     * @param dialogOtherLang  діалог для іншої мови
+     */
+    private void addOldMessage(Dialog dialog, Dialog dialogOtherLang) {
         for (String text : dialog.getGpt().getTexts()) {
             MessagePanel message = new MessagePanel(true, text);
             chatArea.add(message, gbc);
-
         }
         answer1.setText(dialog.getUser()[0].getTexts()[0]);
         answer2.setText(dialog.getUser()[1].getTexts()[0]);
 
-        //final boolean answered = dialog.isCompleted();
-
         Msg chosen = dialog.getUser()[0].isChosen() ? dialog.getUser()[0] : dialog.getUser()[1];
-        if (dialog.isCompleted() && dialog.getId()<(calcTotalMessages()-1)) {
+        if (dialog.isCompleted() && dialog.getId() < (calcTotalMessages() - 1)) {
             MessagePanel message = new MessagePanel(false, chosen.getTexts()[0]);
-            //System.out.println("i added message: "+chosen.getTexts()[0]);
             chatArea.add(message, gbc);
-            //dialog.setId(Main.getProgress().getDialogCount());
-//           //System.out.println("cur lv: "+level+", cur dialog: "+dialog+" (id: "+dialog.getId()+")");
-//           //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
-
-            //Main.updateDialogCount();
         }
-
 
         SwingUtilities.invokeLater(() -> {
             scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
         });
         Main.updateChatData(chatData);
-        //chatArea.setPreferredSize(new Dimension(860, chatArea.getHeight()+100*(1+dialog.getGpt().getTexts().length)));
     }
 
+
+    /**
+     * Додає повідомлення до чату.
+     * @param dialog діалог для поточної мови
+     * @param dialogOtherLang діалог для іншої мови
+     * @param level рівень гри
+     */
     private void addMessage(Dialog dialog, Dialog dialogOtherLang, int level){
         for (String text : dialog.getGpt().getTexts()) {
             MessagePanel message = new MessagePanel(true, text);
             chatArea.add(message, gbc);
 
         }
-        //if (Main.getProgress().getDialogCount()<(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)) dialog.setId(Main.getProgress().getDialogCount());
+
         dialog.setId(Main.getProgress().getDialogCount());
-       //System.out.println("set id "+Main.getProgress().getDialogCount()+" in addMessage");
-       //System.out.println("adding message. cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
-       //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
-
-//        answer1.setText(HTMLfyText(dialog.getUser()[0].getTexts()[0]));
-//        answer2.setText(HTMLfyText(dialog.getUser()[1].getTexts()[0]));
-        answer1.setText(dialog.getUser()[0].getTexts()[0]);
+         answer1.setText(dialog.getUser()[0].getTexts()[0]);
         answer2.setText(dialog.getUser()[1].getTexts()[0]);
-
-        //final boolean answered = dialog.isCompleted();
 
 
         if (Main.getProgress().isAlive()) {
             answer1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                   //System.out.println("pressed answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
-
-                    //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
-
-
-                    //                    if (!dialog.isCompleted() && dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()-1)) {
-                    if (!dialog.isCompleted() || dialog.getId()==(calcTotalMessages()-1)) {
+                  if (!dialog.isCompleted() || dialog.getId()==(calcTotalMessages()-1)) {
                         //if (!dialog.isCompleted() && (dialog.getUser()[0].getPlot()<chatData.chapter1.getDialogs().size() && !chatData.yourChapter1.getDialogs().contains(chatData.chapter1.getDialogs().get(dialog.getUser()[0].getPlot())) || dialog.getUser()[0].getPlot()>=chatData.chapter1.getDialogs().size())) {
                         Main.playEffect("click.wav", 0.2);
                         //answered[0] = true;
@@ -137,9 +130,6 @@ public class ChatUI extends UI {
 
                         MessagePanel message = new MessagePanel(false, dialog.getUser()[0].getTexts()[0]);
                         chatArea.add(message, gbc);
-                       //System.out.println("!!!added answer1: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
-//                       //System.out.println("cur lv: "+level+" (id: "+dialog.getId()+")"+", cur dialog: "+dialog);
-//                       //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
 
                         dialog.setId(Main.getProgress().getDialogCount());
                        //System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer1.addActionListener");
@@ -153,25 +143,13 @@ public class ChatUI extends UI {
                         dispose();
                         System.exit(0);
                     }
-//                    else if (dialog.getGpt().getPlot()>=100 || (dialog.getUser()[0].getPlot() == chatData.chapter1.getDialogs().size() && level<2)) {
-//
-//                        ////System.out.println(true);
-//                        //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-//                       //System.out.println("stating game in this stupid else");
-//                        Main.startMazeGame();
-//                        SwingUtilities.invokeLater(() -> dispose());
-//
-//                    }
+
                     ChatUI.super.requestFocus();
                 }
             });
             answer2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                   //System.out.println("pressed answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog);
-                    //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs)+"");
-
-                    //                    if (!dialog.isCompleted() && dialog.getId()==(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()-1)) {
                     if (!dialog.isCompleted() || dialog.getId()==(calcTotalMessages()-1)) {
                         //answered[0] = true;
                         Main.playEffect("click.wav", 0.2);
@@ -195,15 +173,7 @@ public class ChatUI extends UI {
                         dispose();
                         System.exit(0);
                     }
-//                    else if (dialog.getGpt().getPlot()>=100 || (dialog.getUser()[1].getPlot() == chatData.chapter1.getDialogs().size() && level<2)) {
-//
-//                            ////System.out.println(true);
-//                            //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-//                       //System.out.println("stating game in this stupid else");
-//                            Main.startMazeGame();
-//                            SwingUtilities.invokeLater(() -> dispose());
-//
-//                    }
+
                     ChatUI.super.requestFocus();
                 }
             });
@@ -246,11 +216,8 @@ public class ChatUI extends UI {
         Msg chosen = dialog.getUser()[0].isChosen() ? dialog.getUser()[0] : dialog.getUser()[1];
         if (dialog.isCompleted() && dialog.getId()<(calcTotalMessages()-1)) {
             MessagePanel message = new MessagePanel(false, chosen.getTexts()[0]);
-           //System.out.println("i added message: "+chosen.getTexts()[0]);
             chatArea.add(message, gbc);
             dialog.setId(Main.getProgress().getDialogCount());
-//           //System.out.println("cur lv: "+level+", cur dialog: "+dialog+" (id: "+dialog.getId()+")");
-//           //System.out.println("total dialogs: "+(chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size())+"");
 
             Main.updateDialogCount();
         }
@@ -260,16 +227,19 @@ public class ChatUI extends UI {
             scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
         });
         Main.updateChatData(chatData);
-        //chatArea.setPreferredSize(new Dimension(860, chatArea.getHeight()+100*(1+dialog.getGpt().getTexts().length)));
+
     }
 
+
+    /**
+     * Знаходить серед бази діалогів відповідного розділу та додає у чат наступний діалог до поточного рівня гри.
+     * @param level рівень гри
+     * @param dialog діалог для поточної мови
+     * @param dialogOtherLang діалог для іншої мови
+     * @param nextPlot номер наступного сюжету (діалогу)
+     */
     private void addNextDialog(int level, Dialog dialog, Dialog dialogOtherLang, int nextPlot) {
-       //System.out.println("addNextDialog: \ncurrent dialog: "+dialog+"\nnext plot: "+nextPlot+"\n");
-       //System.out.println("!!!added answer2: "+" (id: "+dialog.getId()+")"+", dialog: "+dialog+"\n");
-        //dialog.setId(Main.getProgress().getDialogCount());
-        //dialogOtherLang.setId(Main.getProgress().getDialogCount());
-        //System.out.println("set id "+Main.getProgress().getDialogCount()+" in answer2.addActionListener");
-        //Main.getProgress().setDialogCount(calcTotalMessages());
+
         try {
 
             switch (level){
@@ -285,9 +255,6 @@ public class ChatUI extends UI {
                 case 1: {
                     //chatData.yourChapter1.getDialogs().add(dialog);
                     if (nextPlot == 0) {
-                        ////System.out.println(true);
-                        //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
-                       //System.out.println("Strarting maze from addNextDialog case 1");
                         Main.startMazeGame();
                         SwingUtilities.invokeLater(() -> dispose());
                     } else if (nextPlot == 101){ //101 death
@@ -321,14 +288,9 @@ public class ChatUI extends UI {
             Main.updateChatData(chatData);
 
         } catch (IndexOutOfBoundsException ex) {
-           //System.out.println(ex.getMessage());
-            //System.out.println("plot "+dialog.getUser()[0].getPlot());
-            //dispose();
             if (nextPlot == chatData.chapter1.getDialogs().size() && level<2
                     || nextPlot == chatData.chapter2.getDialogs().size() && level==2
                     || nextPlot == chatData.chapter3.getDialogs().size() && level==3) {
-                ////System.out.println(true);
-                //if (Main.mazeUI==null || !Main.mazeUI.isMazeCompleted()) dialog.setCompleted(false);
                 if (Main.getProgress().getLv()==0) Main.updateLevel();
                 switch (level) {
                     case 1: {
@@ -352,38 +314,40 @@ public class ChatUI extends UI {
 
                 }
                 Main.updateChatData(chatData);
-               //System.out.println("Starting maze from addNextDialog catch");
                 Main.startMazeGame();
                 SwingUtilities.invokeLater(this::dispose);
             }
-//            else if (nextPlot == 101){ //101 death
-//                addDeathMessage(1);
-//            }
             else { //100 exit
                //System.out.println("exit game");
                 dispose();
-                //System.exit(0); // Exit the program
+                System.exit(0); // Exit the program
             }
         }
 
     }
+    /**
+     * Обчислює загальну кількість повідомлень.
+     * @return загальна кількість повідомлень
+     */
     private int calcTotalMessages() {
-        return chatData.yourChapter1.getDialogs().size()+chatData.yourChapter2.getDialogs().size()+chatData.yourChapter3.getDialogs().size()+additionalDialogs;
+        return chatData.yourChapter1.getDialogs().size() + chatData.yourChapter2.getDialogs().size() + chatData.yourChapter3.getDialogs().size() + additionalDialogs;
     }
+    /**
+     * Оновлює дані про прогрес.
+     * Викликає метод оновлення прогресу батьківського класу та очищає вміст чату.
+     * Після цього встановлює повідомлення.
+     */
     @Override
-    public void updateProgressData(){
+    public void updateProgressData() {
         super.updateProgressData();
         chatArea.removeAll();
         setMessages();
-
-       //System.out.println(Main.getProgress());
     }
+    /**
+    Метод, що встановлює повідомлення в чаті, підвантажуючи їх з об'єкта прогресу.
+     */
     private void setMessages(){
         Main.getProgress().setDialogCount(0);
-       //System.out.println("chatData.yourChapter1 "+chatData.yourChapter1);
-       //System.out.println("chatData.yourChapter1Ukr "+chatData.yourChapter1Ukr);
-
-        //System.out.println(chatData.chapter.getDialogs());
         for (int i=0; i<chatData.yourChapter1.getDialogs().size(); i++) {
             Dialog dialog =  chatData.yourChapter1.getDialogs().get(i);
             Dialog dialogUkr =  chatData.yourChapter1Ukr.getDialogs().get(i);
@@ -444,26 +408,40 @@ public class ChatUI extends UI {
             addFinal();
         }
     }
-    public void addDeathMessage(int i){
+
+    /**
+     * Додає повідомлення про смерть до чату.
+     * @param i індекс причини смерті (0 - від моба, 1 - через грубість гравця)
+     */
+    public void addDeathMessage(int i) {
         switch (i) {
-            case 0:{
+            case 0: {
                 Main.setDeathReason("mob");
-                if (Main.getLanguage().equals("uk")) addMessage(chatData.deathDialogUkr, chatData.deathDialog,1);
-                else if (Main.getLanguage().equals("en")) addMessage(chatData.deathDialog, chatData.deathDialogUkr, 1);
+                if (Main.getLanguage().equals("uk")) {
+                    addMessage(chatData.deathDialogUkr, chatData.deathDialog, 1);
+                } else if (Main.getLanguage().equals("en")) {
+                    addMessage(chatData.deathDialog, chatData.deathDialogUkr, 1);
+                }
                 break;
             }
-            case 1:{
+            case 1: {
                 Main.setDeathReason("rude");
-                if (Main.getLanguage().equals("uk")) addMessage(chatData.deathDialog1Ukr, chatData.deathDialog1,1);
-                else if (Main.getLanguage().equals("en")) addMessage(chatData.deathDialog1, chatData.deathDialog1Ukr, 1);
+                if (Main.getLanguage().equals("uk")) {
+                    addMessage(chatData.deathDialog1Ukr, chatData.deathDialog1, 1);
+                } else if (Main.getLanguage().equals("en")) {
+                    addMessage(chatData.deathDialog1, chatData.deathDialog1Ukr, 1);
+                }
                 break;
             }
         }
 
-        //Main.updateDialogCount();
         additionalDialogs++;
         Main.setAlive(false);
     }
+
+    /**
+     * Додає до чату повідомлення з проханням про завершення лабіринту.
+     */
     public void addFinishMazeMessage(){
         int randomIndex = (int) Math.floor(Math.random() * chatData.finishMaze1Chapter.size());
         if (Main.getLanguage().equals("uk")) addMessage(chatData.finishMaze1ChapterUkr.get(randomIndex), chatData.finishMaze1Chapter.get(randomIndex), 1);
@@ -471,18 +449,22 @@ public class ChatUI extends UI {
         //Main.updateDialogCount();
         additionalDialogs++;
     }
-    public void startChapter2(){
+    /**
+     * Розпочинає другий розділ гри: вставляє перше повідомлення 2 розділу у чат.
+     */
+    public void startChapter2() {
         chatData.yourChapter2Ukr.getDialogs().add(chatData.chapter2Ukr.getDialogs().get(0));
         chatData.yourChapter2.getDialogs().add(chatData.chapter2.getDialogs().get(0));
         Main.updateChatData(chatData);
         if (Main.getLanguage().equals("uk")) {
-            addMessage(chatData.chapter2Ukr.getDialogs().get(0), chatData.chapter2.getDialogs().get(0),2);
-        }
-        else if (Main.getLanguage().equals("en")) {
+            addMessage(chatData.chapter2Ukr.getDialogs().get(0), chatData.chapter2.getDialogs().get(0), 2);
+        } else if (Main.getLanguage().equals("en")) {
             addMessage(chatData.chapter2.getDialogs().get(0), chatData.chapter2Ukr.getDialogs().get(0), 2);
         }
-
     }
+    /**
+     * Розпочинає третій розділ гри: вставляє перше повідомлення 3 розділу у чат.
+     */
     public void startChapter3(){
         chatData.yourChapter3Ukr.getDialogs().add(chatData.chapter3Ukr.getDialogs().get(0));
         chatData.yourChapter3.getDialogs().add(chatData.chapter3.getDialogs().get(0));
@@ -497,8 +479,12 @@ public class ChatUI extends UI {
 
     }
 
+    /**
+     * Встановлює параметри кнопки з варіантом відповіді та повертає її.
+     * @param text текст варіанту відповіді
+     * @return кнопка з варіантом відповіді
+     */
     public JButton setAnswerOption(String text) {
-        //JButton answer = new JButton(HTMLfyText(text));
         JButton answer = new JButton(text);
         answer.setFont(font16);
         answer.setBackground(answerBtnColor);
@@ -511,10 +497,9 @@ public class ChatUI extends UI {
         return answer;
     }
 
-    private String HTMLfyText(String text) {
-        return "<html><div style=\"padding: 5px 10px\">"+text+"</div></html>";
-    }
-
+    /**
+     * Створює медіапрогравач для фінального відео та додає його в чат з автозапуском та можливістю зупиняти та вмикати відео
+     */
     public void addFinal() {
         answersPanel.removeAll();
 
@@ -570,8 +555,12 @@ public class ChatUI extends UI {
 
 
     }
+    /**
+     * Завершує роботу поточного вікна чату і переходить до вказаного фрейму, вимикаючи відео, якщо воно грає.
+     * @param destinationFrame фрейм, до якого потрібно перейти після закриття поточного вікна
+     */
     @Override
-    void quit(JFrame destinationFrame){
+    public void quit(JFrame destinationFrame){
         destinationFrame.setVisible(true);
         if (videoPlayer!=null && videoPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             videoPlayer.pause();
@@ -592,6 +581,12 @@ public class ChatUI extends UI {
         ImageIcon chatGPTIcon = new ImageIcon("images/chatGPT.png");
         ImageIcon userIcon = new ImageIcon("images/user-icon.png");
 
+        /**
+         * Конструктор, який створює панель повідомлення для чату.
+         *
+         * @param chatGPT вказує, чи це повідомлення від ChatGPT (true) чи від користувача (false)
+         * @param text    текст повідомлення
+         */
         public MessagePanel(boolean chatGPT, String text){
             setPreferredSize(new Dimension(890, 100));
             setBackground(chatGPT ? chatBg : userMsgBg);
@@ -601,8 +596,6 @@ public class ChatUI extends UI {
             avatarImageLabel.setPreferredSize(new Dimension(40, 40));
             avatarImageLabel.setVerticalAlignment(SwingConstants.TOP);
 
-
-            //messageLabel = new JLabel(HTMLfyText(text));
             JTextArea messageLabel = new JTextArea(text);
             messageLabel.setAlignmentX(CENTER_ALIGNMENT);
             messageLabel.setEditable(false);
@@ -613,15 +606,12 @@ public class ChatUI extends UI {
             messageLabel.setOpaque(false);
             messageLabel.setBorder(new EmptyBorder(0, 10, 0, 10));
             messageLabel.setPreferredSize(new Dimension(500, 100));
-            //messageLabel.setMaximumSize(new Dimension(600 - 40, 200));
             messageLabel.setForeground(textColor);
             messageLabel.setFont(font16);
-            //messageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
             contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
             contentPanel.add(avatarImageLabel, BorderLayout.WEST);
             contentPanel.add(messageLabel, BorderLayout.CENTER);
-            //contentPanel.setMinimumSize(new Dimension(600, 100));
 
             add(contentPanel);
 

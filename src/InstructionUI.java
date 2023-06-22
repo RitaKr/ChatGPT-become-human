@@ -30,6 +30,11 @@ public class InstructionUI extends UI {
     private JLabel keyboardInstructionLabel, mobInstructionLabel, GPTInstructionLabel, slidingDoorInstructionLabel, doorButtonInstructionLabel, rotatingDoorInstructionLabel, keyInstructionLabel, teleportInstructionLabel, finishInstructionLabel, quizInstructionLabel;
     private JLabel keyboardLabel, mobLabel, GPTLabel, slidingDoorLabel, doorButtonLabel, rotatingDoorLabel, keyLabel, teleportLabel, finishLabel, quizLabel;
 
+    /**
+     * Конструктор класу InstructionUI (вікно з інструкцією до лабіринтів).
+     * Ініціалізує заголовок вікна, фонове зображення та батьківський фрейм.
+     * Встановлює усі компоненти для графічного інтерфейсу навчальної інструкції.
+     */
     public InstructionUI() {
         super("ChatGPT: become human", "bg-instruction.jpg", Main.mainMenuUI);
         super.backgroundPanel.setLayout(new BorderLayout());
@@ -79,31 +84,29 @@ public class InstructionUI extends UI {
 
     }
 
-    private void quizInstruction() {
-        quizPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        quizPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
-        quizPanel.setOpaque(false);
-        quizPanel.setBackground(null);
-
-        ImageIcon GPTIcon = new ImageIcon(new ImageIcon(QUIZ_IMAGE_PATH).getImage().getScaledInstance(60, 80, Image.SCALE_DEFAULT));
-        quizLabel = new JLabel(GPTIcon);
-        quizLabel.setBackground(null);
-        quizPanel.add(quizLabel);
-
-        String quizText = "<html><div WIDTH=650 style=\"padding: 0 10px;\"><i><b>Java вікторина</b></i>. " +
-                "Ви маєте наступити на нього та натиснути ПРОБІЛ, щоб відкрити вікторину. Ви можете відповісти на одну вікторину тільки один раз, змінювати відповідь також не можна." +
-                "Правильна відповідь додає вам здоров'я або вбиває моба, неправильна - забирає у Вас здоров'я</div></html>";
-        String quizTextEng = "<html><div WIDTH=650 style=\"padding: 0 10px;\"><i><b>Java quiz</b></i>. " +
-                "You have to step on it and press SPACE key to open a quiz. You can answer one quiz once and you can't change your answer. " +
-                "Correct answers heal you or kill a mob, while wrong answers damage you</div></html>";
-        quizInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? quizText : quizTextEng);
-        quizInstructionLabel.setFont(font16);
-        quizInstructionLabel.setForeground(TEXT_COLOR);
-        quizPanel.add(quizInstructionLabel);
-
-        contentPanel.add(quizPanel);
+    /**
+     * Малює та стилізує заголовок навчальної інструкції, додає його.
+     * Додає панель заголовка до основної фонової панелі вікна.
+     */
+    private void drawTitle() {
+        titleLabel = new JLabel(Main.getLanguage().equals("uk") ? "Інструкція до гри" : "Game instruction", SwingConstants.CENTER);
+        titleLabel.setFont(titleFont);
+        titleLabel.setForeground(TITLE_COLOR);
+        //titleLabel.setBorder(new LineBorder(TITLE_COLOR));
+        titlePanel = new JPanel();
+        titlePanel.add(titleLabel);
+        titlePanel.setBorder(new EmptyBorder(8,0,8, 0));
+        titlePanel.setBackground(BG_COLOR);
+        super.backgroundPanel.add(titlePanel, BorderLayout.NORTH);
     }
 
+    /**
+     * Оновлює дані про прогрес гри.
+     * Викликає метод батьківського класу для оновлення прогресу.
+     * Змінює текст заголовка залежно від мови.
+     * Очищує вміст панелі змісту.
+     * Викликає методи для створення та відображення різних розділів навчальної інструкції.
+     */
     @Override
     public void updateProgressData(){
         super.updateProgressData();
@@ -121,6 +124,10 @@ public class InstructionUI extends UI {
         quizInstruction();
     }
 
+    /**
+     * Створює розділ навчальної інструкції про головного персонажа ChatGPT.
+     * Додає створену панель до панелі змісту.
+     */
     public void GPTInstruction(){
         GPTPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         GPTPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -144,6 +151,10 @@ public class InstructionUI extends UI {
         contentPanel.add(GPTPanel);
     }
 
+    /**
+     * Створює розділ навчальної інструкції про клавіші пересування у лабіринті.
+     * Додає створену панель до панелі змісту.
+     */
     private void keyboardInstruction(){
         keyboardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         keyboardPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -168,6 +179,10 @@ public class InstructionUI extends UI {
         contentPanel.add(keyboardPanel);
     }
 
+    /**
+     * Створює розділ навчальної інструкції про фініш лабіринту.
+     * Додає створену панель до панелі змісту.
+     */
     private void finishInstruction(){
         finishPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         finishPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -190,6 +205,10 @@ public class InstructionUI extends UI {
         contentPanel.add(finishPanel);
     }
 
+    /**
+     * Створює розділ навчальної інструкції про мобів.
+     * Додає створену панель до панелі змісту.
+     */
     private void mobInstruction() {
         mobPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mobPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -213,6 +232,10 @@ public class InstructionUI extends UI {
         contentPanel.add(mobPanel);
     }
 
+    /**
+     * Створює розділ навчальної інструкції про телепорти.
+     * Додає створену панель до панелі змісту.
+     */
     private void teleportInstruction(){
         teleportPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         teleportPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -241,6 +264,10 @@ public class InstructionUI extends UI {
         contentPanel.add(teleportPanel);
     }
 
+    /**
+     * Створює розділ навчальної інструкції про ковзальні двері.
+     * Додає створену панель до панелі змісту.
+     */
     private void slidingDoorInstruction(){
         slidingDoorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         slidingDoorPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -264,7 +291,10 @@ public class InstructionUI extends UI {
 
         contentPanel.add(slidingDoorPanel);
     }
-
+    /**
+     * Створює розділ навчальної інструкції про кнопку пересування ковзальних дверей.
+     * Додає створену панель до панелі змісту.
+     */
     private void doorButtonInstruction(){
         doorButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         doorButtonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -287,6 +317,10 @@ public class InstructionUI extends UI {
         contentPanel.add(doorButtonPanel);
     }
 
+    /**
+     * Створює розділ навчальної інструкції про обертальні двері.
+     * Додає створену панель до панелі змісту.
+     */
     private void rotatingDoorInstruction(){
         rotatingDoorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rotatingDoorPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -312,6 +346,10 @@ public class InstructionUI extends UI {
         contentPanel.add(rotatingDoorPanel);
     }
 
+    /**
+     * Створює розділ навчальної інструкції про ключ, що відчиняє (обертає на 90 градусів) обертальні двері.
+     * Додає створену панель до панелі змісту.
+     */
     private void keyInstruction(){
         keyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         keyPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
@@ -334,20 +372,33 @@ public class InstructionUI extends UI {
         contentPanel.add(keyPanel);
     }
 
-    private void drawTitle() {
-        titleLabel = new JLabel(Main.getLanguage().equals("uk") ? "Інструкція до гри" : "Game instruction", SwingConstants.CENTER);
-        titleLabel.setFont(titleFont);
-        titleLabel.setForeground(TITLE_COLOR);
-        //titleLabel.setBorder(new LineBorder(TITLE_COLOR));
-        titlePanel = new JPanel();
-        titlePanel.add(titleLabel);
-        titlePanel.setBorder(new EmptyBorder(8,0,8, 0));
-        titlePanel.setBackground(BG_COLOR);
-        super.backgroundPanel.add(titlePanel, BorderLayout.NORTH);
+    /**
+     * Створює розділ навчальної інструкції про вікторину.
+     * Додає створену панель до панелі змісту.
+     */
+    private void quizInstruction() {
+        quizPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        quizPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // додаємо відступи
+        quizPanel.setOpaque(false);
+        quizPanel.setBackground(null);
+
+        ImageIcon GPTIcon = new ImageIcon(new ImageIcon(QUIZ_IMAGE_PATH).getImage().getScaledInstance(60, 80, Image.SCALE_DEFAULT));
+        quizLabel = new JLabel(GPTIcon);
+        quizLabel.setBackground(null);
+        quizPanel.add(quizLabel);
+
+        String quizText = "<html><div WIDTH=650 style=\"padding: 0 10px;\"><i><b>Java вікторина</b></i>. " +
+                "Ви маєте наступити на нього та натиснути ПРОБІЛ, щоб відкрити вікторину. Ви можете відповісти на одну вікторину тільки один раз, змінювати відповідь також не можна." +
+                "Правильна відповідь додає вам здоров'я або вбиває моба, неправильна - забирає у Вас здоров'я</div></html>";
+        String quizTextEng = "<html><div WIDTH=650 style=\"padding: 0 10px;\"><i><b>Java quiz</b></i>. " +
+                "You have to step on it and press SPACE key to open a quiz. You can answer one quiz once and you can't change your answer. " +
+                "Correct answers heal you or kill a mob, while wrong answers damage you</div></html>";
+        quizInstructionLabel = new JLabel(Main.getLanguage().equals("uk") ? quizText : quizTextEng);
+        quizInstructionLabel.setFont(font16);
+        quizInstructionLabel.setForeground(TEXT_COLOR);
+        quizPanel.add(quizInstructionLabel);
+
+        contentPanel.add(quizPanel);
     }
 
-    public static void main(String[] args) {
-        new InstructionUI();
-
-    }
 }

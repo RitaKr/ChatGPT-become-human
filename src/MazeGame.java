@@ -16,9 +16,6 @@ import java.util.Arrays;
 
 public class MazeGame extends JPanel {
 
-
-    // Array representing the maze structure
-
     private Maze settings;
     Maze.Cell[][] maze;
     private static int mazeWidth = Maze.cols * Maze.cellSize + (Maze.cols + 1) * Maze.wallSize;
@@ -30,24 +27,8 @@ public class MazeGame extends JPanel {
 
     MediaPlayer mediaPlayer;
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean isMazeCompleted() {
-        return mazeCompleted;
-    }
-
     public int getLevel() {
         return level;
-    }
-
-    public static int getMazeWidth() {
-        return mazeWidth;
-    }
-
-    public static int getMazeHeight() {
-        return mazeHeight;
     }
 
     public static Character chatGPT;
@@ -74,9 +55,6 @@ public class MazeGame extends JPanel {
             new Quiz("Which of the following operators is used to compare two values for equality in Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. ="), new Answer("C. equals()"), new Answer("D. There is more than 1 correct answer", true)))),
 
-//            new Quiz("Which of the following is the correct way to create an int array in Java?",
-//                    new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
-
             new Quiz("How is the superclass constructor called in Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. super()", true), new Answer("B. this()"), new Answer("C. extends()"), new Answer("D. super")))),
 
@@ -85,9 +63,6 @@ public class MazeGame extends JPanel {
 
             new Quiz("Which Java keyword is used to instantiate a class?",
                     new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
-
-//            new Quiz("What is the \"garbage collector\" in Java?",
-//                    new ArrayList<>(Arrays.asList(new Answer("A. Method for deleting unnecessary files"), new Answer("B. System for automatic cleaning of unused memory", true), new Answer("C. Method for changing variable values"), new Answer("D.Service for removing old versions of Java")))),
 
             new Quiz("What Java keyword is used to follow?",
                     new ArrayList<>(Arrays.asList(new Answer("A. inherit"), new Answer("B. superclass"), new Answer("C. extends", true), new Answer("D. implements")))),
@@ -129,9 +104,6 @@ public class MazeGame extends JPanel {
             new Quiz("Який з наступних операторів використовується для порівняння двох значень на рівність в Java?",
                     new ArrayList<>(Arrays.asList(new Answer("A. =="), new Answer("B. ="), new Answer("C. equals()"), new Answer("D. Декілька правильних відповідей", true)))),
 
-            //new Quiz("Який із наступних варіантів є правильним способом створення масиву int в Java?",
-                    //new ArrayList<>(Arrays.asList(new Answer("A. int array = new int[5];", true), new Answer("B. int[] array = new int 5;"), new Answer("C. array int[] = new int[5];"), new Answer("D. int array new[5];")))),
-
             new Quiz("Як у Java викликається конструктор суперкласу?",
                  new ArrayList<>(Arrays.asList(new Answer("A. super()", true), new Answer("B. this()"), new Answer("C. extends()"), new Answer("D. super")))),
 
@@ -140,9 +112,6 @@ public class MazeGame extends JPanel {
 
             new Quiz("Яке ключове слово в Java використовується для створення екземпляра класу?",
                              new ArrayList<>(Arrays.asList(new Answer("A. class"), new Answer("B. new", true), new Answer("C. this"), new Answer("D. instance")))),
-
-//            new Quiz("Що таке в Java \"garbage collector\"?",
-//                    new ArrayList<>(Arrays.asList(new Answer("A. Метод для видалення непотрібних файлів"), new Answer("B. Система для автоматичного очищення не використовуваної пам'яті", true), new Answer("C. Метод для зміни значень змінних"), new Answer("D. Сервіс для видалення старих версій Java")))),
 
             new Quiz("Яке ключове слово в Java використовується для наслідування?",
                     new ArrayList<>(Arrays.asList(new Answer("A. inherit"), new Answer("B. superclass"), new Answer("C. extends", true), new Answer("D. implements")))),
@@ -189,16 +158,14 @@ public class MazeGame extends JPanel {
         return chatGPT;
     }
 
-    public MazeGame(int level) {
-
-        this.level = level;
-        setScene(level);
-    }
-    public MazeGame() {
-
-        this.level = Main.getProgress().getLv();
-        setScene();
-    }
+    /**
+     * Створює новий об'єкт гри в лабіринт.
+     *
+     * @param fromChooseMaze прапорець, що позначає, чи була гра запущена зі вікна вибору лабіринту
+     * @param level          рівень лабіринту (якщо гра запущена з вікна вибором лабіринту, якщо ні - рівень підтягується з прогресу)
+     * @param volumeCoef     коефіцієнт гучності фонової музики
+     * @param volumeCoef1    коефіцієнт гучності звукових ефектів
+     */
     public MazeGame(boolean fromChooseMaze, int level, double volumeCoef, double volumeCoef1) {
         this.volumeCoef= volumeCoef;
         this.volumeCoef1= volumeCoef1;
@@ -210,17 +177,30 @@ public class MazeGame extends JPanel {
             this.level = Main.getProgress().getLv();
             setScene();
         }
-
     }
+    /**
+     * Встановлює сцену гри з вказаним рівнем лабіринту.
+     *
+     * @param level рівень лабіринту
+     */
     public void setScene(int level) {
         setMaze(level);
     }
+
+    /**
+     * Встановлює сцену гри з використанням поточного рівня лабіринту.
+     */
     public void setScene() {
         Main.setLevel(level);
         setMaze(level);
 
     }
 
+    /**
+     * Встановлює сцену гри з використанням вказаного рівня лабіринту.
+     *
+     * @param level рівень лабіринту
+     */
     private void setMaze(int level) {
         gameOver = false;
         settings = new Maze(level);
@@ -311,18 +291,33 @@ public class MazeGame extends JPanel {
         repaint();
         playMusic();
     }
+
+    /**
+     * Генерує випадкове незавершене питання зі списку питань.
+     *
+     * @return незавершене питання типу Quiz
+     */
     public Quiz getRandomQuiz(){
         java.util.List<Quiz> uncompletedQuizes = Main.getLanguage().equals("en") ?
                 quizes.stream().filter(quiz -> !quiz.isCompleted()).toList()
                 : quizesUkr.stream().filter(quiz -> !quiz.isCompleted()).toList();
         return uncompletedQuizes.get((int)Math.floor(Math.random() * uncompletedQuizes.size()));
     }
-    private void drawBackground(Graphics g){
 
+    /**
+     * Малює фонове зображення на графічному контексті.
+     *
+     * @param g графічний контекст
+     */
+    private void drawBackground(Graphics g){
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        //System.out.println("x "+getWidth() + ", y" + getHeight() );
     }
 
+    /**
+     * Завантажує фонове зображення з заданою назвою зображення.
+     *
+     * @param imageName назва зображення
+     */
     private void loadBackgroundImage(String imageName) {
         String imagePath = "images/" + imageName;
 
@@ -334,12 +329,15 @@ public class MazeGame extends JPanel {
     }
 
 
-
+    /**
+     * Динамічно перемальовує компонент з графічним контекстом g, зокрема реалізує рух мобів.
+     *
+     * @param g графічний контекст
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Main.mazeUI.updateUpperPanel();
-
 
         drawBackground(g);
         // Draw the maze layout
@@ -363,6 +361,11 @@ public class MazeGame extends JPanel {
 
     }
 
+    /**
+     * Малює лабіринт на графічному контексті g.
+     *
+     * @param g графічний контекст
+     */
     private void drawMaze(Graphics g) {
         for (int row = 0; row < Maze.rows; row++) {
             for (int col = 0; col < Maze.cols; col++) {
@@ -386,6 +389,11 @@ public class MazeGame extends JPanel {
 
     }
 
+    /**
+     * Малює персонажі у лабіринті.
+     *
+     * @param g графічний контекст
+     */
     private void drawCharacters(Graphics g) {
         // Draw the character at its current position
         chatGPT.draw(g);
@@ -393,6 +401,11 @@ public class MazeGame extends JPanel {
         if (mob2!=null) mob2.draw(g);
         if (mob3!=null) mob3.draw(g);
     }
+
+    /**
+     * Малює статичні предмети в лабіринті.
+     * @param g графічний контекст для малювання
+     */
     private void drawStaticItems(Graphics g) {
         if (teleport1!=null) teleport1.draw(g);
         if (teleport2!=null) teleport2.draw(g);
@@ -406,14 +419,23 @@ public class MazeGame extends JPanel {
         if (quiz2Item !=null) quiz2Item.draw(g);
         if (quiz3Item !=null) quiz3Item.draw(g);
 
-
     }
+    /**
+     * Малює рухомі предмети в лабіринті.
+     * @param g графічний контекст для малювання
+     */
     private void drawMovableItems(Graphics g) {
         if (slidingDoor!=null) slidingDoor.draw(g);
         if (rotatingDoor!=null) rotatingDoor.draw(g);
 
     }
 
+
+    /**
+     * Переміщує персонажа чат-бота у лабіринті.
+     * @param dx зміщення по осі X
+     * @param dy зміщення по осі Y
+     */
     public void moveChatGPT(int dx, int dy) {
         int newX = chatGPT.getX() + dx;
         int newY = chatGPT.getY() + dy;
@@ -429,7 +451,6 @@ public class MazeGame extends JPanel {
                 chatGPT.looseLife();
                 Main.mazeUI.repaintHeartsPanel();
                 playEffect("mob-collision.wav", 0.15);
-               //System.out.println("shimmer in chatGPT");
                 shimmerCharacter(chatGPT);
                 if (mob1!=null && isCollisionWithMob(mob1)) freezeMob(mob1);
                 if (mob2!=null && isCollisionWithMob(mob2)) freezeMob(mob2);
@@ -460,8 +481,11 @@ public class MazeGame extends JPanel {
         }
     }
 
-
-
+    /**
+     * Переміщує рухомого персонажа (Mob) у лабіринті.
+     * @param character персонаж, якого потрібно перемістити
+     * @param d відстань переміщення
+     */
     public void moveMob(Mob character, int d) {
         int direction = character.isReverse() ? -1 : 1;
         int newX = character.getX();
@@ -481,14 +505,10 @@ public class MazeGame extends JPanel {
                 }
                 if (isCollisionWithMob(character) && character.isDamaging()) {
                     chatGPT.looseLife();
-                    //MazeUI.HeartsPanel.repaintHeartsPanel();
                     Main.mazeUI.repaintHeartsPanel();
                     playEffect("mob-collision.wav", 0.15);
                     shimmerCharacter(chatGPT);
                     checkGameOver();
-
-                   //System.out.println("Lives left (mob): " + chatGPT.getLives());
-                   //System.out.println("shimmer in mob");
 
                     freezeMob(character);
                 }
@@ -496,6 +516,11 @@ public class MazeGame extends JPanel {
             repaint();
         }
     }
+
+    /**
+     * Перевіряє, чи гра завершилася (геймовер або успішне завершення рівня).
+     * Виконує відповідні дії в залежності від стану гри.
+     */
     public void checkGameOver(){
         if (!chatGPT.isAlive() ) {
             stopMusic();
@@ -505,7 +530,6 @@ public class MazeGame extends JPanel {
                 MessageWindow messageWindow = Main.getLanguage().equals("en") ?
                         new MessageWindow(this, "You died. Coming back to Maze selection...", "Game over", "Ok...")
                     : new MessageWindow(this, "Ви померли. Повертаємось до вибору лабіринтів...", "Гру закінчено", "Ок...");
-            //setScene(level);
                 messageWindow.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -521,7 +545,6 @@ public class MazeGame extends JPanel {
                         new MessageWindow(this, "You died. Coming back to chat...", "Game over", "Ok...")
                         : new MessageWindow(this, "Ви померли. Повертаємось до чату...", "Гру закінчено", "Ок...");
 
-                //setScene(level);
                 messageWindow.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -639,12 +662,15 @@ public class MazeGame extends JPanel {
 
             }
 
-            //MazeUI.updateUpperPanel();
-
         }
 
 
     }
+
+    /**
+     * Заморожує ворога на півтори секунди.
+     * @param character Ворог, якого потрібно заморозити.
+     */
     private static void freezeMob(Mob character) {
         character.setFrozen(true); // Freeze the mob
         character.setDamaging(false);
@@ -659,7 +685,10 @@ public class MazeGame extends JPanel {
         }).start();
     }
 
-
+    /**
+     * Здійснює ефект мерехтіння для персонажа протягом певного часу під час зіткнення з мобом.
+     * @param character Персонаж, для якого потрібно застосувати ефект мерехтіння.
+     */
     public void shimmerCharacter(Character character) {
         int duration = 500; // Duration of the shimmer in milliseconds
         int interval = 100; // Interval for toggling visibility in milliseconds
@@ -685,7 +714,10 @@ public class MazeGame extends JPanel {
         shimmerTimer.start();
     }
 
-
+    /**
+     * Здійснює рух ковзної двері.
+     * Якщо ковзна двері існує, виконує звуковий ефект відкриття дверей, зміщує двері та оновлює налаштування.
+     */
     public void moveSlidingDoor(){
         if (slidingDoor!=null) {
             playEffect("sliding-door-open.wav", 0.6);
@@ -694,6 +726,11 @@ public class MazeGame extends JPanel {
             repaint();
         }
     }
+
+    /**
+     * Здійснює рух обертових дверей.
+     * Якщо обертові двері існують, виконує звуковий ефект відкриття дверей, обертає двері та оновлює налаштування.
+     */
     public void moveRotatingDoor(){
         if (rotatingDoor!=null) {
             playEffect("rotating-door-open.wav", 0.1);
@@ -702,6 +739,14 @@ public class MazeGame extends JPanel {
             repaint();
         }
     }
+
+
+    /**
+     * Перевіряє, чи персонаж знаходиться всередині певного предмета з заданим відступом.
+     * @param item предмет, для якого перевіряється положення персонажа
+     * @param margin відступ, що враховується при перевірці (додавання до границь предмета)
+     * @return {@code true} якщо персонаж знаходиться всередині предмета з врахуванням відступу, {@code false} - в іншому випадку
+     */
     boolean isInside(Item item, int margin) {
         int characterTop = chatGPT.getY();
         int characterBottom = chatGPT.getY() + chatGPT.getHeight();
@@ -717,15 +762,22 @@ public class MazeGame extends JPanel {
         return characterBottom<=(teleportBottom+margin) && characterTop>=(teleportTop-margin) && characterLeft>=(teleportLeft-margin) && characterRight<=(teleportRight+margin);
 
     }
+
+    /**
+
+     * Перевіряє, чи є задана позиція допустимою для персонажа з урахуванням стін лабіринту.
+     * @param character персонаж, для якого перевіряється позиція
+     * @param x нове значення координати x
+     * @param y нове значення координати y
+     * @return {@code true} якщо позиція є допустимою, {@code false} - в іншому випадку
+     */
     public boolean isPositionValid(Character character, int x, int y) {
         int chW = character.getWidth();
         int chH = character.getHeight();
         if (x < Maze.wallSize || x + chW  > mazeWidth - Maze.wallSize ||
                 y < Maze.wallSize || y + chH > mazeHeight - Maze.wallSize) {
-            // Maze.Character is outside the maze boundaries
             return false;
         }
-        // Check if the character is colliding with any maze walls
         for (int row = 0; row < Maze.rows; row++) {
             for (int col = 0; col < Maze.cols; col++) {
                 int wallX = settings.maze[row][col].getX();
@@ -752,11 +804,29 @@ public class MazeGame extends JPanel {
         }
         return true;
     }
+
+    /**
+     * Перевіряє, чи відбувається зіткнення двох прямокутників.
+     * @param x1 координата x першого прямокутника
+     * @param y1 координата y першого прямокутника
+     * @param width1 ширина першого прямокутника
+     * @param height1 висота першого прямокутника
+     * @param x2 координата x другого прямокутника
+     * @param y2 координата y другого прямокутника
+     * @param width2 ширина другого прямокутника
+     * @param height2 висота другого прямокутника
+     * @return {@code true} якщо відбувається зіткнення, {@code false} - в іншому випадку
+     */
     private boolean isRectCollision(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2) {
         return x1 < (x2 + width2) && (x1 + width1) > x2 && y1 < (y2 + height2) && (y1 + height1) > y2;
     }
-    public boolean isCollisionWithMob(Item item) {
 
+    /**
+     * Перевіряє, чи відбувається зіткнення персонажа зі зазначеним об'єктом.
+     * @param item об'єкт, з яким перевіряється зіткнення
+     * @return {@code true} якщо відбувається зіткнення, {@code false} - в іншому випадку
+     */
+    public boolean isCollisionWithMob(Item item) {
         // Calculate the boundaries of the character
         int characterTop = chatGPT.getY();
         int characterBottom = chatGPT.getY() + chatGPT.getHeight();
@@ -779,20 +849,24 @@ public class MazeGame extends JPanel {
         return collisionTop || collisionBottom || collisionLeft || collisionRight;
 
     }
-
+    /**
+     * Повертає пріоритетний розмір панелі.
+     * @return об'єкт Dimension, що представляє пріоритетний розмір панелі
+     */
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(mazeWidth, mazeHeight);  // Set the preferred size of the panel
     }
 
+    /**
+     * Застосовує бонус, в залежності від того, чи правильно була дана відповідь на вікторину
+     */
     public void getBonus(){
-        System.out.print("bonus gained :");
         if (quizWindow.isAnsweredCorrectly()) {
             if (chatGPT.getLives()<3) {
                 playEffect("pickup.wav", 0.15);
                 chatGPT.setLives(chatGPT.getLives() + 1);
                 Main.mazeUI.repaintHeartsPanel();
-                System.out.println("+life");
             } else {
 
                 if (mob2==null && mob1 !=null) {
@@ -803,31 +877,31 @@ public class MazeGame extends JPanel {
                     shimmerCharacter(mob2);
                     mob2 = null;
                 }
-                System.out.println("-mob");
             }
         } else {
             playEffect("mob-collision.wav", 0.15);
             chatGPT.looseLife();
             shimmerCharacter(chatGPT);
             Main.mazeUI.repaintHeartsPanel();
-            System.out.println("-life");
         }
     }
 
+    /**
+     * Перевіряє, чи відтворюється фонова музика.
+     *
+     * @return {@code true}, якщо фонова музика відтворюється, {@code false} - в іншому випадку.
+     */
     public boolean isMusicPlaying() {
         MediaPlayer.Status status = mediaPlayer.getStatus();
-
-        if (status == MediaPlayer.Status.PLAYING) {
-            // The MediaPlayer is currently playing
-           //System.out.println("The track is playing");
-            return true;
-        } else {
-            // The MediaPlayer is in a different state (e.g., stopped)
-           //System.out.println("The track is in a different state");
-            return false;
-        }
-
+        return status == MediaPlayer.Status.PLAYING;
     }
+
+    /**
+     * Відтворює аудіоефект з вказаним шляхом і гучністю.
+     *
+     * @param path   шлях до аудіофайлу ефекту
+     * @param volume гучність ефекту (від 0.0 до 1.0)
+     */
     public void playEffect(String path, double volume) {
         new JFXPanel();
         Platform.runLater(() -> {
@@ -839,43 +913,42 @@ public class MazeGame extends JPanel {
             mediaPlayer.play();
         });
     }
-//    public static void updateVolume(double volume) {
-//        if (mediaPlayer!=null) {
-//            mediaPlayer.setVolume(volume);
-//            System.out.println(mediaPlayer.getVolume());
-//        }
-//    }
+
+    /**
+     * Налаштовує фонову музику з вказаним шляхом і гучністю.
+     *
+     * @param path   шлях до аудіофайлу музики
+     * @param volume гучність музики (від 0.0 до 1.0)
+     */
     public void setMusic(String path, double volume) {
-        // Initialize JavaFX environment
         new JFXPanel();
 
-
-        // Create a File object with the MP3 file
         File musicFile = new File(path);
-
-        // Create a Media object with the File object
         Media media = new Media(musicFile.toURI().toString());
-
-        // Create a MediaPlayer object to play the media
         mediaPlayer = new MediaPlayer(media);
-
-        // Configure the MediaPlayer to loop the music
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-
-        // Start playing the music
-
         mediaPlayer.setVolume(volume * volumeCoef);
-        //System.out.println("Main.volumeCoef "+Main.volumeCoef+"volumeCoef "+volumeCoef+", maze volume "+mediaPlayer.getVolume());
-
     }
+
+    /**
+     * Відтворює фонову музику, якщо вона встановлена.
+     */
     public void playMusic() {
         if (mediaPlayer!=null) mediaPlayer.play();
 
     }
+
+    /**
+     * Ставить фонову музику на паузу.
+     */
     public void pauseMusic() {
 
         if (mediaPlayer!=null) mediaPlayer.pause();
     }
+
+    /**
+     * Зупиняє фонову музику.
+     */
     public void stopMusic() {
 
         if (mediaPlayer!=null) mediaPlayer.stop();

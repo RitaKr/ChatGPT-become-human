@@ -38,6 +38,13 @@ public class UI extends JFrame {
 
     boolean enableDefaultQuit = true;
 
+    /**
+     * Конструктор для створення об'єкта загального інтерфейсу UI.
+     *
+     * @param title             заголовок UI
+     * @param backgroundImagePath шлях до зображення фону
+     * @param quitFrame         вікно для виходу
+     */
     public UI(String title, String backgroundImagePath, JFrame quitFrame)  {
         super(title);
         this.title = title;
@@ -45,12 +52,26 @@ public class UI extends JFrame {
         this.quitFrame = quitFrame;
         setUI();
     }
+
+    /**
+     * Конструктор для створення об'єкта загального інтерфейсу UI без зображення фону.
+     *
+     * @param title     заголовок UI
+     * @param quitFrame вікно для виходу
+     */
     public UI(String title,  JFrame quitFrame)  {
         super(title);
         this.title = title;
         this.quitFrame = quitFrame;
         setUI();
     }
+
+    /**
+     * Конструктор для створення об'єкта загального інтерфейсу UI з зображенням фону.
+     *
+     * @param title             заголовок UI
+     * @param backgroundImagePath шлях до зображення фону
+     */
     public UI(String title, String backgroundImagePath)  {
         super(title);
         this.title = title;
@@ -58,12 +79,13 @@ public class UI extends JFrame {
         this.quitFrame = this;
         setUI();
     }
-    public UI(String title)  {
-        super(title);
-        this.title = title;
-        this.quitFrame = this;
-        setUI();
-    }
+
+    /**
+     * Конструктор для створення об'єкта загального інтерфейсу UI з включеною функцією стандартного закриття.
+     *
+     * @param title             заголовок UI
+     * @param enableDefaultQuit флаг, що визначає, чи включити стандартну функцію закриття
+     */
     public UI(String title, boolean enableDefaultQuit)  {
         super(title);
         this.title = title;
@@ -72,6 +94,9 @@ public class UI extends JFrame {
         setUI();
     }
 
+    /**
+     * Встановлює вигляд UI, включаючи налаштування шрифту та фону.
+     */
     void setUI() {
 
         try {
@@ -156,6 +181,17 @@ public class UI extends JFrame {
         });
     }
 
+    /**
+     * Створює кнопку з заданим текстом, кольором тексту, фоновим зображенням та зображенням при наведенні, шириною та висотою.
+     *
+     * @param text            текст кнопки
+     * @param textColor       колір тексту
+     * @param backgroundImage фонове зображення
+     * @param hoverImage      зображення при наведенні
+     * @param width           ширина кнопки
+     * @param height          висота кнопки
+     * @return створена кнопка
+     */
     JButton createButton(String text, Color textColor, Image backgroundImage, Image hoverImage, int width, int height) {
         JButton button = new JButton(new ImageIcon(backgroundImage.getScaledInstance(width, height, Image.SCALE_SMOOTH))) {
             @Override
@@ -172,8 +208,6 @@ public class UI extends JFrame {
                 return false;
             }
         };
-        //button.setBackground(i<buttonNames.length-1 ? bgColor : Color.red);
-        //button.setForeground(Color.WHITE);
 
         button.setLayout(new BorderLayout());
 
@@ -219,12 +253,20 @@ public class UI extends JFrame {
 
         return button;
     }
+
+    /**
+     * Оновлює дані про прогрес та відповідно змінює текст заголовка рівня.
+     */
     public void updateProgressData(){
         Main.fetchProgress();
-        levelLabel.setText((Main.getLanguage().equals("en") ? "Current level: " : "Поточний рівень: ") +Main.getProgress().getLv());
-        levelLabel.updateUI();
+        updateUpperPanel();
     }
 
+    /**
+     * Завантажує зображення фону.
+     *
+     * @param imageName ім'я зображення фону
+     */
     private void loadBackgroundImage(String imageName) {
         String imagePath = "images/" + imageName;
 
@@ -234,10 +276,19 @@ public class UI extends JFrame {
             backgroundImage = new ImageIcon(imagePath).getImage();
         }
     }
+
+    /**
+     * Оновлює верхню панель інтерфейсу.
+     */
     public void updateUpperPanel() {
         levelLabel.setText((Main.getLanguage().equals("en") ? "Current level " : "Поточний рівень ") + Main.getProgress().getLv());
         levelLabel.updateUI();
     }
+    /**
+     * Встановлює верхню панель для поточного фрейму.
+     *
+     * @param currentFrame поточний фрейм
+     */
     public void setUpperPanel(JFrame currentFrame){
 
         upperPanel.setBorder(new EmptyBorder(5, 20, 5, 20));
@@ -268,6 +319,16 @@ public class UI extends JFrame {
         upperPanel.add(quitButton, BorderLayout.EAST);
 
     }
+
+    /**
+     * Creates a button with an icon.
+     *
+     * @param icon       the icon of the button
+     * @param hoverIcon  the icon of the button when hovered
+     * @param size       the size of the button (width and height)
+     * @param padding    the padding of the button
+     * @return the button with the icon
+     */
     private JButton setIconButton(ImageIcon icon,ImageIcon hoverIcon,int size, int padding) {
         JButton button = new JButton(icon);
         button.setBackground(null);
@@ -294,7 +355,12 @@ public class UI extends JFrame {
         });
         return button;
     }
-    void quit(JFrame destinationFrame){
+
+    /**
+     * Закриває поточне вікно та відображає вказане вікно призначення.
+     * @param destinationFrame Вікно, яке буде показане після закриття поточного вікна.
+     */
+    public void quit(JFrame destinationFrame){
         destinationFrame.setVisible(true);
         SwingUtilities.invokeLater(this::dispose);
 
