@@ -158,6 +158,13 @@ public class Main {
         progress = new ProgressData(fileContent);
 
     }
+
+    /**
+     * Зчитує вміст файлу за заданим шляхом і повертає його у вигляді рядка.
+     *
+     * @param filePath шлях до файлу, який потрібно прочитати
+     * @return рядок з вмістом файлу
+     */
     public static String readFile(String filePath) {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -173,10 +180,10 @@ public class Main {
 
 
     /**
-     * Зчитує вміст файлу за заданим шляхом і повертає його у вигляді рядка.
+     * Записує дані у файл
      *
-     * @param filePath шлях до файлу, який потрібно прочитати
-     * @return рядок з вмістом файлу
+     * @param filePath шлях до файлу, в який потрібно записати дані
+     * @param content дані, які треба записати в файл
      */
     public static void writeFile(String filePath, String content) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
