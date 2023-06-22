@@ -1,7 +1,9 @@
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import javax.swing.*;
 import java.io.*;
 
 public class Main {
@@ -43,7 +45,10 @@ public class Main {
         //startMazeGame();
         mainMenuUI.setVisible(true);
         setMusic("background-music.mp3", 0.1);
-        playMusic();
+        SwingUtilities.invokeLater(() -> {
+            playMusic();
+        });
+
     }
     private static void updateUsername(String newName) {
         progress.setUsername(newName);
@@ -129,56 +134,82 @@ public class Main {
         }
     }
     public static void playEffect(String path, double volume) {
-        new JFXPanel();
+        JFXPanel jfxPanel = new JFXPanel();
 
-        File musicFile = new File("music/"+path);
-        Media media = new Media(musicFile.toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setCycleCount(1);
-        mediaPlayer.setVolume(volume* volumeCoef1);
-        mediaPlayer.play();
+        Platform.runLater(() -> {
+            File musicFile = new File("music/" + path);
+            Media media = new Media(musicFile.toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(volume * volumeCoef1);
+            mediaPlayer.play();
+        });
     }
     public static void setMusic(String path, double volume) {
-        // Initialize JavaFX environment
+        // Initialize JavaFX environment if not already initialized
         new JFXPanel();
 
 
-        // Create a File object with the MP3 file
-        File musicFile = new File("music/" +path);
+            // Create a File object with the MP3 file
+            File musicFile = new File("music/" + path);
 
-        // Create a Media object with the File object
-        Media media = new Media(musicFile.toURI().toString());
+            // Create a Media object with the File object
+            Media media = new Media(musicFile.toURI().toString());
 
-        // Create a MediaPlayer object to play the media
-        backgroundMediaPlayer = new MediaPlayer(media);
+            // Create a MediaPlayer object to play the media
+            backgroundMediaPlayer = new MediaPlayer(media);
 
-        // Configure the MediaPlayer to loop the music
-        backgroundMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            // Configure the MediaPlayer to loop the music
+            backgroundMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
-        // Start playing the music
-        backgroundMediaPlayer.setVolume(volume * volumeCoef);
+            // Start playing the music
+            backgroundMediaPlayer.setVolume(volume * volumeCoef);
 
+            System.out.println("Background music is set.");
+            System.out.println("Background music volume: " + backgroundMediaPlayer.getVolume());
 
     }
+
+    public static void playMusic() {
+        if (backgroundMediaPlayer != null) {
+            backgroundMediaPlayer.play();
+            System.out.println("Background music is playing.");
+        } else {
+            System.out.println("Background music is null. Make sure to set the music first.");
+        }
+    }
+
     public static void updateVolume(double volume) {
-        if (backgroundMediaPlayer!=null) {
+        if (backgroundMediaPlayer != null && backgroundMediaPlayer.getStatus() != MediaPlayer.Status.UNKNOWN) {
             backgroundMediaPlayer.setVolume(volume);
             System.out.println(backgroundMediaPlayer.getVolume());
         }
     }
-    public static void playMusic() {
-        if (backgroundMediaPlayer!=null)backgroundMediaPlayer.play();
 
-    }
     public static void pauseMusic() {
-
-        if (backgroundMediaPlayer!=null) backgroundMediaPlayer.pause();
+        if (backgroundMediaPlayer != null && backgroundMediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            backgroundMediaPlayer.pause();
+        }
     }
     public static void stopMusic() {
-
-        if (backgroundMediaPlayer!=null) backgroundMediaPlayer.stop();
+        if (backgroundMediaPlayer != null && backgroundMediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            backgroundMediaPlayer.stop();
+        }
     }
+    public static boolean isMusicPlaying() {
+        MediaPlayer.Status status = backgroundMediaPlayer.getStatus();
 
+        if (status == MediaPlayer.Status.PLAYING) {
+            // The MediaPlayer is currently playing
+            //System.out.println("The track is playing");
+            return true;
+        } else {
+            // The MediaPlayer is in a different state (e.g., stopped)
+            //System.out.println("The track is in a different state");
+            return false;
+        }
+
+    }
     public static String getLanguage() {
         return progress==null ? "en" : progress.getLanguage();
     }

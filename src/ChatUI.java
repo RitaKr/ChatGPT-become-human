@@ -1,6 +1,7 @@
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -8,10 +9,7 @@ import javafx.scene.media.MediaView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class ChatUI extends UI {
     static JPanel chatArea = new JPanel(new GridBagLayout());
@@ -373,6 +371,10 @@ public class ChatUI extends UI {
         super.updateProgressData();
         chatArea.removeAll();
         setMessages();
+        System.out.println(Main.getProgress());
+        if (Main.getProgress().isFinaleUnlocked()) {
+            addFinal();
+        }
     }
     private void setMessages(){
         Main.getProgress().setDialogCount(0);
@@ -435,6 +437,9 @@ public class ChatUI extends UI {
 
                 }
             }
+        }
+        if (Main.getProgress().isFinaleUnlocked()) {
+            addFinal();
         }
 
 
@@ -519,25 +524,51 @@ public class ChatUI extends UI {
 
         // Додаємо JFXPanel до фрейму Swing
         JFXPanel jfxPanel = new JFXPanel();
+        //jfxPanel.setPreferredSize(new Dimension(600, 400));
+        jfxPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         chatArea.add(jfxPanel, gbc);
 
         // Запускаємо JavaFX Thread
         Platform.runLater(() -> {
             // Створюємо відео-плеєр JavaFX
-            String videoUrl = getClass().getResource("/end-of-the-game.mpg").toExternalForm();
+            String videoUrl = getClass().getResource("/end-of-the-game.mp4").toExternalForm();
             Media media = new Media(videoUrl);
             MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setAutoPlay(true);
-
             MediaView mediaView = new MediaView(mediaPlayer);
-            Scene scene = new Scene(new javafx.scene.Group(mediaView));
 
-            // Додаємо сцену до JFXPanel
-            jfxPanel.setScene(scene);
+            // Create the scene and set the size
+            StackPane stackPane = new StackPane(mediaView);
+            stackPane.setStyle("-fx-background-color: rgb(85, 82, 93);"); // Set the desired background color
+
+            Scene scene = new Scene(stackPane, 600, 400);
+            System.out.println("scene created");
+
+            // Set the size of the MediaView
+            mediaView.setFitWidth(600);
+            mediaView.setFitHeight(400);
+
+            // Start playing the video
+            if (isVisible()) mediaPlayer.play();
+
+            jfxPanel.addKeyListener(new KeyAdapter() {
+                // ... your key listener code ...
+            });
+
+            jfxPanel.addMouseListener(new MouseAdapter() {
+                // ... your mouse listener code ...
+            });
+
+            jfxPanel.setFocusable(true);
+            jfxPanel.requestFocusInWindow();
+
+            // Add the scene to the JFXPanel after it's added to the chatArea
+            SwingUtilities.invokeLater(() -> {
+                jfxPanel.setScene(scene);
+                scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+            });
         });
-
-
     }
+
 
     class MessagePanel extends JPanel {
         JPanel contentPanel = new JPanel(new BorderLayout());

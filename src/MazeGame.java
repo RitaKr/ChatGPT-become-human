@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -626,8 +627,9 @@ public class MazeGame extends JPanel {
                     messageWindow.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
-                            Main.getProgress().setFinaleUnlocked(true);
                             Main.getProgress().getChatData().yourChapter3.setCompleted(true);
+                            Main.getProgress().setFinaleUnlocked(true);
+                            Main.updateProgress();
                             Main.chatUI.addFinal();
                             Main.chatUI.setVisible(true);
                             stopMusic();
@@ -786,7 +788,34 @@ public class MazeGame extends JPanel {
         return new Dimension(mazeWidth, mazeHeight);  // Set the preferred size of the panel
     }
 
+    public void getBonus(){
+        System.out.print("bonus gained :");
+        if (quizWindow.isAnsweredCorrectly()) {
+            if (chatGPT.getLives()<3) {
+                playEffect("pickup.wav", 0.15);
+                chatGPT.setLives(chatGPT.getLives() + 1);
+                Main.mazeUI.repaintHeartsPanel();
+                System.out.println("+life");
+            } else {
 
+                if (mob1==null) {
+                    shimmerCharacter(mob2);
+                    mob2 = null;
+                }
+                else {
+                    shimmerCharacter(mob1);
+                    mob1 = null;
+                }
+                System.out.println("-mob");
+            }
+        } else {
+            playEffect("mob-collision.wav", 0.15);
+            chatGPT.looseLife();
+            shimmerCharacter(chatGPT);
+            Main.mazeUI.repaintHeartsPanel();
+            System.out.println("-life");
+        }
+    }
 
     public boolean isMusicPlaying() {
         MediaPlayer.Status status = mediaPlayer.getStatus();
@@ -804,13 +833,14 @@ public class MazeGame extends JPanel {
     }
     public void playEffect(String path, double volume) {
         new JFXPanel();
-
-        File musicFile = new File("music/"+path);
-        Media media = new Media(musicFile.toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setCycleCount(1);
-        mediaPlayer.setVolume(volume * volumeCoef1);
-        mediaPlayer.play();
+        Platform.runLater(() -> {
+            File musicFile = new File("music/" + path);
+            Media media = new Media(musicFile.toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(1);
+            mediaPlayer.setVolume(volume * volumeCoef1);
+            mediaPlayer.play();
+        });
     }
 //    public static void updateVolume(double volume) {
 //        if (mediaPlayer!=null) {

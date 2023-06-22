@@ -157,6 +157,18 @@ public class UI extends JFrame {
                         quit(quitFrame);
                         break;
                     }
+                    case KeyEvent.VK_SHIFT:
+                        if (Main.isMusicPlaying()) {
+                            // The MediaPlayer is currently playing
+                            System.out.println("The track is playing");
+                            Main.pauseMusic();
+                        } else {
+                            // The MediaPlayer is currently paused
+                            System.out.println("The track is paused");
+                            Main.playMusic();
+                        }
+
+                        break;
                 }
             }
 

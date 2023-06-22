@@ -93,10 +93,10 @@ public class QuizWindow extends JDialog {
                                 quiz.setAnsweredCorrectly(true);
                                 answerBtn.setIcon(new ImageIcon(correctAnswerImage));
                             } else {
-                                quiz.setAnsweredCorrectly(true);
+                                quiz.setAnsweredCorrectly(false);
                                 answerBtn.setIcon(new ImageIcon(wrongAnswerImage));
                             }
-                            Timer timer = new Timer(2000, new ActionListener() {
+                            Timer timer = new Timer(1000, new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     dispose();

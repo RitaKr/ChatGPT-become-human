@@ -66,8 +66,10 @@ public class MainMenuUI extends UI {
       startButton.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e){
+              Main.fetchProgress();
               //Main.playEffect("click.wav", 0.2);
               Main.chatUI.updateProgressData();
+              if (Main.getProgress().isFinaleUnlocked()) Main.chatUI.addFinal();
               Main.chatUI.setVisible(true);
               Main.chatUI.requestFocus();
               SwingUtilities.invokeLater(()->dispose());

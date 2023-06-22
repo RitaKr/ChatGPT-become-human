@@ -207,7 +207,8 @@ class ProgressData {
 
                     data.yourChapter3.getDialogs().add(data.chapter3.getDialogs().get(key));
                     data.yourChapter3Ukr.getDialogs().add(data.chapter3Ukr.getDialogs().get(key));
-                if (value != 2 && i!=chapter3dialogs.length-1) {
+                if (value != 2) {
+                    //if (value != 2 && i!=chapter3dialogs.length-1) {
                     data.yourChapter3.getDialogs().get(i).getUser()[value].setChosen(true);
                     data.yourChapter3.getDialogs().get(i).setCompleted(true);
                     data.yourChapter3Ukr.getDialogs().get(i).getUser()[value].setChosen(true);
